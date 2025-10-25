@@ -1,4 +1,4 @@
-package com.ain.insuranceservice.model;
+package com.ain.insuranceservice.models;
 
 
 public enum VehicleType {

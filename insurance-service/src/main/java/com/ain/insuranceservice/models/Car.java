@@ -1,4 +1,4 @@
-package com.ain.insuranceservice.model;
+package com.ain.insuranceservice.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

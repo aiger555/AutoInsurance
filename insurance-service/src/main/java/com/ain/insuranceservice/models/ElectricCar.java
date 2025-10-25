@@ -1,8 +1,6 @@
-package com.ain.insuranceservice.model;
+package com.ain.insuranceservice.models;
 
 import jakarta.persistence.*;
-
-import java.util.UUID;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "car_id")
