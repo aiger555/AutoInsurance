@@ -1,0 +1,113 @@
+-- -- Create tables for insurance system
+--
+-- -- Table: clients
+-- CREATE TABLE clients (
+--                          id BIGSERIAL PRIMARY KEY,
+--                          full_name VARCHAR(160) NOT NULL,
+--                          passport_number VARCHAR(50) UNIQUE NOT NULL,
+--                          pin VARCHAR(20),
+--                          phone_number VARCHAR(20),
+--                          address TEXT,
+--                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+--
+-- -- Table: cars
+-- CREATE TABLE cars (
+--                       id BIGSERIAL PRIMARY KEY,
+--                       brand VARCHAR(100) NOT NULL,
+--                       model VARCHAR(100) NOT NULL,
+--                       manufacture_year INTEGER NOT NULL,
+--                       vin VARCHAR(50) UNIQUE NOT NULL,
+--                       license_plate VARCHAR(20) UNIQUE NOT NULL,
+--                       registration_authority VARCHAR(200),
+--                       registration_date DATE,
+--                       tech_passport_number VARCHAR(100),
+--                       vehicle_type VARCHAR(50) NOT NULL,
+--                       engine_power INTEGER,
+--                       engine_volume DOUBLE PRECISION,
+--                       max_allowed_weight DOUBLE PRECISION,
+--                       battery_capacity DOUBLE PRECISION,
+--                       passenger_capacity INTEGER,
+--                       owner_id BIGINT NOT NULL,
+--                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                       CONSTRAINT fk_car_owner FOREIGN KEY (owner_id) REFERENCES clients(id)
+-- );
+--
+-- -- Table: insurance_policies
+-- CREATE TABLE insurance_policies (
+--                                     policy_number VARCHAR(50) PRIMARY KEY,
+--                                     policy_type VARCHAR(20) NOT NULL,
+--                                     premium DECIMAL(15,2) NOT NULL,
+--                                     start_date DATE NOT NULL,
+--                                     end_date DATE NOT NULL,
+--                                     status VARCHAR(20) DEFAULT 'ACTIVE',
+--                                     vehicle_owner_id BIGINT NOT NULL,
+--                                     policy_holder_id BIGINT NOT NULL,
+--                                     car_id BIGINT NOT NULL,
+--                                     passport_number VARCHAR(50),
+--                                     pin VARCHAR(20),
+--                                     company_name VARCHAR(200),
+--                                     company_phone VARCHAR(20),
+--                                     company_address TEXT,
+--                                     emergency_phone VARCHAR(20),
+--                                     agent_name VARCHAR(100),
+--                                     agent_phone VARCHAR(20),
+--                                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                                     CONSTRAINT fk_policy_vehicle_owner FOREIGN KEY (vehicle_owner_id) REFERENCES clients(id),
+--                                     CONSTRAINT fk_policy_holder FOREIGN KEY (policy_holder_id) REFERENCES clients(id),
+--                                     CONSTRAINT fk_policy_car FOREIGN KEY (car_id) REFERENCES cars(id)
+-- );
+--
+-- -- Table: drivers
+-- CREATE TABLE drivers (
+--                          id BIGSERIAL PRIMARY KEY,
+--                          policy_number VARCHAR(50) NOT NULL,
+--                          full_name VARCHAR(200) NOT NULL,
+--                          birth_date DATE NOT NULL,
+--                          license_number VARCHAR(50) NOT NULL,
+--                          driving_experience INTEGER NOT NULL,
+--                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                          CONSTRAINT fk_driver_policy FOREIGN KEY (policy_number) REFERENCES insurance_policies(policy_number)
+-- );
+--
+-- -- Create indexes for better performance
+-- CREATE INDEX idx_cars_owner_id ON cars(owner_id);
+-- CREATE INDEX idx_cars_vin ON cars(vin);
+-- CREATE INDEX idx_cars_license_plate ON cars(license_plate);
+-- CREATE INDEX idx_policies_vehicle_owner ON insurance_policies(vehicle_owner_id);
+-- CREATE INDEX idx_policies_policy_holder ON insurance_policies(policy_holder_id);
+-- CREATE INDEX idx_policies_car ON insurance_policies(car_id);
+-- CREATE INDEX idx_drivers_policy ON drivers(policy_number);
+--
+-- -- Insert sample clients
+-- INSERT INTO clients (first_name, last_name, passport_number, pin, phone_number, email, address) VALUES
+--                                                                                                     ('Иван', 'Иванов', 'AN1234567', '12345678901234', '+996555123456', 'ivan.ivanov@email.com', 'г. Бишкек, ул. Чуйкова 123'),
+--                                                                                                     ('Мария', 'Петрова', 'AN7654321', '98765432109876', '+996555654321', 'maria.petrova@email.com', 'г. Бишкек, ул. Советская 45'),
+--                                                                                                     ('Алексей', 'Сидоров', 'AN1122334', '11223344556677', '+996555112233', 'alex.sidorov@email.com', 'г. Ош, ул. Ленина 67'),
+--                                                                                                     ('Елена', 'Козлова', 'AN4455667', '44556677889900', '+996555445566', 'elena.kozlova@email.com', 'г. Бишкек, ул. Московская 89');
+--
+-- -- Insert sample cars
+-- INSERT INTO cars (brand, model, manufacture_year, vin, license_plate, registration_authority, registration_date, tech_passport_number, vehicle_type, engine_power, engine_volume, owner_id) VALUES
+--                                                                                                                                                                                                 ('Toyota', 'Camry', 2020, 'JTDKB20U303000001', '01KG123AB', 'ГУВД г. Бишкек', '2020-05-15', 'TP123456789', 'PASSENGER_CAR', 180, 2.5, 1),
+--                                                                                                                                                                                                 ('Mercedes-Benz', 'E-Class', 2022, 'WDDHF8JB9EA123456', '01KG456CD', 'ГУВД г. Бишкек', '2022-03-20', 'TP987654321', 'PASSENGER_CAR', 249, 3.0, 2),
+--                                                                                                                                                                                                 ('Kamaz', '65115', 2018, 'XLC65115012345678', '02OS789EF', 'ГУВД г. Ош', '2018-11-10', 'TP456789123', 'TRUCK', 400, NULL, 3),
+--                                                                                                                                                                                                 ('Hyundai', 'Sonata', 2021, '5NPE34AF0MH123456', '01KG321GH', 'ГУВД г. Бишкек', '2021-07-05', 'TP321654987', 'PASSENGER_CAR', 150, 2.0, 4);
+--
+-- -- Insert sample insurance policies
+-- INSERT INTO insurance_policies (policy_number, policy_type, premium, start_date, end_date, vehicle_owner_id, policy_holder_id, car_id, passport_number, pin, company_name, company_phone, emergency_phone, agent_name, agent_phone) VALUES
+--                                                                                                                                                                                                                                         ('OSGBIS202412150001', 'OSAGO', 4500.00, '2024-12-15', '2025-12-14', 1, 1, 1, 'AN1234567', '12345678901234', 'Страховая Компания "АВАНГАРД"', '+996312611111', '+996700111111', 'Алина Кожомова', '+996555123456'),
+--                                                                                                                                                                                                                                         ('CASBIS202412160001', 'CASCO', 85000.00, '2024-12-16', '2025-12-15', 2, 2, 2, 'AN7654321', '98765432109876', 'Страховая Компания "АВАНГАРД"', '+996312611111', '+996700111111', 'Алина Кожомова', '+996555123456'),
+--                                                                                                                                                                                                                                         ('OSGOSH202412170001', 'OSAGO', 6800.00, '2024-12-17', '2025-12-16', 3, 3, 3, 'AN1122334', '11223344556677', 'Страховая Компания "АВАНГАРД"', '+996312611111', '+996700111111', 'Алина Кожомова', '+996555123456'),
+--                                                                                                                                                                                                                                         ('DSABIS202412180001', 'DSAGO', 7500.00, '2024-12-18', '2025-12-17', 4, 4, 4, 'AN4455667', '44556677889900', 'Страховая Компания "АВАНГАРД"', '+996312611111', '+996700111111', 'Алина Кожомова', '+996555123456');
+--
+-- -- Insert sample drivers
+-- INSERT INTO drivers (policy_number, full_name, birth_date, license_number, driving_experience) VALUES
+--                                                                                                    ('OSGBIS202412150001', 'Иван Иванович Иванов', '1985-05-15', 'AA123456', 10),
+--                                                                                                    ('OSGBIS202412150001', 'Мария Петровна Петрова', '1990-08-20', 'AB654321', 5),
+--                                                                                                    ('CASBIS202412160001', 'Мария Сергеевна Петрова', '1988-03-10', 'AC987654', 8),
+--                                                                                                    ('OSGOSH202412170001', 'Алексей Викторович Сидоров', '1978-11-25', 'AD321987', 15),
+--                                                                                                    ('DSABIS202412180001', 'Елена Александровна Козлова', '1992-07-30', 'AE159753', 4),
+--                                                                                                    ('DSABIS202412180001', 'Дмитрий Евгеньевич Козлов', '1989-12-05', 'AF357951', 6);
