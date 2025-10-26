@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table (name = "drivers")
 public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

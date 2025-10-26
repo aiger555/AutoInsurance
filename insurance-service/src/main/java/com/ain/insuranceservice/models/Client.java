@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Table (name = "clients")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

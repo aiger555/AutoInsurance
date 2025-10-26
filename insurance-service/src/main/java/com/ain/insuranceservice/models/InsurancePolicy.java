@@ -11,6 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table (name = "insurance_policies")
 public class InsurancePolicy {
     @Id
     private String policyNumber;
