@@ -19,6 +19,6 @@ public class Driver {
 
     private String fullName;
     private LocalDate birthDate;
-    private String licenceNumber;
+    private String licenseNumber;
     private LocalDate drivingExperience;
 }
