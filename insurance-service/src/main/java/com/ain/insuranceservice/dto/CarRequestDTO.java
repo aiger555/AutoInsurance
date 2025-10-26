@@ -1,0 +1,45 @@
+package com.ain.insuranceservice.dto;
+
+import com.ain.insuranceservice.models.Client;
+import com.ain.insuranceservice.models.VehicleType;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+@Data
+public class CarRequestDTO {
+    @NotBlank(message = "Brand is required")
+    private String brand;
+
+    @NotBlank(message = "Model is required")
+    private String model;
+
+    @NotBlank(message = "Year of manufacture is required")
+    private String manufactureYear;
+
+    @NotBlank(message = "VIN is required")
+    private String vin;
+
+    @NotBlank(message = "License plate is required")
+    private String licensePlate;
+
+    @NotBlank(message = "Registration Authority is required")
+    private String registrationAuthority;
+
+    @NotBlank(message = "Registration Date is required")
+    private String registrationDate;
+
+    @NotBlank(message = "TechPassport Number is required")
+    private String techPassportNumber;
+
+    private String engineVolume;
+    private String maxAllowedWeight;
+    private String batteryCapacity;
+    private String passengerCapacity;
+
+    @NotBlank(message = "Vehicle Type is required")
+    private VehicleType vehicleType;
+
+    @NotBlank(message = "Owner is required")
+    private Client owner;
+
+}
