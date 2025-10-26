@@ -29,7 +29,7 @@ public class Car {
 
     @NotNull
     @Column(unique = true)
-    private String licencePlate;
+    private String licensePlate;
 
     @NotNull
     private String registrationAuthority;

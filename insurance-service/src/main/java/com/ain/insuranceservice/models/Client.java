@@ -29,7 +29,7 @@ public class Client {
 
     @NotNull
     @Column(unique = true)
-    private Long pin;
+    private String pin;
 
     @NotNull
     private String address;
