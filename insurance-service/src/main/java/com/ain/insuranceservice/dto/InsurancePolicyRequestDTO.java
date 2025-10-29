@@ -1,8 +1,6 @@
 package com.ain.insuranceservice.dto;
 
-import com.ain.insuranceservice.models.Client;
-import com.ain.insuranceservice.models.PolicyType;
-import com.ain.insuranceservice.models.VehicleType;
+import com.ain.insuranceservice.models.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -30,12 +28,12 @@ public class InsurancePolicyRequestDTO {
     private String status;
 
     @NotBlank(message = "Vehicle Owner is required")
-    private ClientResponseDTO vehicleOwner;
+    private Client vehicleOwner;
 
     @NotBlank(message = "Insured Car is required")
-    private CarResponseDTO insuredCar;
+    private Car insuredCar;
 
-    private List<DriverResponseDTO> drivers = new ArrayList<>();
+    private List<Driver> drivers = new ArrayList<>();
 
     private String comissarNumber;
 

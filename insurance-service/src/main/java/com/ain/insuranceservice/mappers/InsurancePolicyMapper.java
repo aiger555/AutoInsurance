@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class InsurancePolicyMapper {
         return insurancePolicyDTO;
     }
 
-    public static InsurancePolicy toModel(InsurancePolicyRequestDTO insurancePolicyRequestDTO, Client vehicleOwner, Car insuredCar, List<Driver> drivers) {
+    public static InsurancePolicy toModel(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
         InsurancePolicy insurancePolicy = new InsurancePolicy();
         insurancePolicy.setPolicyNumber(insurancePolicyRequestDTO.getPolicyNumber());
         insurancePolicy.setPolicyType(insurancePolicyRequestDTO.getPolicyType());
@@ -50,9 +51,9 @@ public class InsurancePolicyMapper {
         insurancePolicy.setStartDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
         insurancePolicy.setEndDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
         insurancePolicy.setStatus(insurancePolicyRequestDTO.getStatus());
-        insurancePolicy.setVehicleOwner(vehicleOwner);
-        insurancePolicy.setInsuredCar(insuredCar);
-        insurancePolicy.setDrivers(drivers);
+        insurancePolicy.setVehicleOwner(insurancePolicyRequestDTO.getVehicleOwner());
+        insurancePolicy.setInsuredCar(insurancePolicyRequestDTO.getInsuredCar());
+        insurancePolicy.setDrivers(insurancePolicyRequestDTO.getDrivers());
         insurancePolicy.setComissarNumber(insurancePolicyRequestDTO.getComissarNumber());
         insurancePolicy.setCompanyNumber(insurancePolicyRequestDTO.getCompanyNumber());
         insurancePolicy.setCreatedAt(LocalDateTime.parse(insurancePolicyRequestDTO.getCreatedAt()));
