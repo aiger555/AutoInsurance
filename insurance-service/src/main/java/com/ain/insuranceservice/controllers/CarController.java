@@ -1,14 +1,16 @@
 package com.ain.insuranceservice.controllers;
 
+import com.ain.insuranceservice.dto.CarRequestDTO;
 import com.ain.insuranceservice.dto.CarResponseDTO;
+import com.ain.insuranceservice.dto.ClientRequestDTO;
+import com.ain.insuranceservice.dto.ClientResponseDTO;
 import com.ain.insuranceservice.models.Car;
 import com.ain.insuranceservice.services.CarService;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +24,10 @@ public class CarController {
     public ResponseEntity<List<CarResponseDTO>> getAllCars() {
         List<CarResponseDTO> cars = carService.getCars();
         return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
+    @PostMapping
+    public ResponseEntity<CarResponseDTO> createCar(@Valid @RequestBody CarRequestDTO carRequestDTO) {
+        CarResponseDTO carResponseDTO = carService.createCar(carRequestDTO);
+        return new ResponseEntity<>(carResponseDTO, HttpStatus.CREATED);
     }
 }

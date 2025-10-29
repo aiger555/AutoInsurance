@@ -1,0 +1,26 @@
+### create a new car entity POST
+POST http://localhost:4000/cars
+Content-Type: application/json
+
+{
+  "brand": "Zeekr",
+  "model": "205",
+  "manufactureYear": 2015,
+  "vin": "JTDKB20U3035846941",
+  "licensePlate": "08KG098AC",
+  "registrationAuthority": "411011",
+  "registrationDate": "2025-01-06",
+  "techPassportNumber": "AB 096203",
+  "batteryCapacity": 156,
+  "vehicleType": "ELECTRIC_CAR",
+  "owner": {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "fullname": "Сидоров Алексей Викторович",
+    "dateOfBirth": "1978-11-25",
+    "phoneNumber": "+996555112233",
+    "passportNumber": "AN1122334",
+    "pin": "10211198233445",
+    "address": "г. Ош, ул. Ленина 67"
+  }
+}
+###

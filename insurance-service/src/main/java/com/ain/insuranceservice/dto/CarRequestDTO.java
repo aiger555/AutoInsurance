@@ -4,6 +4,7 @@ import com.ain.insuranceservice.models.Client;
 import com.ain.insuranceservice.models.VehicleType;
 import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -37,10 +38,10 @@ public class CarRequestDTO {
     private String batteryCapacity;
     private String passengerCapacity;
 
-    @NotBlank(message = "Vehicle Type is required")
+    @NotNull(message = "Vehicle Type is required")
     private VehicleType vehicleType;
 
-    @NotBlank(message = "Owner is required")
+    @NotNull(message = "Owner is required")
     private Client owner;
 
     public void validate(){

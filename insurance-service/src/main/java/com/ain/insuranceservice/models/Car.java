@@ -41,7 +41,6 @@ public class Car {
     @NotNull
     private String techPassportNumber;
 
-    @NotNull
     private Double engineVolume;
     private Double maxAllowedWeight; // for trucks, trailers, semi-trailers
     private Double batteryCapacity; // for electrocars

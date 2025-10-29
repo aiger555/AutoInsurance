@@ -57,25 +57,25 @@ public class CarMapper {
 
         VehicleType vehicleType = carRequestDTO.getVehicleType();
         if (vehicleType == VehicleType.PASSENGER_CAR) {
-            if(carRequestDTO.getEngineVolume() != null && carRequestDTO.getEngineVolume().isEmpty()) {
+            if(carRequestDTO.getEngineVolume() != null && !carRequestDTO.getEngineVolume().isEmpty()) {
                 car.setEngineVolume(Double.valueOf(carRequestDTO.getEngineVolume()));
             }else {
                 throw new IllegalArgumentException("Engine volume is required");
             }
         } else if (vehicleType == VehicleType.TRUCK || vehicleType == VehicleType.TRAILER || vehicleType == VehicleType.SEMI_TRAILER) {
-            if (carRequestDTO.getMaxAllowedWeight() != null && carRequestDTO.getMaxAllowedWeight().isEmpty()) {
+            if (carRequestDTO.getMaxAllowedWeight() != null && !carRequestDTO.getMaxAllowedWeight().isEmpty()) {
                 car.setMaxAllowedWeight(Double.valueOf(carRequestDTO.getMaxAllowedWeight()));
             } else {
                 throw new IllegalArgumentException("Max allowed weight is required");
             }
         } else if (vehicleType == VehicleType.ELECTRIC_CAR) {
-            if (carRequestDTO.getBatteryCapacity() != null && carRequestDTO.getBatteryCapacity().isEmpty()) {
+            if (carRequestDTO.getBatteryCapacity() != null && !carRequestDTO.getBatteryCapacity().isEmpty()) {
                 car.setBatteryCapacity(Double.valueOf(carRequestDTO.getBatteryCapacity()));
             } else {
                 throw new IllegalArgumentException("Battery capacity is required");
             }
         } else if (vehicleType == VehicleType.BUS || vehicleType == VehicleType.TRUCK || vehicleType == VehicleType.MINIBUS) {
-            if (carRequestDTO.getPassengerCapacity() != null && carRequestDTO.getPassengerCapacity().isEmpty()) {
+            if (carRequestDTO.getPassengerCapacity() != null && !carRequestDTO.getPassengerCapacity().isEmpty()) {
                 car.setPassengerCapacity(Double.valueOf(carRequestDTO.getPassengerCapacity()));
             } else {
                 throw new IllegalArgumentException("Passenger capacity is required");
