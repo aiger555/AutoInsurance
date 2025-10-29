@@ -21,7 +21,7 @@ public class DriverService {
         this.driverReposiroty = driverReposiroty;
     }
 
-    public List<DriverResponseDTO> getCars() {
+    public List<DriverResponseDTO> getDrivers() {
         List<Driver> drivers = driverReposiroty.findAll();
         return drivers.stream()
                 .map(DriverMapper::toDTO).toList();

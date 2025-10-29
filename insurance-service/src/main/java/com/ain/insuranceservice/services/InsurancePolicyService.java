@@ -21,7 +21,7 @@ public class InsurancePolicyService {
         this.clientRepository = clientRepository;
     }
 
-    public List<InsurancePolicyResponseDTO> getCars() {
+    public List<InsurancePolicyResponseDTO> getInsurancePolicies() {
         List<InsurancePolicy> insurancePolicies = insurancePolicyRepository.findAll();
         return insurancePolicies.stream()
                 .map(InsurancePolicyMapper::toDTO).toList();

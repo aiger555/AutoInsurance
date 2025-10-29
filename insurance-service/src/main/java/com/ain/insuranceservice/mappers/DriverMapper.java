@@ -15,6 +15,7 @@ public class DriverMapper {
     public static DriverResponseDTO toDTO(Driver driver) {
         DriverResponseDTO driverDTO = new DriverResponseDTO();
         driverDTO.setId(driver.getId().toString());
+        driverDTO.setPolicy(driver.getPolicy());
         driverDTO.setFullName(driver.getFullName());
         driverDTO.setBirthDate(driver.getBirthDate().toString());
         driverDTO.setLicenseNumber(driver.getLicenseNumber());
@@ -25,6 +26,7 @@ public class DriverMapper {
 
     public static Driver toModel(DriverRequestDTO driverRequestDTO) {
         Driver driver = new Driver();
+        driver.setPolicy(driverRequestDTO.getPolicy());
         driver.setFullName(driverRequestDTO.getFullName());
         driver.setBirthDate(LocalDate.parse(driverRequestDTO.getBirthDate()));
         driver.setLicenseNumber(driverRequestDTO.getLicenseNumber());
