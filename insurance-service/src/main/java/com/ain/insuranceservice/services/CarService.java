@@ -1,5 +1,6 @@
 package com.ain.insuranceservice.services;
 
+import com.ain.insuranceservice.dto.CarRequestDTO;
 import com.ain.insuranceservice.dto.CarResponseDTO;
 import com.ain.insuranceservice.mappers.CarMapper;
 import com.ain.insuranceservice.models.Car;
@@ -20,5 +21,11 @@ public class CarService {
         List<Car> cars = carRepository.findAll();
         return cars.stream()
                 .map(CarMapper::toDTO).toList();
+    }
+
+    public CarResponseDTO createCar(CarRequestDTO carRequestDTO) {
+        Car newCar = carRepository.save(CarMapper.toModel(carRequestDTO));
+        return CarMapper.toDTO(newCar);
+
     }
 }

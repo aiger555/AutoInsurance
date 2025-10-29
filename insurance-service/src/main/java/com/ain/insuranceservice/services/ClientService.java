@@ -1,5 +1,6 @@
 package com.ain.insuranceservice.services;
 
+import com.ain.insuranceservice.dto.ClientRequestDTO;
 import com.ain.insuranceservice.dto.ClientResponseDTO;
 import com.ain.insuranceservice.mappers.ClientMapper;
 import com.ain.insuranceservice.models.Client;
@@ -21,5 +22,11 @@ public class ClientService {
         List<Client> clients = clientRepository.findAll();
         return clients.stream()
                 .map(ClientMapper::toDTO).toList();
+    }
+
+    public ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO) {
+        Client newClient = clientRepository.save(ClientMapper.toModel(clientRequestDTO));
+        return ClientMapper.toDTO(newClient);
+
     }
 }

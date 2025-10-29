@@ -1,8 +1,15 @@
 package com.ain.insuranceservice.mappers;
 
 
+import com.ain.insuranceservice.dto.DriverRequestDTO;
 import com.ain.insuranceservice.dto.DriverResponseDTO;
+import com.ain.insuranceservice.dto.InsurancePolicyRequestDTO;
 import com.ain.insuranceservice.models.Driver;
+import com.ain.insuranceservice.models.InsurancePolicy;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DriverMapper {
     public static DriverResponseDTO toDTO(Driver driver) {
@@ -15,4 +22,16 @@ public class DriverMapper {
 
         return driverDTO;
     }
+
+    public static Driver toModel(DriverRequestDTO driverRequestDTO) {
+        Driver driver = new Driver();
+        driver.setFullName(driverRequestDTO.getFullName());
+        driver.setBirthDate(LocalDate.parse(driverRequestDTO.getBirthDate()));
+        driver.setLicenseNumber(driverRequestDTO.getLicenseNumber());
+        driver.setDrivingExperience(LocalDate.parse(driverRequestDTO.getDrivingExperience()));
+        return driver;
+    }
 }
+
+
+

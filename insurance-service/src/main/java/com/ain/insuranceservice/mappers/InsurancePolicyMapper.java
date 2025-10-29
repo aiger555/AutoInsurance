@@ -1,12 +1,17 @@
 package com.ain.insuranceservice.mappers;
 
 
-import com.ain.insuranceservice.dto.ClientResponseDTO;
-import com.ain.insuranceservice.dto.DriverResponseDTO;
-import com.ain.insuranceservice.dto.InsurancePolicyResponseDTO;
+import com.ain.insuranceservice.dto.*;
+import com.ain.insuranceservice.models.Car;
+import com.ain.insuranceservice.models.Client;
+import com.ain.insuranceservice.models.Driver;
 import com.ain.insuranceservice.models.InsurancePolicy;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,5 +40,23 @@ public class InsurancePolicyMapper {
         insurancePolicyDTO.setUpdatedAt(insurancePolicy.getUpdatedAt().toString());
 
         return insurancePolicyDTO;
+    }
+
+    public static InsurancePolicy toModel(InsurancePolicyRequestDTO insurancePolicyRequestDTO, Client vehicleOwner, Car insuredCar, List<Driver> drivers) {
+        InsurancePolicy insurancePolicy = new InsurancePolicy();
+        insurancePolicy.setPolicyNumber(insurancePolicyRequestDTO.getPolicyNumber());
+        insurancePolicy.setPolicyType(insurancePolicyRequestDTO.getPolicyType());
+        insurancePolicy.setPremium(BigDecimal.valueOf(Long.parseLong(insurancePolicyRequestDTO.getPremium())));
+        insurancePolicy.setStartDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
+        insurancePolicy.setEndDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
+        insurancePolicy.setStatus(insurancePolicyRequestDTO.getStatus());
+        insurancePolicy.setVehicleOwner(vehicleOwner);
+        insurancePolicy.setInsuredCar(insuredCar);
+        insurancePolicy.setDrivers(drivers);
+        insurancePolicy.setComissarNumber(insurancePolicyRequestDTO.getComissarNumber());
+        insurancePolicy.setCompanyNumber(insurancePolicyRequestDTO.getCompanyNumber());
+        insurancePolicy.setCreatedAt(LocalDateTime.parse(insurancePolicyRequestDTO.getCreatedAt()));
+        insurancePolicy.setUpdatedAt(LocalDateTime.now());
+        return insurancePolicy;
     }
 }

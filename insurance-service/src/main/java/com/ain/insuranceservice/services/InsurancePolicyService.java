@@ -1,5 +1,6 @@
 package com.ain.insuranceservice.services;
 
+import com.ain.insuranceservice.dto.InsurancePolicyRequestDTO;
 import com.ain.insuranceservice.dto.InsurancePolicyResponseDTO;
 import com.ain.insuranceservice.models.InsurancePolicy;
 import com.ain.insuranceservice.repositories.InsurancePolicyRepository;
@@ -20,5 +21,12 @@ public class InsurancePolicyService {
         List<InsurancePolicy> insurancePolicies = insurancePolicyRepository.findAll();
         return insurancePolicies.stream()
                 .map(InsurancePolicyMapper::toDTO).toList();
+    }
+
+
+    public InsurancePolicyResponseDTO createInsurancePolicy(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        InsurancePolicy newInsurancePolicy = insurancePolicyRepository.save(InsurancePolicyMapper.toModel(insurancePolicyRequestDTO));
+        return InsurancePolicyMapper.toDTO(newInsurancePolicy);
+
     }
 }
