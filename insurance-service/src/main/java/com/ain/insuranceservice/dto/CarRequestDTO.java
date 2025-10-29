@@ -2,6 +2,7 @@ package com.ain.insuranceservice.dto;
 
 import com.ain.insuranceservice.models.Client;
 import com.ain.insuranceservice.models.VehicleType;
+import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -41,5 +42,37 @@ public class CarRequestDTO {
 
     @NotBlank(message = "Owner is required")
     private Client owner;
+
+    public void validate(){
+        switch (vehicleType){
+            case PASSENGER_CAR:
+                if (engineVolume == null || engineVolume.isEmpty()){
+                    throw new ValidationException("Engine Volume is required");
+                }
+                break;
+
+            case TRUCK:
+            case TRAILER:
+            case SEMI_TRAILER:
+                if (maxAllowedWeight == null || maxAllowedWeight.isEmpty()){
+                    throw new ValidationException("Max Allowed Weight is required for " + vehicleType.getDisplayName());
+                }
+                break;
+            case ELECTRIC_CAR:
+                if (batteryCapacity == null || batteryCapacity.isEmpty()){
+                    throw new ValidationException("Battery Capacity is required");
+                }
+                break;
+            case BUS:
+            case MINIBUS:
+                if (passengerCapacity == null || passengerCapacity.isEmpty()){
+                    throw new ValidationException("Passenger Capacity is required for " + vehicleType.getDisplayName());
+                }
+                break;
+            case MOTORCYCLE:
+            case SPECIAL_VEHICLE:
+                break;
+        }
+    }
 
 }
