@@ -62,7 +62,7 @@ public class CarMapper {
             }else {
                 throw new IllegalArgumentException("Engine volume is required");
             }
-        } else if (vehicleType == VehicleType.TRUCK || vehicleType == VehicleType.TRAILER || vehicleType == VehicleType.SEMI_TRAILER) {
+        } else if (vehicleType == VehicleType.TRUCK) {
             if (carRequestDTO.getMaxAllowedWeight() != null && !carRequestDTO.getMaxAllowedWeight().isEmpty()) {
                 car.setMaxAllowedWeight(Double.valueOf(carRequestDTO.getMaxAllowedWeight()));
             } else {
@@ -74,7 +74,7 @@ public class CarMapper {
             } else {
                 throw new IllegalArgumentException("Battery capacity is required");
             }
-        } else if (vehicleType == VehicleType.BUS || vehicleType == VehicleType.TRUCK || vehicleType == VehicleType.MINIBUS) {
+        } else if (vehicleType == VehicleType.BUS || vehicleType == VehicleType.MINIBUS) {
             if (carRequestDTO.getPassengerCapacity() != null && !carRequestDTO.getPassengerCapacity().isEmpty()) {
                 car.setPassengerCapacity(Double.valueOf(carRequestDTO.getPassengerCapacity()));
             } else {
