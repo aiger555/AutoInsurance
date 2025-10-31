@@ -4,23 +4,47 @@ Content-Type: application/json
 
 {
   "policyNumber": "0505063",
-  "policyType": "205",
-  "manufactureYear": 2015,
-  "vin": "JTDKB20U3035846941",
-  "licensePlate": "08KG098AC",
-  "registrationAuthority": "411011",
-  "registrationDate": "2025-01-06",
-  "techPassportNumber": "AB 096203",
-  "batteryCapacity": 156,
-  "vehicleType": "ELECTRIC_CAR",
-  "owner": {
-    "id": "550e8400-e29b-41d4-a716-446655440002",
-    "fullname": "Сидоров Алексей Викторович",
-    "dateOfBirth": "1978-11-25",
-    "phoneNumber": "+996555112233",
-    "passportNumber": "AN1122334",
-    "pin": "10211198233445",
-    "address": "г. Ош, ул. Ленина 67"
-  }
+  "policyType": "OSAGO",
+  "startDate": "2024-12-01",
+  "endDate": "2025-12-01",
+  "status": "ACTIVE",
+  "vehicleOwner": {
+    "id": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  "insuredCar": {
+    "id": "660e8400-e29b-41d4-a716-446655440000",
+    "brand": "Toyota",
+    "model": "Camry",
+    "manufactureYear": "2020",
+    "vin": "JTDKB20U303000001",
+    "licensePlate": "01KG123AB",
+    "registrationAuthority": "ГУВД г. Бишкек",
+    "registrationDate": "2020-05-15",
+    "techPassportNumber": "TP123456789",
+    "engineVolume": "2.5",
+    "maxAllowedWeight": null,
+    "batteryCapacity": null,
+    "passengerCapacity": null,
+    "vehicleType": "PASSENGER_CAR",
+    "owner": {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "fullName": "Иванов Иван Иванович",
+      "dateOfBirth": "1985-05-15",
+      "phoneNumber": "+996555123456",
+      "passport_number": "AN1234567",
+      "pin": "10123194567890",
+      "address": "г. Бишкек, ул. Чуйкова 123"
+    }
+  },
+  "drivers":  [
+    {
+      "fullName": "Ivanov Ivan Ivanovich",
+      "birthDate": "1985-05-15",
+      "licenseNumber": "BG 5896423",
+      "drivingExperience": "2005-06-20"
+    }
+  ],
+  "comissarNumber": "+996558040425",
+  "companyNumber": "+996202565656"
 }
 ###

@@ -50,8 +50,6 @@ public class InsurancePolicyMapper {
         insurancePolicy.setDrivers(insurancePolicyRequestDTO.getDrivers());
         insurancePolicy.setComissarNumber(insurancePolicyRequestDTO.getComissarNumber());
         insurancePolicy.setCompanyNumber(insurancePolicyRequestDTO.getCompanyNumber());
-        insurancePolicy.setCreatedAt(LocalDateTime.parse(insurancePolicyRequestDTO.getCreatedAt()));
-        insurancePolicy.setUpdatedAt(LocalDateTime.now());
         return insurancePolicy;
     }
 }

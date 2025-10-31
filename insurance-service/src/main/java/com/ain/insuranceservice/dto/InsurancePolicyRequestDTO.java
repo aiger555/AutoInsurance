@@ -2,6 +2,7 @@ package com.ain.insuranceservice.dto;
 
 import com.ain.insuranceservice.models.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -12,10 +13,9 @@ public class InsurancePolicyRequestDTO {
     @NotBlank(message = "Policy Number is required")
     private String policyNumber;
 
-    @NotBlank(message = "Policy Type is required")
+    @NotNull(message = "Policy Type is required")
     private PolicyType policyType;
 
-    @NotBlank(message = "Premium is required")
     private String premium;
 
     @NotBlank(message = "Start Date is required")
@@ -27,10 +27,10 @@ public class InsurancePolicyRequestDTO {
     @NotBlank(message = "status is required")
     private String status;
 
-    @NotBlank(message = "Vehicle Owner is required")
+    @NotNull(message = "Vehicle Owner is required")
     private Client vehicleOwner;
 
-    @NotBlank(message = "Insured Car is required")
+    @NotNull(message = "Insured Car is required")
     private Car insuredCar;
 
     private List<Driver> drivers = new ArrayList<>();
@@ -39,7 +39,4 @@ public class InsurancePolicyRequestDTO {
 
     private String companyNumber;
 
-    private String createdAt;
-
-    private VehicleType updatedAt;
 }
