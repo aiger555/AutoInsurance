@@ -15,7 +15,7 @@ public class Driver {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "policy_id")
+    @JoinColumn(name = "policy_number")
     private InsurancePolicy policy;
 
     private String fullName;

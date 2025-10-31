@@ -2,11 +2,12 @@ package com.ain.insuranceservice.dto;
 
 import com.ain.insuranceservice.models.InsurancePolicy;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class DriverRequestDTO {
-    @NotBlank(message = "Insurance policy is required")
+    @NotNull(message = "Insurance policy is required")
     private InsurancePolicy policy;
 
     @NotBlank(message = "Full name is required")
