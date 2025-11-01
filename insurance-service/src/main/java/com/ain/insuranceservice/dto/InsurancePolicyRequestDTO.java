@@ -3,8 +3,10 @@ package com.ain.insuranceservice.dto;
 import com.ain.insuranceservice.models.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,5 +40,11 @@ public class InsurancePolicyRequestDTO {
     private String comissarNumber;
 
     private String companyNumber;
+
+    @Pattern(regexp = "personal|rent", message = "usage purpose must be 'personal' or 'rental'")
+    private String usagePurpose;
+    private BigDecimal marketValue;
+    private BigDecimal franchise;
+    private Boolean isLegalEntity; //for phys. or yur.
 
 }

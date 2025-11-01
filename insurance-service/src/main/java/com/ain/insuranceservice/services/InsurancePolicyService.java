@@ -25,15 +25,16 @@ import java.util.List;
 public class InsurancePolicyService {
     private final ClientRepository clientRepository;
     private final InsurancePolicyRepository insurancePolicyRepository;
-    private CarRepository carRepository;
+    private final CarRepository carRepository;
 
     @Autowired
     private InsuranceCalculationService calculationService;
 
 
-    public InsurancePolicyService(InsurancePolicyRepository insurancePolicyRepository, ClientRepository clientRepository) {
+    public InsurancePolicyService(InsurancePolicyRepository insurancePolicyRepository, ClientRepository clientRepository, CarRepository carRepository) {
         this.insurancePolicyRepository = insurancePolicyRepository;
         this.clientRepository = clientRepository;
+        this.carRepository = carRepository;
     }
 
     public List<InsurancePolicyResponseDTO> getInsurancePolicies() {
@@ -44,26 +45,115 @@ public class InsurancePolicyService {
 
     public InsurancePolicyResponseDTO createInsurancePolicy(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
         InsurancePolicy newInsurancePolicy = insurancePolicyRepository.save(InsurancePolicyMapper.toModel(insurancePolicyRequestDTO));
-        BigDecimal calculatedPremium = calculationService.calculatePremium(newInsurancePolicy);
+        BigDecimal calculatedPremium = calculatePremiumBasedOnPolicyType(newInsurancePolicy, insurancePolicyRequestDTO);
         newInsurancePolicy.setPremium(calculatedPremium);
-//
-//        if (newInsurancePolicy.getDrivers() != null) {
-//            for (Driver driver : newInsurancePolicy.getDrivers()) {
-//                driver.setPolicy(newInsurancePolicy);
-//            }
-//        }
 
         InsurancePolicy savedPolicy = insurancePolicyRepository.save(newInsurancePolicy);
         return InsurancePolicyMapper.toDTO(savedPolicy);
     }
 
-    public BigDecimal calculatePremium(InsurancePolicyRequestDTO requestDTO) {
-        InsurancePolicy tempPolicy = InsurancePolicyMapper.toModel(requestDTO);
-        return calculationService.calculatePremium(tempPolicy);
+
+    private BigDecimal calculatePremiumBasedOnPolicyType(InsurancePolicy insurancePolicy, InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        return switch (insurancePolicy.getPolicyType()) {
+            case OSAGO, DSAGO -> calculationService.calculatePremium(insurancePolicy);
+            case CASCO -> {
+                String usagePurpose = getCascoUsagePurpose(insurancePolicyRequestDTO);
+                BigDecimal marketValue = getCascoMarketValue(insurancePolicyRequestDTO);
+                BigDecimal franchise = getCascoFranchise(insurancePolicyRequestDTO);
+                boolean isLegalEntity = getCascoIsLegalEntity(insurancePolicyRequestDTO);
+
+                yield calculationService.calculateCascoPremium(
+                        insurancePolicy.getInsuredCar(),
+                        usagePurpose,
+                        marketValue,
+                        franchise,
+                        isLegalEntity
+                );
+            }
+            default -> throw new IllegalStateException("Unexpected policy type: " + insurancePolicy.getPolicyType());
+        };
     }
 
-    public BigDecimal calculateCascoPremium(Car car, String usagePurpose, BigDecimal marketValue,
-                                            BigDecimal franchise, boolean isLegalEntity) {
+
+
+
+//    public BigDecimal calculateCascoPremiumWithAdditionalData(InsurancePolicy insurancePolicy, InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+//        if (insurancePolicyRequestDTO.getMarketValue() == null) {
+//            throw new IllegalArgumentException("Market value is required for CASCO policy");
+//        }
+//
+//        if (insurancePolicyRequestDTO.getUsagePurpose() == null || insurancePolicyRequestDTO.getUsagePurpose().trim().isEmpty()) {
+//            throw new IllegalArgumentException("Usage purpose is required for CASCO policy");
+//        }
+//
+//        String usagePurpose = getCascoUsagePurpose(insurancePolicyRequestDTO);
+//        BigDecimal marketValue = getCascoMarketValue(insurancePolicyRequestDTO);
+//        BigDecimal franchise = getCascoFranchise(insurancePolicyRequestDTO);
+//        boolean isLegalEntity = getCascoIsLegalEntity(insurancePolicyRequestDTO);
+//
+//        BigDecimal basePremium = calculationService.calculateCascoPremium(
+//                insurancePolicy.getInsuredCar(),
+//                usagePurpose,
+//                marketValue,
+//                franchise,
+//                isLegalEntity
+//        );
+//
+//        if ("rent".equals(usagePurpose)) {
+//            BigDecimal rentSurCharge = basePremium.multiply(new BigDecimal("0.10"));
+//            basePremium = basePremium.add(rentSurCharge);
+//        }
+//        return basePremium;
+//    }
+//
+
+    private String getCascoUsagePurpose(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        if (insurancePolicyRequestDTO.getUsagePurpose() != null && !insurancePolicyRequestDTO.getUsagePurpose().trim().isEmpty()) {
+            String usagePurpose = insurancePolicyRequestDTO.getUsagePurpose().toLowerCase();
+            if (usagePurpose.equals("personal") || usagePurpose.equals("rent")) {
+                return usagePurpose;
+            } else {
+                throw new IllegalArgumentException("Invalid usagePurpose value: " + usagePurpose);
+            }
+        }
+        return "personal";
+    }
+
+    private BigDecimal getCascoMarketValue(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        if (insurancePolicyRequestDTO.getMarketValue() != null) {
+            if (insurancePolicyRequestDTO.getMarketValue().compareTo(BigDecimal.ZERO) > 0) {
+                return insurancePolicyRequestDTO.getMarketValue();
+            } else {
+                throw new IllegalArgumentException("Invalid market value, it shoulb be greater than 0");
+            }
+        }
+        return new BigDecimal("500000");
+    }
+
+    private BigDecimal getCascoFranchise(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        if (insurancePolicyRequestDTO.getFranchise() != null) {
+            if (insurancePolicyRequestDTO.getFranchise().compareTo(BigDecimal.ZERO) >= 0) {
+                return insurancePolicyRequestDTO.getFranchise();
+            } else {
+                throw new IllegalArgumentException("Invalid franchise value, it should not be less than 0");
+            }
+        }
+        return new BigDecimal("4375");
+    }
+
+    private boolean getCascoIsLegalEntity(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        if (insurancePolicyRequestDTO.getIsLegalEntity() != null) {
+            return insurancePolicyRequestDTO.getIsLegalEntity();
+        }
+        return false;
+    }
+
+    public BigDecimal calculatePremium(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        InsurancePolicy tempPolicy = InsurancePolicyMapper.toModel(insurancePolicyRequestDTO);
+        return calculatePremiumBasedOnPolicyType(tempPolicy, insurancePolicyRequestDTO);
+    }
+
+    public BigDecimal calculateCascoPremium(Car car, String usagePurpose, BigDecimal marketValue, BigDecimal franchise, boolean isLegalEntity) {
         return calculationService.calculateCascoPremium(car, usagePurpose, marketValue, franchise, isLegalEntity);
     }
 

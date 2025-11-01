@@ -2,39 +2,77 @@
 POST http://localhost:4000/policies
 Content-Type: application/json
 
+//{
+//  "policyNumber": "0505063",
+//  "policyType": "OSAGO",
+//  "startDate": "2024-12-01",
+//  "endDate": "2025-12-01",
+//  "status": "ACTIVE",
+//  "vehicleOwner": {
+//    "id": "550e8400-e29b-41d4-a716-446655440000"
+//  },
+//  "insuredCar": {
+//    "id": "660e8400-e29b-41d4-a716-446655440000",
+//    "brand": "Toyota",
+//    "model": "Camry",
+//    "manufactureYear": "2020",
+//    "vin": "JTDKB20U303000001",
+//    "licensePlate": "01KG123AB",
+//    "registrationAuthority": "ГУВД г. Бишкек",
+//    "registrationDate": "2020-05-15",
+//    "techPassportNumber": "TP123456789",
+//    "engineVolume": "2.5",
+//    "maxAllowedWeight": null,
+//    "batteryCapacity": null,
+//    "passengerCapacity": null,
+//    "vehicleType": "PASSENGER_CAR",
+//    "owner": {
+//      "id": "550e8400-e29b-41d4-a716-446655440000",
+//      "fullName": "Иванов Иван Иванович",
+//      "dateOfBirth": "1985-05-15",
+//      "phoneNumber": "+996555123456",
+//      "passport_number": "AN1234567",
+//      "pin": "10123194567890",
+//      "address": "г. Бишкек, ул. Чуйкова 123"
+//    }
+//  },
+//  "drivers":  [
+//    {
+//      "fullName": "Ivanov Ivan Ivanovich",
+//      "birthDate": "1985-05-15",
+//      "licenseNumber": "BG 5896423",
+//      "drivingExperience": "2005-06-20"
+//    }
+//  ],
+//  "comissarNumber": "+996558040425",
+//  "companyNumber": "+996202565656"
+//}
+
+
 {
-  "policyNumber": "0505063",
-  "policyType": "OSAGO",
+  "policyNumber": "251",
+  "policyType": "CASCO",
   "startDate": "2024-12-01",
   "endDate": "2025-12-01",
   "status": "ACTIVE",
   "vehicleOwner": {
-    "id": "550e8400-e29b-41d4-a716-446655440000"
+    "id": "550e8400-e29b-41d4-a716-446655440002"
   },
   "insuredCar": {
-    "id": "660e8400-e29b-41d4-a716-446655440000",
-    "brand": "Toyota",
-    "model": "Camry",
-    "manufactureYear": "2020",
-    "vin": "JTDKB20U303000001",
-    "licensePlate": "01KG123AB",
-    "registrationAuthority": "ГУВД г. Бишкек",
-    "registrationDate": "2020-05-15",
-    "techPassportNumber": "TP123456789",
-    "engineVolume": "2.5",
-    "maxAllowedWeight": null,
+    "id": "660e8400-e29b-41d4-a716-446655440002",
+    "brand": "Kamaz",
+    "model": "65115",
+    "manufactureYear": "2018",
+    "vin": "XLC65115012345678",
+    "licensePlate": "02OS789EF",
+    "registrationAuthority": "ГУВД г. Ош",
+    "registrationDate": "2018-11-10",
+    "techPassportNumber": "TP456789123",
+    "engineVolume": null,
+    "maxAllowedWeight": "3500",
     "batteryCapacity": null,
     "passengerCapacity": null,
-    "vehicleType": "PASSENGER_CAR",
-    "owner": {
-      "id": "550e8400-e29b-41d4-a716-446655440000",
-      "fullName": "Иванов Иван Иванович",
-      "dateOfBirth": "1985-05-15",
-      "phoneNumber": "+996555123456",
-      "passport_number": "AN1234567",
-      "pin": "10123194567890",
-      "address": "г. Бишкек, ул. Чуйкова 123"
-    }
+    "vehicleType": "TRUCK"
   },
   "drivers":  [
     {
@@ -45,6 +83,10 @@ Content-Type: application/json
     }
   ],
   "comissarNumber": "+996558040425",
-  "companyNumber": "+996202565656"
+  "companyNumber": "+996202565656",
+  "usagePurpose": "rent",
+  "marketValue": 10000,
+  "franchise": 5000,
+  "isLegalEntity": false
 }
 ###

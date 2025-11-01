@@ -17,6 +17,7 @@ public class InsuranceCalculationService {
     //basic rates
     private static final BigDecimal BASE_OSAGO = new BigDecimal("1680");
     private static final BigDecimal BASE_DSAGO = new BigDecimal("1900");
+    private static final BigDecimal BASE_CASCO = new BigDecimal("14000");
 
     //koeff-s for passenger_car based on volume
     private static final BigDecimal ENGINE_0_2000 = new BigDecimal("1.0");
@@ -41,6 +42,11 @@ public class InsuranceCalculationService {
 
     public BigDecimal calculatePremium(InsurancePolicy policy) {
         BigDecimal basePremium = getBasePremiumPolicyType(policy.getPolicyType());
+
+        if (policy.getPolicyType() == PolicyType.CASCO) {
+            return calculateCascoPremium(policy);
+        }
+
         Car car = policy.getInsuredCar();
         List<Driver> drivers = policy.getDrivers();
         BigDecimal vehicleCoefficient = calculateVehicleCoefficient(car);
@@ -58,6 +64,7 @@ public class InsuranceCalculationService {
         return switch (policyType){
             case OSAGO -> BASE_OSAGO;
             case DSAGO -> BASE_DSAGO;
+            case CASCO -> BASE_CASCO;
             default -> BASE_OSAGO;
         };
     }
@@ -123,6 +130,16 @@ public class InsuranceCalculationService {
         return experienceYears >= 3;
     }
 
+    public BigDecimal calculateCascoPremium(InsurancePolicy policy) {
+        Car car = policy.getInsuredCar();
+        String usagePurpose = "personal";
+        BigDecimal marketValue = new BigDecimal("500000");
+        BigDecimal franchise = new BigDecimal("14000");
+        boolean isLegalEntity = false;
+
+        return calculateCascoPremium(car, usagePurpose, marketValue, franchise, isLegalEntity);
+    }
+
     public BigDecimal calculateCascoPremium(Car car, String usagePurpose, BigDecimal marketValue,
                                             BigDecimal franchise, boolean isLegalEntity) {
         BigDecimal usageCoefficient = usagePurpose.equals("personal") ?
@@ -132,7 +149,10 @@ public class InsuranceCalculationService {
 
         BigDecimal franchiseCoefficient = calculateFranchiseCoefficient(franchise);
 
-        return usageCoefficient
+        BigDecimal baseCascoCoefficient = new BigDecimal("0.05");
+
+        return baseCascoCoefficient
+                .multiply(usageCoefficient)
                 .multiply(ageCoefficient)
                 .multiply(franchiseCoefficient)
                 .multiply(marketValue)
