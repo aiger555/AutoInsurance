@@ -37,7 +37,7 @@ CREATE TABLE cars (
 CREATE TABLE insurance_policies (
                                     policy_number VARCHAR(50) PRIMARY KEY,
                                     policy_type VARCHAR(20) NOT NULL,
-                                    premium DECIMAL(15,2) NOT NULL,
+                                    premium DECIMAL(15,2),
                                     start_date DATE NOT NULL,
                                     end_date DATE NOT NULL,
                                     status VARCHAR(20) DEFAULT 'ACTIVE',

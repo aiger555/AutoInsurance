@@ -2,6 +2,7 @@ package com.ain.insuranceservice.mappers;
 
 
 import com.ain.insuranceservice.dto.*;
+import com.ain.insuranceservice.models.Driver;
 import com.ain.insuranceservice.models.InsurancePolicy;
 import lombok.Data;
 
@@ -43,13 +44,25 @@ public class InsurancePolicyMapper {
         insurancePolicy.setPolicyType(insurancePolicyRequestDTO.getPolicyType());
 //        insurancePolicy.setPremium(BigDecimal.valueOf(Long.parseLong(insurancePolicyRequestDTO.getPremium())));
         insurancePolicy.setStartDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
-        insurancePolicy.setEndDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
+        insurancePolicy.setEndDate(LocalDate.parse(insurancePolicyRequestDTO.getEndDate()));
         insurancePolicy.setStatus(insurancePolicyRequestDTO.getStatus());
         insurancePolicy.setVehicleOwner(insurancePolicyRequestDTO.getVehicleOwner());
         insurancePolicy.setInsuredCar(insurancePolicyRequestDTO.getInsuredCar());
-        insurancePolicy.setDrivers(insurancePolicyRequestDTO.getDrivers());
+//        insurancePolicy.setDrivers(insurancePolicyRequestDTO.getDrivers());
         insurancePolicy.setComissarNumber(insurancePolicyRequestDTO.getComissarNumber());
         insurancePolicy.setCompanyNumber(insurancePolicyRequestDTO.getCompanyNumber());
+        if (insurancePolicyRequestDTO.getDrivers() != null) {
+            insurancePolicy.setDrivers(insurancePolicyRequestDTO.getDrivers().stream().map(driverRequest ->{
+                Driver driver = new Driver();
+                driver.setFullName(driverRequest.getFullName());
+                driver.setBirthDate(driverRequest.getBirthDate());
+                driver.setLicenseNumber(driverRequest.getLicenseNumber());
+                driver.setDrivingExperience(driverRequest.getDrivingExperience());
+                driver.setPolicy(insurancePolicy);
+                return driver;
+            })
+            .collect(Collectors.toList()));
+        }
         return insurancePolicy;
     }
 }
