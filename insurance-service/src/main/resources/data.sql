@@ -37,6 +37,7 @@ CREATE TABLE cars (
 CREATE TABLE insurance_policies (
                                     policy_number VARCHAR(50) PRIMARY KEY,
                                     policy_type VARCHAR(20) NOT NULL,
+                                    policy_holder VARCHAR(255),
                                     premium DECIMAL(15,2),
                                     start_date DATE NOT NULL,
                                     end_date DATE NOT NULL,
@@ -77,10 +78,10 @@ INSERT INTO cars (id, brand, model, manufacture_year, vin, license_plate, regist
                                                                                                                                                                                       ('660e8400-e29b-41d4-a716-446655440002', 'Kamaz', '65115', 2018, 'XLC65115012345678', '02OS789EF', 'ГУВД г. Ош', '2018-11-10', 'TP456789123', NULL, 'TRUCK', '550e8400-e29b-41d4-a716-446655440002');
 
 -- Insert sample insurance policies
-INSERT INTO insurance_policies (policy_number, policy_type, premium, start_date, end_date, vehicle_owner_id, car_id, comissar_number, company_number) VALUES
-                                                                                                                                                          ('0505060', 'OSAGO', 4500.00, '2024-12-15', '2025-12-14', '550e8400-e29b-41d4-a716-446655440000', '660e8400-e29b-41d4-a716-446655440000', '+996558040425', '+996202565656'),
-                                                                                                                                                          ('236', 'CASCO', 85000.00, '2024-12-16', '2025-12-15', '550e8400-e29b-41d4-a716-446655440001', '660e8400-e29b-41d4-a716-446655440001', '+996558040425', '+996202565656'),
-                                                                                                                                                          ('0505061', 'OSAGO', 6800.00, '2024-12-17', '2025-12-16', '550e8400-e29b-41d4-a716-446655440002', '660e8400-e29b-41d4-a716-446655440002', '+996558040425', '+996202565656');
+INSERT INTO insurance_policies (policy_number, policy_type, policy_holder, premium, start_date, end_date, vehicle_owner_id, car_id, comissar_number, company_number) VALUES
+                                                                                                                                                          ('0505060', 'OSAGO', 'Иванов Иван Иванович	', 4500.00, '2024-12-15', '2025-12-14', '550e8400-e29b-41d4-a716-446655440000', '660e8400-e29b-41d4-a716-446655440000', '+996558040425', '+996202565656'),
+                                                                                                                                                          ('236', 'CASCO','Петрова Мария Сергеевна', 85000.00, '2024-12-16', '2025-12-15', '550e8400-e29b-41d4-a716-446655440001', '660e8400-e29b-41d4-a716-446655440001', '+996558040425', '+996202565656'),
+                                                                                                                                                          ('0505061', 'OSAGO', 'Сидоров Алексей Викторович', 6800.00, '2024-12-17', '2025-12-16', '550e8400-e29b-41d4-a716-446655440002', '660e8400-e29b-41d4-a716-446655440002', '+996558040425', '+996202565656');
 
 -- Insert sample drivers
 INSERT INTO drivers (id, policy_number, full_name, birth_date, license_number, driving_experience) VALUES

@@ -52,6 +52,7 @@ Content-Type: application/json
 {
   "policyNumber": "251",
   "policyType": "CASCO",
+  "policyHolder": "Сидоров Алексей Викторович",
   "startDate": "2024-12-01",
   "endDate": "2025-12-01",
   "status": "ACTIVE",

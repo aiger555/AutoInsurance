@@ -25,10 +25,7 @@ public class InsurancePolicy {
     private LocalDate startDate;
     private LocalDate endDate;
     private String status;
-
-    @ManyToOne
-    @JoinColumn(name = "policy_holder_id")
-    private Client policyHolder;
+    private String policyHolder;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_owner_id")

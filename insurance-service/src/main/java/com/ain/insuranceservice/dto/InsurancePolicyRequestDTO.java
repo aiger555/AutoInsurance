@@ -18,6 +18,8 @@ public class InsurancePolicyRequestDTO {
     @NotNull(message = "Policy Type is required")
     private PolicyType policyType;
 
+    private String policyHolder;
+
     private String premium;
 
     @NotBlank(message = "Start Date is required")

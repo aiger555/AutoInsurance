@@ -39,6 +39,11 @@ public class InsurancePolicyService {
     @Transactional
     public InsurancePolicyResponseDTO createInsurancePolicy(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
         InsurancePolicy newInsurancePolicy = insurancePolicyRepository.save(InsurancePolicyMapper.toModel(insurancePolicyRequestDTO));
+
+        if(newInsurancePolicy.getVehicleOwner() != null) {
+            newInsurancePolicy.getVehicleOwner().getFullName();
+        }
+
         BigDecimal calculatedPremium = calculatePremiumBasedOnPolicyType(newInsurancePolicy, insurancePolicyRequestDTO);
         newInsurancePolicy.setPremium(calculatedPremium);
 

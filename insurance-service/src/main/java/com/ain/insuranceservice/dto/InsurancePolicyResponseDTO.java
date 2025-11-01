@@ -10,6 +10,7 @@ import java.util.List;
 public class InsurancePolicyResponseDTO {
     private String policyNumber;
     private PolicyType policyType;
+    private String policyHolder;
     private String premium;
     private String startDate;
     private String endDate;

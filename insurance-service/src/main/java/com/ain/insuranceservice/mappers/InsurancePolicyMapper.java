@@ -22,6 +22,7 @@ public class InsurancePolicyMapper {
         InsurancePolicyResponseDTO insurancePolicyDTO = new InsurancePolicyResponseDTO();
         insurancePolicyDTO.setPolicyNumber(insurancePolicy.getPolicyNumber());
         insurancePolicyDTO.setPolicyType(insurancePolicy.getPolicyType());
+        insurancePolicyDTO.setPolicyHolder(insurancePolicy.getPolicyHolder());
         insurancePolicyDTO.setPremium(insurancePolicy.getPremium().toString());
         insurancePolicyDTO.setStartDate(insurancePolicy.getStartDate().toString());
         insurancePolicyDTO.setEndDate(insurancePolicy.getEndDate().toString());
@@ -42,6 +43,7 @@ public class InsurancePolicyMapper {
         InsurancePolicy insurancePolicy = new InsurancePolicy();
         insurancePolicy.setPolicyNumber(insurancePolicyRequestDTO.getPolicyNumber());
         insurancePolicy.setPolicyType(insurancePolicyRequestDTO.getPolicyType());
+        insurancePolicy.setPolicyHolder(insurancePolicyRequestDTO.getPolicyHolder());
 //        insurancePolicy.setPremium(BigDecimal.valueOf(Long.parseLong(insurancePolicyRequestDTO.getPremium())));
         insurancePolicy.setStartDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
         insurancePolicy.setEndDate(LocalDate.parse(insurancePolicyRequestDTO.getEndDate()));
