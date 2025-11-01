@@ -5,6 +5,7 @@ Content-Type: application/json
 //{
 //  "policyNumber": "0505063",
 //  "policyType": "OSAGO",
+//    "policy_holder": "Иванов Иван Иванович",
 //  "startDate": "2024-12-01",
 //  "endDate": "2025-12-01",
 //  "status": "ACTIVE",

@@ -38,7 +38,7 @@ public class InsurancePolicyService {
 
     @Transactional
     public InsurancePolicyResponseDTO createInsurancePolicy(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
-        InsurancePolicy newInsurancePolicy = insurancePolicyRepository.save(InsurancePolicyMapper.toModel(insurancePolicyRequestDTO));
+        InsurancePolicy newInsurancePolicy = InsurancePolicyMapper.toModel(insurancePolicyRequestDTO);
 
         if(newInsurancePolicy.getVehicleOwner() != null) {
             newInsurancePolicy.getVehicleOwner().getFullName();
