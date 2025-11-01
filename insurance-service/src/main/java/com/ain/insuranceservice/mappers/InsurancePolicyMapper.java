@@ -32,8 +32,8 @@ public class InsurancePolicyMapper {
                 .map(DriverMapper::toDTO).collect(Collectors.toList()));
         insurancePolicyDTO.setComissarNumber(insurancePolicy.getComissarNumber());
         insurancePolicyDTO.setCompanyNumber(insurancePolicy.getCompanyNumber());
-        insurancePolicyDTO.setCreatedAt(insurancePolicy.getCreatedAt().toString());
-        insurancePolicyDTO.setUpdatedAt(insurancePolicy.getUpdatedAt().toString());
+        insurancePolicyDTO.setCreatedAt(LocalDateTime.now().toString());
+        insurancePolicyDTO.setUpdatedAt(LocalDateTime.now().toString());
 
         return insurancePolicyDTO;
     }

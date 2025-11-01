@@ -45,8 +45,12 @@ public class InsuranceCalculationService {
 
         if (policy.getPolicyType() == PolicyType.CASCO) {
             return calculateCascoPremium(policy);
+        } else {
+            return calculateOsagoDsagoPremium(policy);
         }
-
+    }
+    private BigDecimal calculateOsagoDsagoPremium(InsurancePolicy policy) {
+        BigDecimal basePremium = getBasePremiumPolicyType(policy.getPolicyType());
         Car car = policy.getInsuredCar();
         List<Driver> drivers = policy.getDrivers();
         BigDecimal vehicleCoefficient = calculateVehicleCoefficient(car);
@@ -134,29 +138,41 @@ public class InsuranceCalculationService {
         Car car = policy.getInsuredCar();
         String usagePurpose = "personal";
         BigDecimal marketValue = new BigDecimal("500000");
-        BigDecimal franchise = new BigDecimal("14000");
+        BigDecimal franchise = new BigDecimal("5000");
         boolean isLegalEntity = false;
 
         return calculateCascoPremium(car, usagePurpose, marketValue, franchise, isLegalEntity);
     }
 
-    public BigDecimal calculateCascoPremium(Car car, String usagePurpose, BigDecimal marketValue,
-                                            BigDecimal franchise, boolean isLegalEntity) {
-        BigDecimal usageCoefficient = usagePurpose.equals("personal") ?
-                new BigDecimal("1.0") : new BigDecimal("1.3");
+    public BigDecimal calculateCascoPremium(Car car, String usagePurpose, BigDecimal marketValue, BigDecimal franchise, boolean isLegalEntity) {
+        BigDecimal usageCoefficient = "rent".equals(usagePurpose) ?
+                new BigDecimal("1.3") : new BigDecimal("1.0");
 
         BigDecimal ageCoefficient = calculateCarAgeCoefficient(car.getManufactureYear());
-
         BigDecimal franchiseCoefficient = calculateFranchiseCoefficient(franchise);
+        BigDecimal vehicleTypeCoefficient = calculateCascoVehicleCoefficient(car);
+        BigDecimal baseCascoRate = new BigDecimal("0.05");
 
-        BigDecimal baseCascoCoefficient = new BigDecimal("0.05");
-
-        return baseCascoCoefficient
-                .multiply(usageCoefficient)
+        BigDecimal premium = marketValue
+                .multiply(vehicleTypeCoefficient)
                 .multiply(ageCoefficient)
                 .multiply(franchiseCoefficient)
-                .multiply(marketValue)
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
+                .multiply(usageCoefficient)
+                .multiply(baseCascoRate);
+
+        return premium.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
+    private BigDecimal calculateCascoVehicleCoefficient(Car car) {
+        VehicleType vehicleType = car.getVehicleType();
+
+        return switch (vehicleType){
+            case PASSENGER_CAR, TRAILER, SEMI_TRAILER, MOTORCYCLE, SPECIAL_VEHICLE -> new BigDecimal("1.0");
+            case TRUCK -> new BigDecimal("1.2");
+            case BUS, MINIBUS -> new BigDecimal("1.1");
+            case ELECTRIC_CAR -> new BigDecimal("1.3");
+            default -> new BigDecimal("1.0");
+        };
     }
 
     private BigDecimal calculateCarAgeCoefficient(int manufactureYear) {
@@ -172,19 +188,6 @@ public class InsuranceCalculationService {
         else if (franchise.compareTo(new BigDecimal("8750")) <= 0) return new BigDecimal("0.9");
         else return new BigDecimal("0.8");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

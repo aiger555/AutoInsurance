@@ -12,6 +12,7 @@ import com.ain.insuranceservice.repositories.InsurancePolicyRepository;
 import com.ain.insuranceservice.mappers.InsurancePolicyMapper;
 import jakarta.transaction.Transactional;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ain.insuranceservice.repositories.CarRepository;
@@ -20,22 +21,14 @@ import com.ain.insuranceservice.services.InsuranceCalculationService;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Data
+@RequiredArgsConstructor
 @Service
 public class InsurancePolicyService {
-    private final ClientRepository clientRepository;
     private final InsurancePolicyRepository insurancePolicyRepository;
-    private final CarRepository carRepository;
 
     @Autowired
-    private InsuranceCalculationService calculationService;
+    private final InsuranceCalculationService calculationService;
 
-
-    public InsurancePolicyService(InsurancePolicyRepository insurancePolicyRepository, ClientRepository clientRepository, CarRepository carRepository) {
-        this.insurancePolicyRepository = insurancePolicyRepository;
-        this.clientRepository = clientRepository;
-        this.carRepository = carRepository;
-    }
 
     public List<InsurancePolicyResponseDTO> getInsurancePolicies() {
         List<InsurancePolicy> insurancePolicies = insurancePolicyRepository.findAll();
@@ -43,6 +36,7 @@ public class InsurancePolicyService {
                 .map(InsurancePolicyMapper::toDTO).toList();
     }
 
+    @Transactional
     public InsurancePolicyResponseDTO createInsurancePolicy(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
         InsurancePolicy newInsurancePolicy = insurancePolicyRepository.save(InsurancePolicyMapper.toModel(insurancePolicyRequestDTO));
         BigDecimal calculatedPremium = calculatePremiumBasedOnPolicyType(newInsurancePolicy, insurancePolicyRequestDTO);
