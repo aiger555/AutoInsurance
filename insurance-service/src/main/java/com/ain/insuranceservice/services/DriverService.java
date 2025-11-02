@@ -1,6 +1,8 @@
 package com.ain.insuranceservice.services;
 
 import com.ain.insuranceservice.dto.*;
+import com.ain.insuranceservice.exception.LicenseNumberAlreadyExistsException;
+import com.ain.insuranceservice.exception.PinAlreadyExistsException;
 import com.ain.insuranceservice.mappers.CarMapper;
 import com.ain.insuranceservice.mappers.DriverMapper;
 import com.ain.insuranceservice.mappers.InsurancePolicyMapper;
@@ -30,6 +32,10 @@ public class DriverService {
                 .map(DriverMapper::toDTO).toList();
     }
     public DriverResponseDTO createDriver(DriverRequestDTO driverRequestDTO) {
+        if (driverReposiroty.existsByLicenseNumber(driverRequestDTO.getLicenseNumber())) {
+            throw new LicenseNumberAlreadyExistsException("A driver with this license number already exists" + driverRequestDTO.getLicenseNumber());
+        }
+
         InsurancePolicy policy =  insurancePolicyRepository.findById(driverRequestDTO.getPolicy().getPolicyNumber())
                 .orElseThrow(() -> new RuntimeException("Policy not found with number: " + driverRequestDTO.getPolicy().getPolicyNumber()));
         Driver newDriver = driverReposiroty.save(DriverMapper.toModel(driverRequestDTO));

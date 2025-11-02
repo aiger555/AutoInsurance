@@ -2,6 +2,8 @@ package com.ain.insuranceservice.services;
 
 import com.ain.insuranceservice.dto.CarRequestDTO;
 import com.ain.insuranceservice.dto.CarResponseDTO;
+import com.ain.insuranceservice.exception.PinAlreadyExistsException;
+import com.ain.insuranceservice.exception.VinAlreadyExistsException;
 import com.ain.insuranceservice.mappers.CarMapper;
 import com.ain.insuranceservice.models.Car;
 import com.ain.insuranceservice.repositories.CarRepository;
@@ -24,6 +26,9 @@ public class CarService {
     }
 
     public CarResponseDTO createCar(CarRequestDTO carRequestDTO) {
+        if (carRepository.existsByVin(carRequestDTO.getVin())) {
+            throw new VinAlreadyExistsException("A car with this vin already exists" + carRequestDTO.getVin());
+        }
         Car newCar = carRepository.save(CarMapper.toModel(carRequestDTO));
         return CarMapper.toDTO(newCar);
 

@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, UUID> {
-
+    boolean existsByPin(String pin);
 }
