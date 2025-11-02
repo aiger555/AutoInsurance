@@ -1,0 +1,23 @@
+### update an existing car entity
+PUT http://localhost:4000/cars/660e8400-e29b-41d4-a716-446655440001
+Content-Type: application/json
+
+{
+  "brand": "Mercedes-Benz",
+  "model": "E-Class",
+  "manufactureYear": "2022",
+  "vin": "WDDHF8JB9EA123456",
+  "licensePlate": "01KG456CD",
+  "registrationAuthority": "411011",
+  "registrationDate": "2022-03-20",
+  "techPassportNumber": "AA 9876543",
+  "engineVolume": "3.0",
+  "maxAllowedWeight": null,
+  "batteryCapacity": null,
+  "passengerCapacity": null,
+  "vehicleType": "PASSENGER_CAR",
+  "owner": {
+    "id": "550e8400-e29b-41d4-a716-446655440001"
+  }
+}
+###

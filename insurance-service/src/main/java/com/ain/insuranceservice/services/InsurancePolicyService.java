@@ -1,7 +1,11 @@
 package com.ain.insuranceservice.services;
 
+import com.ain.insuranceservice.dto.DriverRequestDTO;
+import com.ain.insuranceservice.dto.DriverResponseDTO;
 import com.ain.insuranceservice.dto.InsurancePolicyRequestDTO;
 import com.ain.insuranceservice.dto.InsurancePolicyResponseDTO;
+import com.ain.insuranceservice.exception.*;
+import com.ain.insuranceservice.mappers.DriverMapper;
 import com.ain.insuranceservice.models.Car;
 import com.ain.insuranceservice.models.Client;
 import com.ain.insuranceservice.models.Driver;
@@ -19,7 +23,10 @@ import com.ain.insuranceservice.repositories.CarRepository;
 import com.ain.insuranceservice.services.InsuranceCalculationService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -38,6 +45,9 @@ public class InsurancePolicyService {
 
     @Transactional
     public InsurancePolicyResponseDTO createInsurancePolicy(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        if (insurancePolicyRepository.existsByPolicyNumber(insurancePolicyRequestDTO.getPolicyNumber())) {
+            throw new PolicyNumberAlreadyExistsException("A policy with this number already exists" + insurancePolicyRequestDTO.getPolicyNumber());
+        }
         InsurancePolicy newInsurancePolicy = InsurancePolicyMapper.toModel(insurancePolicyRequestDTO);
 
         if(newInsurancePolicy.getVehicleOwner() != null) {
@@ -73,38 +83,6 @@ public class InsurancePolicyService {
         };
     }
 
-
-
-
-//    public BigDecimal calculateCascoPremiumWithAdditionalData(InsurancePolicy insurancePolicy, InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
-//        if (insurancePolicyRequestDTO.getMarketValue() == null) {
-//            throw new IllegalArgumentException("Market value is required for CASCO policy");
-//        }
-//
-//        if (insurancePolicyRequestDTO.getUsagePurpose() == null || insurancePolicyRequestDTO.getUsagePurpose().trim().isEmpty()) {
-//            throw new IllegalArgumentException("Usage purpose is required for CASCO policy");
-//        }
-//
-//        String usagePurpose = getCascoUsagePurpose(insurancePolicyRequestDTO);
-//        BigDecimal marketValue = getCascoMarketValue(insurancePolicyRequestDTO);
-//        BigDecimal franchise = getCascoFranchise(insurancePolicyRequestDTO);
-//        boolean isLegalEntity = getCascoIsLegalEntity(insurancePolicyRequestDTO);
-//
-//        BigDecimal basePremium = calculationService.calculateCascoPremium(
-//                insurancePolicy.getInsuredCar(),
-//                usagePurpose,
-//                marketValue,
-//                franchise,
-//                isLegalEntity
-//        );
-//
-//        if ("rent".equals(usagePurpose)) {
-//            BigDecimal rentSurCharge = basePremium.multiply(new BigDecimal("0.10"));
-//            basePremium = basePremium.add(rentSurCharge);
-//        }
-//        return basePremium;
-//    }
-//
 
     private String getCascoUsagePurpose(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
         if (insurancePolicyRequestDTO.getUsagePurpose() != null && !insurancePolicyRequestDTO.getUsagePurpose().trim().isEmpty()) {
@@ -147,13 +125,49 @@ public class InsurancePolicyService {
         return false;
     }
 
-    public BigDecimal calculatePremium(InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
-        InsurancePolicy tempPolicy = InsurancePolicyMapper.toModel(insurancePolicyRequestDTO);
-        return calculatePremiumBasedOnPolicyType(tempPolicy, insurancePolicyRequestDTO);
-    }
+    public InsurancePolicyResponseDTO updatePolicy(String policyNumber, InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        InsurancePolicy insurancePolicy = insurancePolicyRepository.findById(policyNumber).orElseThrow(
+                () -> new InsurancePolicyNotFoundException("Insurance Policy not found with ID: " + policyNumber));
 
-    public BigDecimal calculateCascoPremium(Car car, String usagePurpose, BigDecimal marketValue, BigDecimal franchise, boolean isLegalEntity) {
-        return calculationService.calculateCascoPremium(car, usagePurpose, marketValue, franchise, isLegalEntity);
+        if (!policyNumber.equals(insurancePolicyRequestDTO.getPolicyNumber()) && insurancePolicyRepository.existsByPolicyNumber(
+                insurancePolicyRequestDTO.getPolicyNumber()
+        )) {
+            throw new PolicyNumberAlreadyExistsException("A policy with this id.number already exists" + insurancePolicyRequestDTO.getPolicyNumber());
+        }
+
+        insurancePolicy.setPolicyNumber(insurancePolicyRequestDTO.getPolicyNumber());
+        insurancePolicy.setPolicyType(insurancePolicyRequestDTO.getPolicyType());
+        insurancePolicy.setPolicyHolder(insurancePolicyRequestDTO.getPolicyHolder());
+//        insurancePolicy.setPremium(insurancePolicyRequestDTO.getPremium());
+        insurancePolicy.setStartDate(LocalDate.parse(insurancePolicyRequestDTO.getStartDate()));
+        insurancePolicy.setEndDate(LocalDate.parse(insurancePolicyRequestDTO.getEndDate()));
+        insurancePolicy.setStatus(insurancePolicyRequestDTO.getStatus());
+        insurancePolicy.setVehicleOwner(insurancePolicyRequestDTO.getVehicleOwner());
+        insurancePolicy.setInsuredCar(insurancePolicyRequestDTO.getInsuredCar());
+//        insurancePolicy.setDrivers(insurancePolicyRequestDTO.getDrivers());
+        insurancePolicy.setComissarNumber(insurancePolicyRequestDTO.getComissarNumber());
+        insurancePolicy.setCompanyNumber(insurancePolicyRequestDTO.getCompanyNumber());
+        insurancePolicy.setUsagePurpose(insurancePolicyRequestDTO.getUsagePurpose());
+        insurancePolicy.setMarketValue(insurancePolicyRequestDTO.getMarketValue());
+        insurancePolicy.setFranchise(insurancePolicyRequestDTO.getFranchise());
+        insurancePolicy.setIsLegalEntity(insurancePolicyRequestDTO.getIsLegalEntity());
+
+        insurancePolicy.getDrivers().clear();
+        if (insurancePolicyRequestDTO.getDrivers() != null) {
+            for (Driver driver : insurancePolicyRequestDTO.getDrivers()) {
+                driver.setPolicy(insurancePolicy);
+                insurancePolicy.getDrivers().add(driver);
+            }
+        }
+
+        BigDecimal calculatedPremium = calculatePremiumBasedOnPolicyType(insurancePolicy, insurancePolicyRequestDTO);
+        insurancePolicy.setPremium(calculatedPremium);
+
+        insurancePolicy.setUpdatedAt(LocalDateTime.now());
+
+        InsurancePolicy updatedPolicy = insurancePolicyRepository.save(insurancePolicy);
+        return InsurancePolicyMapper.toDTO(updatedPolicy);
+
     }
 
 }

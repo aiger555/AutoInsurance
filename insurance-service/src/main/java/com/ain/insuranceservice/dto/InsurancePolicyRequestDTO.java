@@ -20,7 +20,7 @@ public class InsurancePolicyRequestDTO {
 
     private String policyHolder;
 
-    private String premium;
+    private BigDecimal premium;
 
     @NotBlank(message = "Start Date is required")
     private String startDate;

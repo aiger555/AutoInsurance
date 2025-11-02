@@ -1,19 +1,19 @@
 package com.ain.insuranceservice.controllers;
 
-import com.ain.insuranceservice.dto.ClientRequestDTO;
-import com.ain.insuranceservice.dto.ClientResponseDTO;
-import com.ain.insuranceservice.dto.InsurancePolicyRequestDTO;
-import com.ain.insuranceservice.dto.InsurancePolicyResponseDTO;
+import com.ain.insuranceservice.dto.*;
 import com.ain.insuranceservice.models.InsurancePolicy;
 import com.ain.insuranceservice.services.ClientService;
 import com.ain.insuranceservice.services.InsurancePolicyService;
 import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Data
@@ -32,5 +32,10 @@ public class InsurancePolicyController {
     public ResponseEntity<InsurancePolicyResponseDTO> createPolicy(@Valid @RequestBody InsurancePolicyRequestDTO policyRequestDTO) {
         InsurancePolicyResponseDTO policyResponseDTO = policyService.createInsurancePolicy(policyRequestDTO);
         return new ResponseEntity<>(policyResponseDTO, HttpStatus.CREATED);
+    }
+    @PutMapping("/{policyNumber}")
+    public ResponseEntity<InsurancePolicyResponseDTO> updatePolicy(@PathVariable String policyNumber, @Validated({Default.class}) @RequestBody InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
+        InsurancePolicyResponseDTO insurancePolicyResponseDTO = policyService.updatePolicy(policyNumber, insurancePolicyRequestDTO);
+        return new ResponseEntity<>(insurancePolicyResponseDTO, HttpStatus.OK);
     }
 }

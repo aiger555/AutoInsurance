@@ -1,0 +1,48 @@
+### update an existing policy entity
+PUT http://localhost:4000/policies/0505063
+Content-Type: application/json
+
+{
+  "policyNumber": "0505063",
+  "policyType": "OSAGO",
+  "policyHolder": "Иванов Иван Иванович",
+  "startDate": "2025-01-01",
+  "endDate": "2026-01-01",
+  "status": "Soon ends",
+  "vehicleOwner":  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "fullname": "Иванов Иван Иванович",
+    "dateOfBirth": "1985-05-15",
+    "phoneNumber": "+996555123456",
+    "passportNumber": "AN1234567",
+    "pin": "10123194567890",
+    "address": "г. Бишкек, ул. Чуйкова 123"
+  },
+  "insuredCar": {
+    "id": "660e8400-e29b-41d4-a716-446655440000",
+    "brand": "Toyota",
+    "model": "Camry",
+    "manufactureYear": 2020,
+    "vin": "JTDKB20U303000001",
+    "licensePlate": "01KG123AB",
+    "registrationAuthority": "ГУВД г. Бишкек",
+    "registrationDate": "2020-05-15",
+    "techPassportNumber": "TP123456789",
+    "engineVolume": 2.5,
+    "vehicleType": "PASSENGER_CAR",
+    "owner": {
+      "id": "550e8400-e29b-41d4-a716-446655440000"
+    }
+  },
+  "drivers": [
+    {
+      "fullName": "Ivanov Ivan Ivanovich",
+      "birthDate": "1985-05-15",
+      "licenseNumber": "BG 5896423",
+      "drivingExperience": "2005-06-20"
+    }
+  ],
+  "comissarNumber": "+996558040425",
+  "companyNumber": "+996202565656"
+}
+###

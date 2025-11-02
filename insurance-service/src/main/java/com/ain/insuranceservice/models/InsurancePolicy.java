@@ -45,4 +45,9 @@ public class InsurancePolicy {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    private String usagePurpose;
+    private BigDecimal marketValue;
+    private BigDecimal franchise;
+    private Boolean isLegalEntity;
 }

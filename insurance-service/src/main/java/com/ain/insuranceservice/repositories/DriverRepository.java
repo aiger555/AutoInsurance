@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface DriverReposiroty extends JpaRepository<Driver, UUID> {
+public interface DriverRepository extends JpaRepository<Driver, UUID> {
     boolean existsByLicenseNumber(String licenseNumber);
 }

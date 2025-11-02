@@ -49,4 +49,46 @@ public class GlobalExceptionHandler {
         errors.put("message", "License number ALREADY EXISTS");
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PolicyNumberAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handlePolicyNumberAlreadyExistsException(PolicyNumberAlreadyExistsException ex) {
+        log.warn("Policy number already exists: {}", ex.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", "Policy number ALREADY EXISTS");
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+
+
+    @ExceptionHandler(ClientNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleClientNotFoundException(ClientNotFoundException ex) {
+        log.warn("Client not found: {}", ex.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", "Client not found");
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CarNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleCarNotFoundException(CarNotFoundException ex) {
+        log.warn("Car not found: {}", ex.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", "Car not found");
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DriverNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleDriverNotFoundException(DriverNotFoundException ex) {
+        log.warn("Driver not found: {}", ex.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", "Driver not found");
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InsurancePolicyNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleInsurancePolicyNotFoundException(InsurancePolicyNotFoundException ex) {
+        log.warn("Insurance policy not found: {}", ex.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", "Insurance policy not found");
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 }

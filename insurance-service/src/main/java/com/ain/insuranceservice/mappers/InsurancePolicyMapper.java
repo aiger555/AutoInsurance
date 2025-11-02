@@ -5,6 +5,7 @@ import com.ain.insuranceservice.dto.*;
 import com.ain.insuranceservice.models.Driver;
 import com.ain.insuranceservice.models.InsurancePolicy;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 
-@Data
+@RequiredArgsConstructor
 public class InsurancePolicyMapper {
     private final ClientMapper clientMapper;
     private final CarMapper carMapper;
@@ -65,6 +66,11 @@ public class InsurancePolicyMapper {
             })
             .collect(Collectors.toList()));
         }
+        insurancePolicy.setUsagePurpose(insurancePolicyRequestDTO.getUsagePurpose());
+        insurancePolicy.setMarketValue(insurancePolicyRequestDTO.getMarketValue());
+        insurancePolicy.setFranchise(insurancePolicyRequestDTO.getFranchise());
+        insurancePolicy.setIsLegalEntity(insurancePolicyRequestDTO.getIsLegalEntity());
+
         return insurancePolicy;
     }
 }

@@ -3,6 +3,7 @@ package com.ain.insuranceservice.dto;
 import com.ain.insuranceservice.models.PolicyType;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,5 +23,9 @@ public class InsurancePolicyResponseDTO {
     private String companyNumber;
     private String createdAt;
     private String updatedAt;
+    private String usagePurpose;
+    private String marketValue;
+    private String franchise;
+    private String isLegalEntity;
 
 }
