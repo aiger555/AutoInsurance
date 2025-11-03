@@ -41,7 +41,7 @@ public class ClientService {
         Client client = clientRepository.findById(id).orElseThrow(
                 () -> new ClientNotFoundException("Client not found with ID: " + id));
 
-        if (clientRepository.existsByPin(clientRequestDTO.getPin())) {
+        if (clientRepository.existsByPinAndIdNot(clientRequestDTO.getPin(), id)) {
             throw new PinAlreadyExistsException("A client with this pin already exists" + clientRequestDTO.getPin());
         }
 

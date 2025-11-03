@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface InsurancePolicyRepository extends JpaRepository<InsurancePolicy, String> {
     boolean existsByPolicyNumber(String policyNumber);
 
-//    boolean existsByPolicyNumberAndPolicyNumberNot(String excludedPolicyNumber);
+//    boolean existsByPolicyNumberAndIdNot(String policyNumber, String id);
 }

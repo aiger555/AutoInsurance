@@ -5,8 +5,8 @@ Content-Type: application/json
 {
   "fullName": "John Doe Kim",
   "dateOfBirth": "2003-01-20",
-  "passportNumber": "AN6554564",
-  "pin": "22505198520004",
+  "passportNumber": "AN 6554564",
+  "pin": "22505198520074",
   "address": "Bishkek",
   "phoneNumber": "+996552555565"
 

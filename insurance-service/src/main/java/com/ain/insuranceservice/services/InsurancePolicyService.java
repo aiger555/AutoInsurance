@@ -134,7 +134,9 @@ public class InsurancePolicyService {
         )) {
             throw new PolicyNumberAlreadyExistsException("A policy with this id.number already exists" + insurancePolicyRequestDTO.getPolicyNumber());
         }
-
+//        if (insurancePolicyRepository.existsByPolicyNumberAndIdNot(insurancePolicyRequestDTO.getPolicyNumber(), policyNumber)) {
+//            throw new PolicyNumberAlreadyExistsException("A policy with this number already exists" + insurancePolicyRequestDTO.getPolicyNumber());
+//        }
         insurancePolicy.setPolicyNumber(insurancePolicyRequestDTO.getPolicyNumber());
         insurancePolicy.setPolicyType(insurancePolicyRequestDTO.getPolicyType());
         insurancePolicy.setPolicyHolder(insurancePolicyRequestDTO.getPolicyHolder());

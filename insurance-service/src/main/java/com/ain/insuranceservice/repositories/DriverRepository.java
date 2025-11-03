@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface DriverRepository extends JpaRepository<Driver, UUID> {
     boolean existsByLicenseNumber(String licenseNumber);
+    boolean existsByLicenseNumberAndIdNot(String licenseNumber, UUID id);
 }

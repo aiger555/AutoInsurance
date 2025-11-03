@@ -46,7 +46,7 @@ public class DriverService {
         Driver driver = driverReposiroty.findById(id).orElseThrow(
                 () -> new DriverNotFoundException("Driver not found with ID: " + id));
 
-        if (driverReposiroty.existsByLicenseNumber(driverRequestDTO.getLicenseNumber())) {
+        if (driverReposiroty.existsByLicenseNumberAndIdNot(driverRequestDTO.getLicenseNumber(), id)) {
             throw new LicenseNumberAlreadyExistsException("A driver with this license number already exists" + driverRequestDTO.getLicenseNumber());
         }
 

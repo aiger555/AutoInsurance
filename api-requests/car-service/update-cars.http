@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "brand": "Mercedes-Benz",
-  "model": "E-Class",
+  "model": "Sprinter",
   "manufactureYear": "2022",
   "vin": "WDDHF8JB9EA123456",
   "licensePlate": "01KG456CD",
