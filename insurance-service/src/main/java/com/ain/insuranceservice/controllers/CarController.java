@@ -28,14 +28,22 @@ public class CarController {
         List<CarResponseDTO> cars = carService.getCars();
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<CarResponseDTO> createCar(@Valid @RequestBody CarRequestDTO carRequestDTO) {
         CarResponseDTO carResponseDTO = carService.createCar(carRequestDTO);
         return new ResponseEntity<>(carResponseDTO, HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<CarResponseDTO> updateCar(@PathVariable UUID id, @Validated({Default.class}) @RequestBody CarRequestDTO carRequestDTO) {
         CarResponseDTO carResponseDTO = carService.updateCar(id, carRequestDTO);
         return new ResponseEntity<>(carResponseDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCar(@PathVariable UUID id) {
+        carService.deleteCar(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

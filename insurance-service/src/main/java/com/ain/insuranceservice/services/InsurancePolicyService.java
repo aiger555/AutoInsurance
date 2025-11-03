@@ -172,4 +172,8 @@ public class InsurancePolicyService {
 
     }
 
+    public void deletePolicy(String policyNumber) {
+        insurancePolicyRepository.deleteById(policyNumber);
+    }
+
 }

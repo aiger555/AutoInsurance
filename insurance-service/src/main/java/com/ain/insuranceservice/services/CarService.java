@@ -79,4 +79,8 @@ public class CarService {
             return null;
         }
     }
+
+    public void deleteCar(UUID id) {
+        carRepository.deleteById(id);
+    }
 }

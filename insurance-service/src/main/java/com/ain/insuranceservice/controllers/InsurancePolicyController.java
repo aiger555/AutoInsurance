@@ -33,9 +33,17 @@ public class InsurancePolicyController {
         InsurancePolicyResponseDTO policyResponseDTO = policyService.createInsurancePolicy(policyRequestDTO);
         return new ResponseEntity<>(policyResponseDTO, HttpStatus.CREATED);
     }
+
     @PutMapping("/{policyNumber}")
     public ResponseEntity<InsurancePolicyResponseDTO> updatePolicy(@PathVariable String policyNumber, @Validated({Default.class}) @RequestBody InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
         InsurancePolicyResponseDTO insurancePolicyResponseDTO = policyService.updatePolicy(policyNumber, insurancePolicyRequestDTO);
         return new ResponseEntity<>(insurancePolicyResponseDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePolicy(@PathVariable String id) {
+        policyService.deletePolicy(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

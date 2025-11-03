@@ -60,4 +60,8 @@ public class DriverService {
         return DriverMapper.toDTO(updatedDriver);
 
     }
+
+    public void deleteDriver(UUID id) {
+        driverReposiroty.deleteById(id);
+    }
 }
