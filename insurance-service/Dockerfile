@@ -14,7 +14,7 @@ FROM eclipse-temurin:21-jre AS runner
 
 WORKDIR /app
 
-COPY --from=builder ./app/target/insurance-service-0.0.1-SNAPSHOT.jar ./app.jar
+COPY --from=builder /app/target/insurance-service-0.0.1-SNAPSHOT.jar ./app.jar
 
 EXPOSE 4000
 
