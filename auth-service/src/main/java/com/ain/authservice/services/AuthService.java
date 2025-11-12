@@ -3,6 +3,7 @@ package com.ain.authservice.services;
 import com.ain.authservice.dto.LoginRequestDTO;
 import com.ain.authservice.models.User;
 import com.ain.authservice.repositories.UserRepository;
+import com.ain.authservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class AuthService {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public Optional<String> authenticate(LoginRequestDTO loginRequestDTO) {
         Optional<String> token = userService
