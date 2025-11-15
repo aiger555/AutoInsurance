@@ -4,6 +4,7 @@ import com.ain.authservice.dto.LoginRequestDTO;
 import com.ain.authservice.models.User;
 import com.ain.authservice.repositories.UserRepository;
 import com.ain.authservice.util.JwtUtil;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,15 @@ public class AuthService {
                 .map(u -> jwtUtil.generateToken(u.getEmail(), u.getRole()));
 
         return token;
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            jwtUtil.validateToken(token);
+            return true;
+        } catch (JwtException e){
+            return false;
+        }
     }
 
 }

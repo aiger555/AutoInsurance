@@ -1,14 +1,16 @@
 package com.ain.authservice.util;
 
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.Keys;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -34,5 +36,17 @@ public class JwtUtil {
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // - 10 hours
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public void validateToken(String token) {
+        try {
+           Jwts.parser().verifyWith((SecretKey) secretKey)
+                   .build()
+                   .parseSignedClaims(token);
+        } catch (SignatureException e){
+            throw new JwtException("Invalid JWT signature");
+        } catch (JwtException e) {
+            throw new JwtException("Invalid JWT");
+        }
     }
 }
