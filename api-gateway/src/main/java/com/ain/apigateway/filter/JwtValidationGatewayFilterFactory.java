@@ -1,4 +1,4 @@
-package com.ain.apigateway;
+package com.ain.apigateway.filter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;

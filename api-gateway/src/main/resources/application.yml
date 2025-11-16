@@ -36,7 +36,7 @@ spring:
             - Path=/api/clients/**
           filters:
             - StripPrefix=1
-            - name: JwtValidation  # ИЗМЕНИТЕ: JwtAuthentication → JwtValidation
+            - name: JwtValidation
 
         - id: insurance-cars-route
           uri: http://localhost:4000
@@ -44,7 +44,7 @@ spring:
             - Path=/api/cars/**
           filters:
             - StripPrefix=1
-            - name: JwtValidation  # ИЗМЕНИТЕ
+            - name: JwtValidation
 
         - id: insurance-drivers-route
           uri: http://localhost:4000
@@ -52,7 +52,7 @@ spring:
             - Path=/api/drivers/**
           filters:
             - StripPrefix=1
-            - name: JwtValidation  # ИЗМЕНИТЕ
+            - name: JwtValidation
 
         - id: insurance-policies-route
           uri: http://localhost:4000
@@ -60,9 +60,8 @@ spring:
             - Path=/api/policies/**
           filters:
             - StripPrefix=1
-            - name: JwtValidation  # ИЗМЕНИТЕ
+            - name: JwtValidation
 
-        # Уберите args, так как они не используются в вашем классе
         # Public insurance routes (no auth required)
         - id: insurance-public-route
           uri: http://localhost:4000
