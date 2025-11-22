@@ -1,0 +1,5 @@
+### GET request to example server
+GET http://localhost:4004/api/policies/0505060/download
+Authorization: Bearer {{token}}
+
+###
