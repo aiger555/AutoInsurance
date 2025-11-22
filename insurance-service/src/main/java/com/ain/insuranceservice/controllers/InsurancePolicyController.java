@@ -4,12 +4,14 @@ import com.ain.insuranceservice.dto.*;
 import com.ain.insuranceservice.models.InsurancePolicy;
 import com.ain.insuranceservice.services.ClientService;
 import com.ain.insuranceservice.services.InsurancePolicyService;
+import com.ain.insuranceservice.services.PDFService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +27,7 @@ import java.util.UUID;
 @Tag(name = "Policy", description = "API for managing Policies") // swagger
 public class InsurancePolicyController {
     private final InsurancePolicyService policyService;
+    private final PDFService pdfService;
 
     @GetMapping
     @Operation(summary = "Get Policies") // swagger
@@ -52,6 +55,25 @@ public class InsurancePolicyController {
     public ResponseEntity<Void> deletePolicy(@PathVariable String id) {
         policyService.deletePolicy(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{policyNumber}/download")
+    @Operation(summary = "Download policy as PDF")
+    public ResponseEntity<byte[]> downloadPolicyPDF(@PathVariable String policyNumber) {
+        try {
+            InsurancePolicy policy = policyService.getPolicyByNumber(policyNumber);
+            byte[] pdfBytes = pdfService.generateInsurancePolicyPDF(policy);
+
+            String filename = "insurance_policy_" + policyNumber + ".pdf";
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"" )
+                    .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+                    .body(pdfBytes);
+        } catch (Exception e){
+            log.error("Error generating PDF for policy {}", policyNumber, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

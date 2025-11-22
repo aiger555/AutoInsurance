@@ -1,5 +1,9 @@
 server:
-  port: 4004 # Gateway listens on port 4004
+  port: 4004
+
+auth:
+  service:
+    url: "http://localhost:4005"
 
 spring:
   application:
@@ -19,15 +23,20 @@ spring:
           uri: http://localhost:4005
           predicates:
             - Path=/login
-          filters:
-            - RewritePath=/login,/login
 
         - id: auth-validate-route
           uri: http://localhost:4005
           predicates:
             - Path=/validate
+
+        - id: insurance-policy-download
+          uri: http://localhost:4000
+          predicates:
+            - Path=/api/policies/*/download
           filters:
-            - RewritePath=/validate,/validate
+            - StripPrefix=1
+            - name: JwtValidation
+
 
         # Insurance Service Routes (protected)
         - id: insurance-clients-route
@@ -36,9 +45,7 @@ spring:
             - Path=/api/clients/**
           filters:
             - StripPrefix=1
-            - name: JwtAuthentication
-              args:
-                authServiceUrl: http://localhost:4005
+            - name: JwtValidation
 
         - id: insurance-cars-route
           uri: http://localhost:4000
@@ -46,9 +53,7 @@ spring:
             - Path=/api/cars/**
           filters:
             - StripPrefix=1
-            - name: JwtAuthentication
-              args:
-                authServiceUrl: http://localhost:4005
+            - name: JwtValidation
 
         - id: insurance-drivers-route
           uri: http://localhost:4000
@@ -56,9 +61,7 @@ spring:
             - Path=/api/drivers/**
           filters:
             - StripPrefix=1
-            - name: JwtAuthentication
-              args:
-                authServiceUrl: http://localhost:4005
+            - name: JwtValidation
 
         - id: insurance-policies-route
           uri: http://localhost:4000
@@ -66,9 +69,7 @@ spring:
             - Path=/api/policies/**
           filters:
             - StripPrefix=1
-            - name: JwtAuthentication
-              args:
-                authServiceUrl: http://localhost:4005
+            - name: JwtValidation
 
         # Public insurance routes (no auth required)
         - id: insurance-public-route
@@ -93,22 +94,7 @@ spring:
           filters:
             - RewritePath=/api-docs/auth,/v3/api-docs
 
-        # Swagger UI Routes
-        - id: swagger-insurance-route
-          uri: http://localhost:4000
-          predicates:
-            - Path=/swagger/insurance/**
-          filters:
-            - RewritePath=/swagger/insurance/(?<path>.*),/swagger-ui/$\{path}
-
-        - id: swagger-auth-route
-          uri: http://localhost:4005
-          predicates:
-            - Path=/swagger/auth/**
-          filters:
-            - RewritePath=/swagger/auth/(?<path>.*),/swagger-ui/$\{path}
-
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
-    com.ain.gateway: DEBUG
+    com.ain.apigateway: DEBUG

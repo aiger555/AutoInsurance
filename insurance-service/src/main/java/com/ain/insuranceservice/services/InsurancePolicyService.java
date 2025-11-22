@@ -176,4 +176,11 @@ public class InsurancePolicyService {
         insurancePolicyRepository.deleteById(policyNumber);
     }
 
+    public InsurancePolicy getPolicyByNumber(String policyNumber) {
+        return insurancePolicyRepository.findById(policyNumber)
+                .orElseThrow(() -> new InsurancePolicyNotFoundException(
+                        "Insurance policy not found with number: " + policyNumber
+                ));
+    }
+
 }
