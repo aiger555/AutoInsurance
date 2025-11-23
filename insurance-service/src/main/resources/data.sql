@@ -85,7 +85,12 @@
 
 
 -- for Postgresql
-CREATE TABLE clients (
+DELETE FROM drivers;
+DELETE FROM insurance_policies;
+DELETE FROM cars;
+DELETE FROM clients;
+
+CREATE TABLE IF NOT EXISTS clients (
                          id UUID PRIMARY KEY,
                          full_name VARCHAR(255) NOT NULL,
                          date_of_birth DATE NOT NULL,
@@ -97,7 +102,7 @@ CREATE TABLE clients (
                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE cars (
+CREATE TABLE IF NOT EXISTS cars (
                       id UUID PRIMARY KEY,
                       brand VARCHAR(100) NOT NULL,
                       model VARCHAR(100) NOT NULL,
@@ -118,7 +123,7 @@ CREATE TABLE cars (
                       CONSTRAINT fk_car_owner FOREIGN KEY (owner_id) REFERENCES clients(id) ON DELETE CASCADE
 );
 
-CREATE TABLE insurance_policies (
+CREATE TABLE IF NOT EXISTS insurance_policies (
                                     policy_number VARCHAR(50) PRIMARY KEY,
                                     policy_type VARCHAR(20) NOT NULL,
                                     policy_holder VARCHAR(255),
@@ -136,7 +141,7 @@ CREATE TABLE insurance_policies (
                                     CONSTRAINT fk_policy_car FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE
 );
 
-CREATE TABLE drivers (
+CREATE TABLE IF NOT EXISTS drivers (
                          id UUID PRIMARY KEY,
                          policy_number VARCHAR(50) NOT NULL,
                          full_name VARCHAR(255) NOT NULL,
