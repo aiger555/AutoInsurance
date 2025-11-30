@@ -1,5 +1,10 @@
 ### create a new policy entity POST
-POST http://localhost:4000/policies
+#locally
+#POST http://localhost:4000/policies
+
+#api-gateway
+POST http://localhost:4004/api/policies
+Authorization: Bearer {{token}}
 Content-Type: application/json
 //CASCO
 //{
