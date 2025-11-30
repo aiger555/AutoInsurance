@@ -85,10 +85,10 @@
 
 
 -- for Postgresql
-DELETE FROM drivers;
-DELETE FROM insurance_policies;
-DELETE FROM cars;
-DELETE FROM clients;
+-- DELETE FROM drivers;
+-- DELETE FROM insurance_policies;
+-- DELETE FROM cars;
+-- DELETE FROM clients;
 
 CREATE TABLE IF NOT EXISTS clients (
                          id UUID PRIMARY KEY,

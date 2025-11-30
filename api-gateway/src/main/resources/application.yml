@@ -1,100 +1,63 @@
 server:
   port: 4004
 
-auth:
-  service:
-    url: "http://localhost:4005"
-
 spring:
   application:
     name: api-gateway
   cloud:
     gateway:
       routes:
-        # Auth Service Routes
-        - id: auth-service-route
-          uri: http://localhost:4005
-          predicates:
-            - Path=/auth/**
-          filters:
-            - StripPrefix=1
-
-        - id: auth-login-route
-          uri: http://localhost:4005
+        - id: auth-service-login
+          uri: http://auth-service:4005  # ← ИСПРАВЬ ЗДЕСЬ!
           predicates:
             - Path=/login
 
-        - id: auth-validate-route
-          uri: http://localhost:4005
+        - id: auth-service-validate
+          uri: http://auth-service:4005  # ← ИСПРАВЬ ЗДЕСЬ!
           predicates:
             - Path=/validate
 
-        - id: insurance-policy-download
-          uri: http://localhost:4000
-          predicates:
-            - Path=/api/policies/*/download
-          filters:
-            - StripPrefix=1
-            - name: JwtValidation
-
-
-        # Insurance Service Routes (protected)
-        - id: insurance-clients-route
-          uri: http://localhost:4000
+        # Insurance Service Routes
+        - id: insurance-service-clients
+          uri: http://insurance-service:4000  # ← ИСПРАВЬ ЗДЕСЬ!
           predicates:
             - Path=/api/clients/**
           filters:
             - StripPrefix=1
             - name: JwtValidation
 
-        - id: insurance-cars-route
-          uri: http://localhost:4000
+        - id: insurance-service-cars
+          uri: http://insurance-service:4000  # ← ИСПРАВЬ ЗДЕСЬ!
           predicates:
             - Path=/api/cars/**
           filters:
             - StripPrefix=1
             - name: JwtValidation
 
-        - id: insurance-drivers-route
-          uri: http://localhost:4000
+        - id: insurance-service-drivers
+          uri: http://insurance-service:4000  # ← ИСПРАВЬ ЗДЕСЬ!
           predicates:
             - Path=/api/drivers/**
           filters:
             - StripPrefix=1
             - name: JwtValidation
 
-        - id: insurance-policies-route
-          uri: http://localhost:4000
+        - id: insurance-service-policies
+          uri: http://insurance-service:4000  # ← ИСПРАВЬ ЗДЕСЬ!
           predicates:
             - Path=/api/policies/**
           filters:
             - StripPrefix=1
             - name: JwtValidation
 
-        # Public insurance routes (no auth required)
-        - id: insurance-public-route
-          uri: http://localhost:4000
+        - id: insurance-service-policy-download
+          uri: http://insurance-service:4000
           predicates:
-            - Path=/public/**
+            - Path=/api/policies/*/download
           filters:
             - StripPrefix=1
-
-        # API Documentation Routes
-        - id: api-docs-insurance-route
-          uri: http://localhost:4000
-          predicates:
-            - Path=/api-docs/insurance
-          filters:
-            - RewritePath=/api-docs/insurance,/v3/api-docs
-
-        - id: api-docs-auth-route
-          uri: http://localhost:4005
-          predicates:
-            - Path=/api-docs/auth
-          filters:
-            - RewritePath=/api-docs/auth,/v3/api-docs
+            - name: JwtValidation
 
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
-    com.ain.apigateway: DEBUG

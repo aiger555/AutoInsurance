@@ -23,9 +23,20 @@ public class JwtUtil {
     private final Key secretKey;
 
     public JwtUtil(@Value("${jwt.secret}") String secret) {
-        byte[] keyBytes = Base64.getDecoder().decode(secret.getBytes(
-                StandardCharsets.UTF_8));
-        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+        try {
+            // ПРОВЕРКА: secret должен быть минимум 32 символа
+            if (secret == null || secret.length() < 32) {
+                throw new IllegalArgumentException("JWT secret must be at least 32 characters long");
+            }
+
+            byte[] keyBytes = Base64.getDecoder().decode(secret);
+            this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid JWT secret configuration: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize JWT utility", e);
+        }
     }
 
     public String generateToken(String email, String role) {
