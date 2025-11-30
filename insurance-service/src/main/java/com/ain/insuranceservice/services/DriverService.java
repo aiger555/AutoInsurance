@@ -29,15 +29,21 @@ public class DriverService {
         return drivers.stream()
                 .map(DriverMapper::toDTO).toList();
     }
+
     public DriverResponseDTO createDriver(DriverRequestDTO driverRequestDTO) {
         if (driverReposiroty.existsByLicenseNumber(driverRequestDTO.getLicenseNumber())) {
             throw new LicenseNumberAlreadyExistsException("A driver with this license number already exists" + driverRequestDTO.getLicenseNumber());
         }
 
-        InsurancePolicy policy =  insurancePolicyRepository.findById(driverRequestDTO.getPolicy().getPolicyNumber())
-                .orElseThrow(() -> new RuntimeException("Policy not found with number: " + driverRequestDTO.getPolicy().getPolicyNumber()));
-        Driver newDriver = driverReposiroty.save(DriverMapper.toModel(driverRequestDTO));
+        InsurancePolicy policy =  insurancePolicyRepository.findById(driverRequestDTO.getPolicyNumber())
+                .orElseThrow(() -> new RuntimeException("Policy not found with number: " + driverRequestDTO.getPolicyNumber()));
+
+        Driver newDriver = new Driver();
         newDriver.setPolicy(policy);
+        newDriver.setFullName(driverRequestDTO.getFullName());
+        newDriver.setBirthDate(LocalDate.parse(driverRequestDTO.getBirthDate()));
+        newDriver.setLicenseNumber(driverRequestDTO.getLicenseNumber());
+        newDriver.setDrivingExperience(LocalDate.parse(driverRequestDTO.getDrivingExperience()));
         Driver savedDriver = driverReposiroty.save(newDriver);
         return DriverMapper.toDTO(savedDriver);
     }
@@ -49,8 +55,10 @@ public class DriverService {
         if (driverReposiroty.existsByLicenseNumberAndIdNot(driverRequestDTO.getLicenseNumber(), id)) {
             throw new LicenseNumberAlreadyExistsException("A driver with this license number already exists" + driverRequestDTO.getLicenseNumber());
         }
+        InsurancePolicy policy =  insurancePolicyRepository.findById(driverRequestDTO.getPolicyNumber())
+                .orElseThrow(() -> new RuntimeException("Policy not found with number: " + driverRequestDTO.getPolicyNumber()));
 
-        driver.setPolicy(driverRequestDTO.getPolicy());
+        driver.setPolicy(policy);
         driver.setFullName(driverRequestDTO.getFullName());
         driver.setBirthDate(LocalDate.parse(driverRequestDTO.getBirthDate()));
         driver.setLicenseNumber(driverRequestDTO.getLicenseNumber());

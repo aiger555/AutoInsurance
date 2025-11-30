@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 public class DriverRequestDTO {
-    @NotNull(message = "Insurance policy is required")
-    private InsurancePolicy policy;
+    @NotNull(message = "Insurance policy number is required")
+    private String policyNumber;
 
     @NotBlank(message = "Full name is required")
     private String fullName;

@@ -1,4 +1,10 @@
 ### GET request to get all policies
-GET http://localhost:4000/policies
+#locally
+#GET http://localhost:4000/policies
+
+
+#api-gateway
+GET http://localhost:4004/api/policies
+Authorization: Bearer {{token}}
 
 ###

@@ -1,14 +1,18 @@
 ###  update an existing driver entity
-PUT http://localhost:4000/drivers/770e8400-e29b-41d4-a716-446655440001
+#locally
+#PUT http://localhost:4000/drivers/df6682fc-6ec0-421a-a636-af9dc37baa9f
+
+#api-gateway
+PUT http://localhost:4004/api/drivers/df6682fc-6ec0-421a-a636-af9dc37baa9f
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "policy": {
-  "policyNumber": "0505060"
-},
-  "fullName": "Петрова Мария Ивановна",
-  "birthDate": "1990-08-20",
-  "licenseNumber": "OG 6543217",
-  "drivingExperience": "2019-08-20"
+{
+  "policyNumber": "0505060",
+  "fullName": "Kim Diana Lee",
+  "birthDate": "2000-10-25",
+  "licenseNumber": "BG 54867951",
+  "drivingExperience": "2005-01-01"
 }
 
 ###

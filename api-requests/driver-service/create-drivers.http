@@ -1,10 +1,14 @@
 ###  create a new driver entity POST
-POST http://localhost:4000/drivers
+#locally
+#POST http://localhost:4000/drivers
+
+#api-gateway
+POST http://localhost:4004/api/drivers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{ "policy": {
-  "policyNumber": "0505060"
-},
+{
+  "policyNumber": "0505060",
   "fullName": "Kim Diana Lee",
   "birthDate": "2000-10-25",
   "licenseNumber": "BG 54867951",

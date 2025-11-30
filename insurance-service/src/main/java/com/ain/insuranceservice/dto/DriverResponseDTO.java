@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class DriverResponseDTO {
     private String id;
-    private InsurancePolicy policy;
+    private String policyNumber;
     private String fullName;
     private String birthDate;
     private String licenseNumber;
