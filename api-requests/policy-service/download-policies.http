@@ -1,8 +1,8 @@
 ### GET request to example server
-#GET http://localhost:4004/api/policies/0505060/download
-#Authorization: Bearer {{token}}
 
-GET http://localhost:4000/policies/0505060/download
+#locally
+#GET http://localhost:4000/policies/0505060/download
 
-
+GET http://localhost:4004/api/policies/0505060/download
+Authorization: Bearer {{token}}
 ###
