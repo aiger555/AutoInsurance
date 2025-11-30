@@ -1,23 +1,34 @@
 ### update an existing car entity
-PUT http://localhost:4000/cars/660e8400-e29b-41d4-a716-446655440001
+#locally
+#PUT http://localhost:4000/cars/0285849e-55c0-49b3-83ba-213c386cc732
+
+#api-gateway
+PUT http://localhost:4004/api/cars/0285849e-55c0-49b3-83ba-213c386cc732
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "brand": "Mercedes-Benz",
-  "model": "Sprinter",
-  "manufactureYear": "2022",
-  "vin": "WDDHF8JB9EA123456",
-  "licensePlate": "01KG456CD",
+  "brand": "Zeekr",
+  "model": "2052",
+  "manufactureYear": "2015",
+  "vin": "JTDKB20U3035846941",
+  "licensePlate": "08KG098AC",
   "registrationAuthority": "411011",
-  "registrationDate": "2022-03-20",
-  "techPassportNumber": "AA 9876543",
-  "engineVolume": "3.0",
+  "registrationDate": "2025-01-06",
+  "techPassportNumber": "AB 096203",
+  "engineVolume": null,
   "maxAllowedWeight": null,
-  "batteryCapacity": null,
+  "batteryCapacity": "156.0",
   "passengerCapacity": null,
-  "vehicleType": "PASSENGER_CAR",
+  "vehicleType": "ELECTRIC_CAR",
   "owner": {
-    "id": "550e8400-e29b-41d4-a716-446655440001"
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "fullName": "Сидоров Алексей Викторович",
+    "dateOfBirth": "1978-11-25",
+    "phoneNumber": "+996555112233",
+    "passport_number": "AN1122334",
+    "pin": "10211198233445",
+    "address": "г. Ош, ул. Ленина 67"
   }
 }
 ###

@@ -1,5 +1,10 @@
 ### create a new car entity POST
-POST http://localhost:4000/cars
+#locally
+#POST http://localhost:4000/cars
+
+#api-gateway
+POST http://localhost:4004/api/cars
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {

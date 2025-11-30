@@ -1,4 +1,8 @@
 ### Delete an entity
-DELETE http://localhost:4000/cars/660e8400-e29b-41d4-a716-446655440001
+#locally
+#DELETE http://localhost:4000/cars/0285849e-55c0-49b3-83ba-213c386cc732
 
+#api-gateway
+DELETE http://localhost:4004/api/cars/0285849e-55c0-49b3-83ba-213c386cc732
+Authorization: Bearer {{token}}
 ###
