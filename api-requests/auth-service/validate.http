@@ -1,6 +1,9 @@
 ### GET request to validate Token
 
-GET http://localhost:4005/validate
+#GET http://localhost:4005/validate
+GET http://localhost:4004/validate
 Authorization: Bearer {{token}}
+
+#Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlckB0ZXN0LmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NDQ5Nzk1MywiZXhwIjoxNzY0NTMzOTUzfQ.C1lg9uHRC4LQtpv6mptyP6G6fuedBD3SfGw-P2UDVsk
 
 ###
