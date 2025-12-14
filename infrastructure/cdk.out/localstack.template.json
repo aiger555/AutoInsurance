@@ -1,0 +1,1557 @@
+{
+ "Resources": {
+  "InsuranceManagementVPC380685C0": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InsuranceManagementVPC"
+     }
+    ]
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet1Subnet14263D48": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet1RouteTable53B6D766": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet1RouteTableAssociation956A06EE": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet1RouteTable53B6D766"
+    },
+    "SubnetId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet1Subnet14263D48"
+    }
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet1DefaultRoute0435AEC4": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "InsuranceManagementVPCIGWB2FF1E22"
+    },
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet1RouteTable53B6D766"
+    }
+   },
+   "DependsOn": [
+    "InsuranceManagementVPCVPCGWB9D114A3"
+   ]
+  },
+  "InsuranceManagementVPCPublicSubnet1EIPC44B2CB2": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet1"
+     }
+    ]
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet1NATGatewayD0F82A6D": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "InsuranceManagementVPCPublicSubnet1EIPC44B2CB2",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet1Subnet14263D48"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "InsuranceManagementVPCPublicSubnet1DefaultRoute0435AEC4",
+    "InsuranceManagementVPCPublicSubnet1RouteTableAssociation956A06EE"
+   ]
+  },
+  "InsuranceManagementVPCPublicSubnet2Subnet9DB8B3D3": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet2RouteTableF34F944B": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet2RouteTableAssociationE1908792": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet2RouteTableF34F944B"
+    },
+    "SubnetId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet2Subnet9DB8B3D3"
+    }
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet2DefaultRoute8F8B61FC": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "InsuranceManagementVPCIGWB2FF1E22"
+    },
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet2RouteTableF34F944B"
+    }
+   },
+   "DependsOn": [
+    "InsuranceManagementVPCVPCGWB9D114A3"
+   ]
+  },
+  "InsuranceManagementVPCPublicSubnet2EIP5B82C616": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet2"
+     }
+    ]
+   }
+  },
+  "InsuranceManagementVPCPublicSubnet2NATGatewayC927163A": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "InsuranceManagementVPCPublicSubnet2EIP5B82C616",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet2Subnet9DB8B3D3"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PublicSubnet2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "InsuranceManagementVPCPublicSubnet2DefaultRoute8F8B61FC",
+    "InsuranceManagementVPCPublicSubnet2RouteTableAssociationE1908792"
+   ]
+  },
+  "InsuranceManagementVPCPrivateSubnet1Subnet82DE1817": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPrivateSubnet1RouteTable1C9A0DDB": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPrivateSubnet1RouteTableAssociationD9960298": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPrivateSubnet1RouteTable1C9A0DDB"
+    },
+    "SubnetId": {
+     "Ref": "InsuranceManagementVPCPrivateSubnet1Subnet82DE1817"
+    }
+   }
+  },
+  "InsuranceManagementVPCPrivateSubnet1DefaultRouteF781E422": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet1NATGatewayD0F82A6D"
+    },
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPrivateSubnet1RouteTable1C9A0DDB"
+    }
+   }
+  },
+  "InsuranceManagementVPCPrivateSubnet2SubnetFCFE32BA": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPrivateSubnet2RouteTable34E292E7": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "localstack/InsuranceManagementVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "InsuranceManagementVPCPrivateSubnet2RouteTableAssociation80746C87": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPrivateSubnet2RouteTable34E292E7"
+    },
+    "SubnetId": {
+     "Ref": "InsuranceManagementVPCPrivateSubnet2SubnetFCFE32BA"
+    }
+   }
+  },
+  "InsuranceManagementVPCPrivateSubnet2DefaultRouteC7F8BEFF": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "InsuranceManagementVPCPublicSubnet2NATGatewayC927163A"
+    },
+    "RouteTableId": {
+     "Ref": "InsuranceManagementVPCPrivateSubnet2RouteTable34E292E7"
+    }
+   }
+  },
+  "InsuranceManagementVPCIGWB2FF1E22": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "InsuranceManagementVPC"
+     }
+    ]
+   }
+  },
+  "InsuranceManagementVPCVPCGWB9D114A3": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "InsuranceManagementVPCIGWB2FF1E22"
+    },
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "AuthServiceDBSubnetGroupCFE5A552": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for AuthServiceDB database",
+    "SubnetIds": [
+     {
+      "Ref": "InsuranceManagementVPCPrivateSubnet1Subnet82DE1817"
+     },
+     {
+      "Ref": "InsuranceManagementVPCPrivateSubnet2SubnetFCFE32BA"
+     }
+    ]
+   }
+  },
+  "AuthServiceDBSecurityGroupBE6D28EB": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for AuthServiceDB database",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "localstackAuthServiceDBSecretE93C53FD3fdaad7efa858a3daf9490cf0a702aeb": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Generated by the CDK for stack: ",
+       {
+        "Ref": "AWS::StackName"
+       }
+      ]
+     ]
+    },
+    "GenerateSecretString": {
+     "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+     "GenerateStringKey": "password",
+     "PasswordLength": 30,
+     "SecretStringTemplate": "{\"username\":\"admin_user\"}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "AuthServiceDBSecretAttachmentF30406A9": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "localstackAuthServiceDBSecretE93C53FD3fdaad7efa858a3daf9490cf0a702aeb"
+    },
+    "TargetId": {
+     "Ref": "AuthServiceDBC6B688BA"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   }
+  },
+  "AuthServiceDBC6B688BA": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t2.micro",
+    "DBName": "auth-service-db",
+    "DBSubnetGroupName": {
+     "Ref": "AuthServiceDBSubnetGroupCFE5A552"
+    },
+    "Engine": "postgres",
+    "EngineVersion": "17.2",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "localstackAuthServiceDBSecretE93C53FD3fdaad7efa858a3daf9490cf0a702aeb"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": "admin_user",
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "AuthServiceDBSecurityGroupBE6D28EB",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "InsuranceServiceDBSubnetGroup034CB8D8": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for InsuranceServiceDB database",
+    "SubnetIds": [
+     {
+      "Ref": "InsuranceManagementVPCPrivateSubnet1Subnet82DE1817"
+     },
+     {
+      "Ref": "InsuranceManagementVPCPrivateSubnet2SubnetFCFE32BA"
+     }
+    ]
+   }
+  },
+  "InsuranceServiceDBSecurityGroupB3EB73F2": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for InsuranceServiceDB database",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "localstackInsuranceServiceDBSecretD496C0CF3fdaad7efa858a3daf9490cf0a702aeb": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Generated by the CDK for stack: ",
+       {
+        "Ref": "AWS::StackName"
+       }
+      ]
+     ]
+    },
+    "GenerateSecretString": {
+     "ExcludeCharacters": " %+~`#$&*()|[]{}:;<>?!'/@\"\\",
+     "GenerateStringKey": "password",
+     "PasswordLength": 30,
+     "SecretStringTemplate": "{\"username\":\"admin_user\"}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "InsuranceServiceDBSecretAttachmentFE448854": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "localstackInsuranceServiceDBSecretD496C0CF3fdaad7efa858a3daf9490cf0a702aeb"
+    },
+    "TargetId": {
+     "Ref": "InsuranceServiceDB14E0F8C3"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   }
+  },
+  "InsuranceServiceDB14E0F8C3": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t2.micro",
+    "DBName": "insurance-service-db",
+    "DBSubnetGroupName": {
+     "Ref": "InsuranceServiceDBSubnetGroup034CB8D8"
+    },
+    "Engine": "postgres",
+    "EngineVersion": "17.2",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "localstackInsuranceServiceDBSecretD496C0CF3fdaad7efa858a3daf9490cf0a702aeb"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": "admin_user",
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "InsuranceServiceDBSecurityGroupB3EB73F2",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "AuthServiceDBHealthCheck": {
+   "Type": "AWS::Route53::HealthCheck",
+   "Properties": {
+    "HealthCheckConfig": {
+     "FailureThreshold": 3,
+     "IPAddress": {
+      "Fn::GetAtt": [
+       "AuthServiceDBC6B688BA",
+       "Endpoint.Address"
+      ]
+     },
+     "Port": {
+      "Fn::GetAtt": [
+       "AuthServiceDBC6B688BA",
+       "Endpoint.Port"
+      ]
+     },
+     "RequestInterval": 30,
+     "Type": "TCP"
+    }
+   }
+  },
+  "InsuranceServiceDBHealthCheck": {
+   "Type": "AWS::Route53::HealthCheck",
+   "Properties": {
+    "HealthCheckConfig": {
+     "FailureThreshold": 3,
+     "IPAddress": {
+      "Fn::GetAtt": [
+       "InsuranceServiceDB14E0F8C3",
+       "Endpoint.Address"
+      ]
+     },
+     "Port": {
+      "Fn::GetAtt": [
+       "InsuranceServiceDB14E0F8C3",
+       "Endpoint.Port"
+      ]
+     },
+     "RequestInterval": 30,
+     "Type": "TCP"
+    }
+   }
+  },
+  "InsuranceManagementClusterB194D3DF": {
+   "Type": "AWS::ECS::Cluster"
+  },
+  "InsuranceManagementClusterDefaultServiceDiscoveryNamespaceDDA3AB36": {
+   "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
+   "Properties": {
+    "Name": "insurance-service.local",
+    "Vpc": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "AuthServiceTaskTaskRoleE466B974": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "AuthServiceTask82E6680D": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "SPRING_SQL_INIT_MODE",
+        "Value": "always"
+       },
+       {
+        "Name": "JWT_SECRET",
+        "Value": "c3VwZXJTZWNyZXRLZXlGb3JKV1RDb25maWd1cmF0aW9uMTIz="
+       },
+       {
+        "Name": "SPRING_DATASOURCE_URL",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "jdbc:postgresql://",
+           {
+            "Fn::GetAtt": [
+             "AuthServiceDBC6B688BA",
+             "Endpoint.Address"
+            ]
+           },
+           ":",
+           {
+            "Fn::GetAtt": [
+             "AuthServiceDBC6B688BA",
+             "Endpoint.Port"
+            ]
+           },
+           "/auth-service-db"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "SPRING_DATASOURCE_PASSWORD",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "{{resolve:secretsmanager:",
+           {
+            "Ref": "AuthServiceDBSecretAttachmentF30406A9"
+           },
+           ":SecretString:password::}}"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "SPRING_JPA_HIBERNATE_DDL_AUTO",
+        "Value": "update"
+       },
+       {
+        "Name": "SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT",
+        "Value": "60000"
+       },
+       {
+        "Name": "SPRING_DATASOURCE_USERNAME",
+        "Value": "admin_user"
+       },
+       {
+        "Name": "SPRING_BOOTSTRAP_SERVERS",
+        "Value": "localhost.localstack.cloud:4510, localhost.localstack.cloud:4511, localhost.localstack.cloud:4512"
+       }
+      ],
+      "Essential": true,
+      "Image": "auth-service",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "AuthServiceLogGroup34125B38"
+        },
+        "awslogs-stream-prefix": "auth-service",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "auth-serviceContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 4005,
+        "HostPort": 4005,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "AuthServiceTaskExecutionRoleA1258495",
+      "Arn"
+     ]
+    },
+    "Family": "localstackAuthServiceTask4114E6CA",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "AuthServiceTaskTaskRoleE466B974",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "AuthServiceTaskExecutionRoleA1258495": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "AuthServiceTaskExecutionRoleDefaultPolicyF20AD0D3": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "AuthServiceLogGroup34125B38",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AuthServiceTaskExecutionRoleDefaultPolicyF20AD0D3",
+    "Roles": [
+     {
+      "Ref": "AuthServiceTaskExecutionRoleA1258495"
+     }
+    ]
+   }
+  },
+  "AuthServiceLogGroup34125B38": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/auth-service",
+    "RetentionInDays": 1
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "AuthService3C2B741A": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "InsuranceManagementClusterB194D3DF"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "EnableECSManagedTags": false,
+    "LaunchType": "FARGATE",
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "AuthServiceSecurityGroup67F2FA7D",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "InsuranceManagementVPCPrivateSubnet1Subnet82DE1817"
+       },
+       {
+        "Ref": "InsuranceManagementVPCPrivateSubnet2SubnetFCFE32BA"
+       }
+      ]
+     }
+    },
+    "ServiceName": "auth-service",
+    "TaskDefinition": {
+     "Ref": "AuthServiceTask82E6680D"
+    }
+   },
+   "DependsOn": [
+    "AuthServiceDBC6B688BA",
+    "AuthServiceDBSecretAttachmentF30406A9",
+    "localstackAuthServiceDBSecretE93C53FD3fdaad7efa858a3daf9490cf0a702aeb",
+    "AuthServiceDBSecurityGroupBE6D28EB",
+    "AuthServiceDBSubnetGroupCFE5A552",
+    "AuthServiceDBHealthCheck",
+    "AuthServiceTaskTaskRoleE466B974"
+   ]
+  },
+  "AuthServiceSecurityGroup67F2FA7D": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "localstack/AuthService/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   },
+   "DependsOn": [
+    "AuthServiceDBC6B688BA",
+    "AuthServiceDBSecretAttachmentF30406A9",
+    "localstackAuthServiceDBSecretE93C53FD3fdaad7efa858a3daf9490cf0a702aeb",
+    "AuthServiceDBSecurityGroupBE6D28EB",
+    "AuthServiceDBSubnetGroupCFE5A552",
+    "AuthServiceDBHealthCheck",
+    "AuthServiceTaskTaskRoleE466B974"
+   ]
+  },
+  "InsuranceServiceTaskTaskRole563E347A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "InsuranceServiceTask9EE49CF3": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "SPRING_SQL_INIT_MODE",
+        "Value": "always"
+       },
+       {
+        "Name": "SPRING_DATASOURCE_URL",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "jdbc:postgresql://",
+           {
+            "Fn::GetAtt": [
+             "InsuranceServiceDB14E0F8C3",
+             "Endpoint.Address"
+            ]
+           },
+           ":",
+           {
+            "Fn::GetAtt": [
+             "InsuranceServiceDB14E0F8C3",
+             "Endpoint.Port"
+            ]
+           },
+           "/insurance-service-db"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "SPRING_DATASOURCE_PASSWORD",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "{{resolve:secretsmanager:",
+           {
+            "Ref": "InsuranceServiceDBSecretAttachmentFE448854"
+           },
+           ":SecretString:password::}}"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "SPRING_JPA_HIBERNATE_DDL_AUTO",
+        "Value": "update"
+       },
+       {
+        "Name": "SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT",
+        "Value": "60000"
+       },
+       {
+        "Name": "SPRING_DATASOURCE_USERNAME",
+        "Value": "admin_user"
+       },
+       {
+        "Name": "SPRING_BOOTSTRAP_SERVERS",
+        "Value": "localhost.localstack.cloud:4510, localhost.localstack.cloud:4511, localhost.localstack.cloud:4512"
+       }
+      ],
+      "Essential": true,
+      "Image": "insurance-service",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "InsuranceServiceLogGroup54F077B8"
+        },
+        "awslogs-stream-prefix": "insurance-service",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "insurance-serviceContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 4000,
+        "HostPort": 4000,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "InsuranceServiceTaskExecutionRole3A1739FC",
+      "Arn"
+     ]
+    },
+    "Family": "localstackInsuranceServiceTask9975BBCA",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "InsuranceServiceTaskTaskRole563E347A",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "InsuranceServiceTaskExecutionRole3A1739FC": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "InsuranceServiceTaskExecutionRoleDefaultPolicy0F9902BF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "InsuranceServiceLogGroup54F077B8",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "InsuranceServiceTaskExecutionRoleDefaultPolicy0F9902BF",
+    "Roles": [
+     {
+      "Ref": "InsuranceServiceTaskExecutionRole3A1739FC"
+     }
+    ]
+   }
+  },
+  "InsuranceServiceLogGroup54F077B8": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/insurance-service",
+    "RetentionInDays": 1
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "InsuranceService1C606A9B": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "InsuranceManagementClusterB194D3DF"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "EnableECSManagedTags": false,
+    "LaunchType": "FARGATE",
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "InsuranceServiceSecurityGroupB7B41866",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "InsuranceManagementVPCPrivateSubnet1Subnet82DE1817"
+       },
+       {
+        "Ref": "InsuranceManagementVPCPrivateSubnet2SubnetFCFE32BA"
+       }
+      ]
+     }
+    },
+    "ServiceName": "insurance-service",
+    "TaskDefinition": {
+     "Ref": "InsuranceServiceTask9EE49CF3"
+    }
+   },
+   "DependsOn": [
+    "InsuranceServiceDB14E0F8C3",
+    "InsuranceServiceDBSecretAttachmentFE448854",
+    "localstackInsuranceServiceDBSecretD496C0CF3fdaad7efa858a3daf9490cf0a702aeb",
+    "InsuranceServiceDBSecurityGroupB3EB73F2",
+    "InsuranceServiceDBSubnetGroup034CB8D8",
+    "InsuranceServiceDBHealthCheck",
+    "InsuranceServiceTaskTaskRole563E347A"
+   ]
+  },
+  "InsuranceServiceSecurityGroupB7B41866": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "localstack/InsuranceService/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   },
+   "DependsOn": [
+    "InsuranceServiceDB14E0F8C3",
+    "InsuranceServiceDBSecretAttachmentFE448854",
+    "localstackInsuranceServiceDBSecretD496C0CF3fdaad7efa858a3daf9490cf0a702aeb",
+    "InsuranceServiceDBSecurityGroupB3EB73F2",
+    "InsuranceServiceDBSubnetGroup034CB8D8",
+    "InsuranceServiceDBHealthCheck",
+    "InsuranceServiceTaskTaskRole563E347A"
+   ]
+  },
+  "APIGatewayTaskDefinitionTaskRole894A199F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "APIGatewayTaskDefinition199BB1B7": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "SPRING_PROFILES_ACTIVE",
+        "Value": "prod"
+       },
+       {
+        "Name": "AUTH_SERVICE_URL",
+        "Value": "http://host.docker.internal:4005"
+       }
+      ],
+      "Essential": true,
+      "Image": "api-gateway",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "ApiGatewayLogGroupA9770429"
+        },
+        "awslogs-stream-prefix": "api-gateway",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "APIGatewayContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 4004,
+        "HostPort": 4004,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "APIGatewayTaskDefinitionExecutionRole555CBA21",
+      "Arn"
+     ]
+    },
+    "Family": "localstackAPIGatewayTaskDefinitionF109B4B7",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "APIGatewayTaskDefinitionTaskRole894A199F",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "APIGatewayTaskDefinitionExecutionRole555CBA21": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "APIGatewayTaskDefinitionExecutionRoleDefaultPolicy582C1C35": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ApiGatewayLogGroupA9770429",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "APIGatewayTaskDefinitionExecutionRoleDefaultPolicy582C1C35",
+    "Roles": [
+     {
+      "Ref": "APIGatewayTaskDefinitionExecutionRole555CBA21"
+     }
+    ]
+   }
+  },
+  "ApiGatewayLogGroupA9770429": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/api-gateway",
+    "RetentionInDays": 1
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "APIGatewayServiceLBDA2B7609": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "APIGatewayServiceLBSecurityGroup8524BFD1",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "InsuranceManagementVPCPublicSubnet1Subnet14263D48"
+     },
+     {
+      "Ref": "InsuranceManagementVPCPublicSubnet2Subnet9DB8B3D3"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "InsuranceManagementVPCPublicSubnet1DefaultRoute0435AEC4",
+    "InsuranceManagementVPCPublicSubnet1RouteTableAssociation956A06EE",
+    "InsuranceManagementVPCPublicSubnet2DefaultRoute8F8B61FC",
+    "InsuranceManagementVPCPublicSubnet2RouteTableAssociationE1908792"
+   ]
+  },
+  "APIGatewayServiceLBSecurityGroup8524BFD1": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB localstackAPIGatewayServiceLB0192615A",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "APIGatewayServiceLBSecurityGrouptolocalstackAPIGatewayServiceSecurityGroup37054EEE4004CAF8FB32": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "APIGatewayServiceSecurityGroup98F3B93B",
+      "GroupId"
+     ]
+    },
+    "FromPort": 4004,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "APIGatewayServiceLBSecurityGroup8524BFD1",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 4004
+   }
+  },
+  "APIGatewayServiceLBPublicListenerD6FA7F47": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "APIGatewayServiceLBPublicListenerECSGroupF9D8CC70"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "APIGatewayServiceLBDA2B7609"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   }
+  },
+  "APIGatewayServiceLBPublicListenerECSGroupF9D8CC70": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   }
+  },
+  "APIGatewayServiceA5206149": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "InsuranceManagementClusterB194D3DF"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "APIGatewayContainer",
+      "ContainerPort": 4004,
+      "TargetGroupArn": {
+       "Ref": "APIGatewayServiceLBPublicListenerECSGroupF9D8CC70"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "APIGatewayServiceSecurityGroup98F3B93B",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "InsuranceManagementVPCPrivateSubnet1Subnet82DE1817"
+       },
+       {
+        "Ref": "InsuranceManagementVPCPrivateSubnet2SubnetFCFE32BA"
+       }
+      ]
+     }
+    },
+    "ServiceName": "api-gateway",
+    "TaskDefinition": {
+     "Ref": "APIGatewayTaskDefinition199BB1B7"
+    }
+   },
+   "DependsOn": [
+    "APIGatewayServiceLBPublicListenerECSGroupF9D8CC70",
+    "APIGatewayServiceLBPublicListenerD6FA7F47",
+    "APIGatewayTaskDefinitionTaskRole894A199F"
+   ]
+  },
+  "APIGatewayServiceSecurityGroup98F3B93B": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "localstack/APIGatewayService/Service/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "InsuranceManagementVPC380685C0"
+    }
+   },
+   "DependsOn": [
+    "APIGatewayTaskDefinitionTaskRole894A199F"
+   ]
+  },
+  "APIGatewayServiceSecurityGroupfromlocalstackAPIGatewayServiceLBSecurityGroup32B4CA424004CA85E4CD": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 4004,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "APIGatewayServiceSecurityGroup98F3B93B",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "APIGatewayServiceLBSecurityGroup8524BFD1",
+      "GroupId"
+     ]
+    },
+    "ToPort": 4004
+   },
+   "DependsOn": [
+    "APIGatewayTaskDefinitionTaskRole894A199F"
+   ]
+  }
+ },
+ "Outputs": {
+  "APIGatewayServiceLoadBalancerDNS7C7318A3": {
+   "Value": {
+    "Fn::GetAtt": [
+     "APIGatewayServiceLBDA2B7609",
+     "DNSName"
+    ]
+   }
+  },
+  "APIGatewayServiceServiceURL95056890": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "APIGatewayServiceLBDA2B7609",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ }
+}
