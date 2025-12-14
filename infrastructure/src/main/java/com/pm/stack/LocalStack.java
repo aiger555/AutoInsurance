@@ -156,7 +156,7 @@ public class LocalStack extends Stack {
         return Cluster.Builder.create(this, "InsuranceManagementCluster")
                 .vpc(vpc)
                 .defaultCloudMapNamespace(CloudMapNamespaceOptions.builder()
-                        .name("insurance-service.local")
+                        .name("AutoInsurance.local")
                         .build())
                 .build();
     }

@@ -1136,7 +1136,7 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
                       "aws:cdk:cloudformation:props": {
-                        "name": "insurance-service.local",
+                        "name": "AutoInsurance.local",
                         "vpc": {
                           "Ref": "InsuranceManagementVPC380685C0"
                         }
@@ -2048,12 +2048,12 @@
                         },
                         "environment": [
                           {
-                            "name": "SPRING_PROFILES_ACTIVE",
-                            "value": "prod"
-                          },
-                          {
                             "name": "AUTH_SERVICE_URL",
                             "value": "http://host.docker.internal:4005"
+                          },
+                          {
+                            "name": "SPRING_PROFILES_ACTIVE",
+                            "value": "prod"
                           }
                         ]
                       }

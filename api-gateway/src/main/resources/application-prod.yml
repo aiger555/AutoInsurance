@@ -45,7 +45,7 @@ spring:
             - StripPrefix=1
             - JwtValidation
 
-        # Route for /api/docs/clients to client-service /v3/api-docs
+        # Route for /api/docs/clients to insurance-service /v3/api-docs
         - id: api-docs-client-route
           uri: http://host.docker.internal:4000
           predicates:

@@ -649,7 +649,7 @@
   "InsuranceManagementClusterDefaultServiceDiscoveryNamespaceDDA3AB36": {
    "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
    "Properties": {
-    "Name": "insurance-service.local",
+    "Name": "AutoInsurance.local",
     "Vpc": {
      "Ref": "InsuranceManagementVPC380685C0"
     }
@@ -1207,12 +1207,12 @@
      {
       "Environment": [
        {
-        "Name": "SPRING_PROFILES_ACTIVE",
-        "Value": "prod"
-       },
-       {
         "Name": "AUTH_SERVICE_URL",
         "Value": "http://host.docker.internal:4005"
+       },
+       {
+        "Name": "SPRING_PROFILES_ACTIVE",
+        "Value": "prod"
        }
       ],
       "Essential": true,
