@@ -12,6 +12,8 @@ import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.Token;
+import software.amazon.awscdk.services.ecr.assets.DockerImageAsset;
+import software.amazon.awscdk.services.ecr.assets.DockerImageAssetProps;
 import software.amazon.awscdk.services.ec2.ISubnet;
 import software.amazon.awscdk.services.ec2.InstanceClass;
 import software.amazon.awscdk.services.ec2.InstanceSize;
@@ -42,8 +44,27 @@ public class LocalStack extends Stack {
     private final Vpc vpc;
     private final Cluster ecsCluster;
 
+    private DockerImageAsset authServiceImage;
+    private DockerImageAsset insuranceServiceImage;
+    private DockerImageAsset apiGatewayImage;
+
     public LocalStack(final App scope, final String id, final StackProps props){
         super(scope, id, props);
+
+        this.authServiceImage = new DockerImageAsset(this, "AuthServiceImage",
+                DockerImageAssetProps.builder()
+                        .directory("./auth-service")
+                        .build());
+
+        this.insuranceServiceImage = new DockerImageAsset(this, "InsuranceServiceImage",
+                DockerImageAssetProps.builder()
+                        .directory("./insurance-service")
+                        .build());
+
+        this.apiGatewayImage = new DockerImageAsset(this, "ApiGatewayImage",
+                DockerImageAssetProps.builder()
+                        .directory("./api-gateway")
+                        .build());
 
         this.vpc = createVpc();
 
@@ -98,7 +119,22 @@ public class LocalStack extends Stack {
         );
         insuranceService.getNode().addDependency(insuranceServiceDb);
         insuranceService.getNode().addDependency(insuranceDbHealthCheck);
-        createApiGatewayService();
+
+        FargateService apiGatewayService = createFargateService(
+                "ApiGatewayService",
+                "api-gateway",
+                List.of(4004),
+                null,  // Нет базы данных
+                Map.of(
+                        "SPRING_PROFILES_ACTIVE", "prod",
+                        "AUTH_SERVICE_URL", "http://auth-service:4005",
+                        "INSURANCE_SERVICE_URL", "http://insurance-service:4000"
+                )
+        );
+
+        apiGatewayService.getNode().addDependency(authService);
+        apiGatewayService.getNode().addDependency(insuranceService);
+
     }
 
     private Vpc createVpc(){
@@ -173,9 +209,20 @@ public class LocalStack extends Stack {
                         .memoryLimitMiB(512)
                         .build();
 
+        ContainerImage containerImage;
+        if (imageName.equals("auth-service")) {
+            containerImage = ContainerImage.fromDockerImageAsset(authServiceImage);
+        } else if (imageName.equals("insurance-service")) {
+            containerImage = ContainerImage.fromDockerImageAsset(insuranceServiceImage);
+        } else if (imageName.equals("api-gateway")) {
+            containerImage = ContainerImage.fromDockerImageAsset(apiGatewayImage);
+        } else {
+            containerImage = ContainerImage.fromRegistry(imageName); // для других сервисов
+        }
+
         ContainerDefinitionOptions.Builder containerOptions =
                 ContainerDefinitionOptions.builder()
-                        .image(ContainerImage.fromRegistry(imageName))
+                        .image(containerImage)  // ✅ ИСПОЛЬЗУЙ ЛОКАЛЬНЫЙ ASSET
                         .portMappings(ports.stream()
                                 .map(port -> PortMapping.builder()
                                         .containerPort(port)
@@ -233,27 +280,26 @@ public class LocalStack extends Stack {
 
         ContainerDefinitionOptions containerOptions =
                 ContainerDefinitionOptions.builder()
-                        .image(ContainerImage.fromRegistry("api-gateway"))
+                        .image(ContainerImage.fromDockerImageAsset(apiGatewayImage))
                         .environment(Map.of(
                                 "SPRING_PROFILES_ACTIVE", "prod",
-                                "AUTH_SERVICE_URL", "http://host.docker.internal:4005"
+                                "AUTH_SERVICE_URL", "http://auth-service:4005",
+                                "INSURANCE_SERVICE_URL", "http://insurance-service:4000"
                         ))
-                        .portMappings(List.of(4004).stream()
-                                .map(port -> PortMapping.builder()
-                                        .containerPort(port)
-                                        .hostPort(port)
-                                        .protocol(Protocol.TCP)
-                                        .build())
-                                .toList())
-                        .logging(LogDriver.awsLogs(AwsLogDriverProps.builder()
-                                .logGroup(LogGroup.Builder.create(this, "ApiGatewayLogGroup")
-                                        .logGroupName("/ecs/api-gateway")
-                                        .removalPolicy(RemovalPolicy.DESTROY)
-                                        .retention(RetentionDays.ONE_DAY)
-                                        .build())
-                                .streamPrefix("api-gateway")
-                                .build()))
-                        .build();
+                        .portMappings(List.of(PortMapping.builder()
+                .containerPort(4004)
+                .hostPort(4004)
+                .protocol(Protocol.TCP)
+                .build()))
+                .logging(LogDriver.awsLogs(AwsLogDriverProps.builder()
+                        .logGroup(LogGroup.Builder.create(this, "ApiGatewayLogGroup")
+                                .logGroupName("/ecs/api-gateway")
+                                .removalPolicy(RemovalPolicy.DESTROY)
+                                .retention(RetentionDays.ONE_DAY)
+                                .build())
+                        .streamPrefix("api-gateway")
+                        .build()))
+                .build();
 
 
         taskDefinition.addContainer("APIGatewayContainer", containerOptions);
