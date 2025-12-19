@@ -1,0 +1,56 @@
+package com.ain.insuranceservice.controllers;
+
+import com.ain.insuranceservice.dto.ClientRequestDTO;
+import com.ain.insuranceservice.dto.ClientResponseDTO;
+import com.ain.insuranceservice.services.ClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/clients")
+@Tag(name = "Client", description = "API for managing CLients") // swagger
+public class ClientController {
+    private final ClientService clientService;
+
+    @GetMapping
+    @Operation(summary = "Get Clients") // swagger
+    public ResponseEntity<List<ClientResponseDTO>> getClients() {
+        List<ClientResponseDTO> clients = clientService.getClients();
+        return new ResponseEntity<>(clients, HttpStatus.OK);
+    }
+
+    @PostMapping
+    @Operation(summary = "Create a new Client") // swagger
+    public ResponseEntity<ClientResponseDTO> createClient(@Valid @RequestBody ClientRequestDTO clientRequestDTO) {
+        ClientResponseDTO clientResponseDTO = clientService.createClient(clientRequestDTO);
+        return new ResponseEntity<>(clientResponseDTO, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a Client") // swagger
+    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id, @Validated({Default.class}) @RequestBody ClientRequestDTO clientRequestDTO) {
+        ClientResponseDTO clientResponseDTO = clientService.updateClient(id, clientRequestDTO);
+        return new ResponseEntity<>(clientResponseDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a Client") // swagger
+    public ResponseEntity<Void> deleteClient(@PathVariable UUID id) {
+        clientService.deleteClient(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}

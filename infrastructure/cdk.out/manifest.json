@@ -1,6 +1,14 @@
 {
   "version": "39.0.0",
   "artifacts": {
+    "localstack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "localstack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
     "localstack": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
@@ -9,8 +17,22 @@
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
-        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}"
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/aed0b43774f90133421a6f1920e705ed452abb7dda89173afc24450bc8c3f139.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "localstack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
       },
+      "dependencies": [
+        "localstack.assets"
+      ],
       "metadata": {
         "/localstack/InsuranceManagementVPC/Resource": [
           {
@@ -269,15 +291,15 @@
             "type": "aws:cdk:warning",
             "data": "minHealthyPercent has not been configured so the default value of 50% is used. The number of running tasks will decrease below the desired count during deployments etc. See https://github.com/aws/aws-cdk/issues/31705 [ack: @aws-cdk/aws-ecs:minHealthyPercent]",
             "trace": [
-              "Annotations.addMessage (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1608)",
-              "Annotations.addWarningV2 (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
-              "new BaseService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\base\\base-service.js:1:8100)",
-              "new FargateService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\fargate\\fargate-service.js:1:3551)",
-              "Kernel._Kernel_create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:549:25)",
-              "Kernel.create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:219:93)",
-              "KernelHost.processRequest (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15482:36)",
-              "KernelHost.run (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15442:22)",
-              "Immediate._onImmediate (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15443:45)",
+              "Annotations.addMessage (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1608)",
+              "Annotations.addWarningV2 (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
+              "new BaseService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\base\\base-service.js:1:8100)",
+              "new FargateService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\fargate\\fargate-service.js:1:3551)",
+              "Kernel._Kernel_create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:549:25)",
+              "Kernel.create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:219:93)",
+              "KernelHost.processRequest (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15482:36)",
+              "KernelHost.run (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15442:22)",
+              "Immediate._onImmediate (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15443:45)",
               "process.processImmediate (node:internal/timers:491:21)"
             ]
           }
@@ -329,15 +351,15 @@
             "type": "aws:cdk:warning",
             "data": "minHealthyPercent has not been configured so the default value of 50% is used. The number of running tasks will decrease below the desired count during deployments etc. See https://github.com/aws/aws-cdk/issues/31705 [ack: @aws-cdk/aws-ecs:minHealthyPercent]",
             "trace": [
-              "Annotations.addMessage (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1608)",
-              "Annotations.addWarningV2 (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
-              "new BaseService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\base\\base-service.js:1:8100)",
-              "new FargateService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\fargate\\fargate-service.js:1:3551)",
-              "Kernel._Kernel_create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:549:25)",
-              "Kernel.create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:219:93)",
-              "KernelHost.processRequest (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15482:36)",
-              "KernelHost.run (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15442:22)",
-              "Immediate._onImmediate (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15443:45)",
+              "Annotations.addMessage (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1608)",
+              "Annotations.addWarningV2 (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
+              "new BaseService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\base\\base-service.js:1:8100)",
+              "new FargateService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\fargate\\fargate-service.js:1:3551)",
+              "Kernel._Kernel_create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:549:25)",
+              "Kernel.create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:219:93)",
+              "KernelHost.processRequest (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15482:36)",
+              "KernelHost.run (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15442:22)",
+              "Immediate._onImmediate (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15443:45)",
               "process.processImmediate (node:internal/timers:491:21)"
             ]
           }
@@ -354,113 +376,76 @@
             "data": "InsuranceServiceSecurityGroupB7B41866"
           }
         ],
-        "/localstack/APIGatewayTaskDefinition/TaskRole/Resource": [
+        "/localstack/ApiGatewayServiceTask/TaskRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "APIGatewayTaskDefinitionTaskRole894A199F"
+            "data": "ApiGatewayServiceTaskTaskRole815142DB"
           }
         ],
-        "/localstack/APIGatewayTaskDefinition/Resource": [
+        "/localstack/ApiGatewayServiceTask/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "APIGatewayTaskDefinition199BB1B7"
+            "data": "ApiGatewayServiceTask8DD23A89"
           }
         ],
-        "/localstack/APIGatewayTaskDefinition/ExecutionRole/Resource": [
+        "/localstack/ApiGatewayServiceTask/ExecutionRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "APIGatewayTaskDefinitionExecutionRole555CBA21"
+            "data": "ApiGatewayServiceTaskExecutionRoleBE003588"
           }
         ],
-        "/localstack/APIGatewayTaskDefinition/ExecutionRole/DefaultPolicy/Resource": [
+        "/localstack/ApiGatewayServiceTask/ExecutionRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "APIGatewayTaskDefinitionExecutionRoleDefaultPolicy582C1C35"
+            "data": "ApiGatewayServiceTaskExecutionRoleDefaultPolicy42B67EE8"
           }
         ],
-        "/localstack/ApiGatewayLogGroup/Resource": [
+        "/localstack/ApiGatewayServiceLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ApiGatewayLogGroupA9770429"
+            "data": "ApiGatewayServiceLogGroup49E23A6C"
           }
         ],
-        "/localstack/APIGatewayService/LB/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceLBDA2B7609"
-          }
-        ],
-        "/localstack/APIGatewayService/LB/SecurityGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceLBSecurityGroup8524BFD1"
-          }
-        ],
-        "/localstack/APIGatewayService/LB/SecurityGroup/to localstackAPIGatewayServiceSecurityGroup37054EEE:4004": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceLBSecurityGrouptolocalstackAPIGatewayServiceSecurityGroup37054EEE4004CAF8FB32"
-          }
-        ],
-        "/localstack/APIGatewayService/LB/PublicListener/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceLBPublicListenerD6FA7F47"
-          }
-        ],
-        "/localstack/APIGatewayService/LB/PublicListener/ECSGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceLBPublicListenerECSGroupF9D8CC70"
-          }
-        ],
-        "/localstack/APIGatewayService/LoadBalancerDNS": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceLoadBalancerDNS7C7318A3"
-          }
-        ],
-        "/localstack/APIGatewayService/ServiceURL": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceServiceURL95056890"
-          }
-        ],
-        "/localstack/APIGatewayService/Service": [
+        "/localstack/ApiGatewayService": [
           {
             "type": "aws:cdk:warning",
             "data": "minHealthyPercent has not been configured so the default value of 50% is used. The number of running tasks will decrease below the desired count during deployments etc. See https://github.com/aws/aws-cdk/issues/31705 [ack: @aws-cdk/aws-ecs:minHealthyPercent]",
             "trace": [
-              "Annotations.addMessage (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1608)",
-              "Annotations.addWarningV2 (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
-              "new BaseService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\base\\base-service.js:1:8100)",
-              "new FargateService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\fargate\\fargate-service.js:1:3551)",
-              "new ApplicationLoadBalancedFargateService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-VHlkL0\\node_modules\\aws-cdk-lib\\aws-ecs-patterns\\lib\\fargate\\application-load-balanced-fargate-service.js:1:3340)",
-              "Kernel._Kernel_create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:549:25)",
-              "Kernel.create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:219:93)",
-              "KernelHost.processRequest (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15482:36)",
-              "KernelHost.run (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15442:22)",
-              "Immediate._onImmediate (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime6584211152704119601\\lib\\program.js:15443:45)",
+              "Annotations.addMessage (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1608)",
+              "Annotations.addWarningV2 (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
+              "new BaseService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\base\\base-service.js:1:8100)",
+              "new FargateService (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-kernel-mPEfNF\\node_modules\\aws-cdk-lib\\aws-ecs\\lib\\fargate\\fargate-service.js:1:3551)",
+              "Kernel._Kernel_create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:549:25)",
+              "Kernel.create (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:219:93)",
+              "KernelHost.processRequest (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15482:36)",
+              "KernelHost.run (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15442:22)",
+              "Immediate._onImmediate (C:\\Users\\ACER\\AppData\\Local\\Temp\\jsii-java-runtime7023714697824184410\\lib\\program.js:15443:45)",
               "process.processImmediate (node:internal/timers:491:21)"
             ]
           }
         ],
-        "/localstack/APIGatewayService/Service/Service": [
+        "/localstack/ApiGatewayService/Service": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceA5206149"
+            "data": "ApiGatewayService075CCF21"
           }
         ],
-        "/localstack/APIGatewayService/Service/SecurityGroup/Resource": [
+        "/localstack/ApiGatewayService/SecurityGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceSecurityGroup98F3B93B"
+            "data": "ApiGatewayServiceSecurityGroup7206EA4A"
           }
         ],
-        "/localstack/APIGatewayService/Service/SecurityGroup/from localstackAPIGatewayServiceLBSecurityGroup32B4CA42:4004": [
+        "/localstack/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "APIGatewayServiceSecurityGroupfromlocalstackAPIGatewayServiceLBSecurityGroup32B4CA424004CA85E4CD"
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/localstack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
           }
         ]
       },

@@ -1,0 +1,95 @@
+server:
+  port: 4004
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # Auth Service Routes
+        - id: auth-service-login
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/login
+
+        - id: auth-service-validate
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/validate
+
+        # Insurance Service Routes (protected)
+        - id: insurance-service-clients
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/api/clients/**
+          filters:
+            - StripPrefix=1
+            - name: JwtValidation
+
+        - id: insurance-service-cars
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/api/cars/**
+          filters:
+            - StripPrefix=1
+            - name: JwtValidation
+
+        - id: insurance-service-drivers
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/api/drivers/**
+          filters:
+            - StripPrefix=1
+            - name: JwtValidation
+
+        - id: insurance-service-policies
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/api/policies/**
+          filters:
+            - StripPrefix=1
+            - name: JwtValidation
+
+        - id: insurance-service-policy-download
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/api/policies/*/download
+          filters:
+            - StripPrefix=1
+            - name: JwtValidation
+
+        # Public insurance routes (no auth required)
+        - id: insurance-service-public
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/public/**
+
+        # API Documentation Routes
+        - id: insurance-service-api-docs
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/insurance-api-docs
+          filters:
+            - RewritePath=/insurance-api-docs, /v3/api-docs
+
+        - id: auth-service-api-docs
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/auth-api-docs
+          filters:
+            - RewritePath=/auth-api-docs, /v3/api-docs
+
+  # CORS configuration
+  web:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: "*"
+      allowed-headers: "*"
+      allow-credentials: true
+
+# Logging
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.ain.apigateway: DEBUG
