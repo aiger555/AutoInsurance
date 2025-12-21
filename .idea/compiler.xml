@@ -10,9 +10,11 @@
         <module name="api-gateway" />
         <module name="insurance-service" />
         <module name="auth-service" />
-        <module name="infrastructure" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="infrastructure" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
