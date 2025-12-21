@@ -1,0 +1,57 @@
+name: Deploy Services
+
+on: [push]
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_auth: ${{ steps.filter.outputs.auth }}
+      deploy_insurance: ${{ steps.filter.outputs.insurance }}
+      deploy_gateway: ${{ steps.filter.outputs.gateway }}
+    steps:
+      - uses: actions/checkout@v3
+      # Используем готовое действие для фильтрации путей
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            auth:
+              - 'auth-service/**'
+            insurance:
+              - 'insurance-service/**'
+            gateway:
+              - 'api-gateway/**'
+
+  deploy_auth:
+    needs: detect
+    if: needs.detect.outputs.deploy_auth == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build & Deploy Auth
+        run: |
+          echo "Деплой Auth Service"
+          cd auth-service
+          # Добавьте сюда ваши реальные команды
+
+  deploy_insurance:
+    needs: detect
+    if: needs.detect.outputs.deploy_insurance == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build & Deploy Insurance
+        run: |
+          echo "Деплой Insurance Service"
+          cd insurance-service
+          # Добавьте сюда ваши реальные команды
+
+  deploy_gateway:
+    needs: detect
+    if: needs.detect.outputs.deploy_gateway == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build & Deploy Gateway
+        run: |
+          echo "Деплой API Gateway"
+          cd api-gateway
+          # Добавьте сюда ваши реальные команды

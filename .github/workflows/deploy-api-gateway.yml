@@ -1,0 +1,27 @@
+name: Deploy API Gateway to Render
+
+on:
+  push:
+    paths:
+      - 'api-gateway/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Render CLI
+        run: |
+          curl -o render https://render.com/download/cli/linux/x86_64/latest
+          chmod +x render
+          sudo mv render /usr/local/bin/
+
+      - name: Deploy API Gateway
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_API_GATEWAY_SERVICE_ID }}
+        run: |
+          cd api-gateway
+          render deploy create $RENDER_SERVICE_ID
