@@ -1,1 +1,1 @@
-web: java -Dserver.port= -jar target/*.jar
+web: java -Dserver.port=$PORT -jar auth-service/target/*.jar
