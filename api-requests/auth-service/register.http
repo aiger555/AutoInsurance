@@ -1,0 +1,28 @@
+### Register a new user
+POST http://localhost:4004/register
+Content-Type: application/json
+
+{
+  "email": "gigigigi0987654@gmail.com",
+  "password": "Gigi0987654@",
+  "confirmPassword": "Gigi0987654@",
+  "role": "USER"
+}
+
+### Request password reset
+POST http://localhost:4004/forgot-password
+Content-Type: application/json
+
+{
+  "email": "gigigigi0987654@gmail.com"
+}
+
+### Reset password with token (replace TOKEN with actual token from email)
+POST http://localhost:4004/reset-password
+Content-Type: application/json
+
+{
+  "token": "TCPNrJAGGSrNYn75RmhQ8WtWSimnHc7c",
+  "newPassword": "newpassword123",
+  "confirmPassword": "newpassword123"
+}

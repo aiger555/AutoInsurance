@@ -18,6 +18,21 @@ spring:
           predicates:
             - Path=/validate
 
+        - id: auth-service-register
+          uri: http://auth-service:4005
+          predicates:
+              - Path=/register
+
+        - id: auth-service-forgot-password
+          uri: http://auth-service:4005
+          predicates:
+              - Path=/forgot-password
+
+        - id: auth-service-reset-password
+          uri: http://auth-service:4005
+          predicates:
+              - Path=/reset-password
+
         # Insurance Service Routes (protected)
         - id: insurance-service-clients
           uri: http://insurance-service:4000
