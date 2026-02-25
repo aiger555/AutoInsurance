@@ -80,6 +80,23 @@ spring:
           predicates:
             - Path=/public/**
 
+        # Chat insurance-service
+        - id: insurance-service-chat
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/api/chat/**
+          filters:
+            - StripPrefix=1
+            - name: JwtValidation
+
+        # WebSocket route for chat
+        - id: insurance-service-chat-ws
+          uri: http://insurance-service:4000
+          predicates:
+            - Path=/ws-chat/**
+          filters:
+            - StripPrefix=0
+
         # API Documentation Routes
         - id: insurance-service-api-docs
           uri: http://insurance-service:4000

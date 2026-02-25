@@ -1,0 +1,76 @@
+### Send message to chatbot
+POST http://localhost:4004/api/chat/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sessionId": "test-session-1",
+  "userId": "user123",
+  "message": "Hello, I need help with my policy"
+}
+
+### Ask about policy
+POST http://localhost:4004/api/chat/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sessionId": "test-session-1",
+  "userId": "user123",
+  "message": "Tell me about policy 0505060"
+}
+
+### File a claim
+POST http://localhost:4004/api/chat/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sessionId": "test-session-1",
+  "userId": "user123",
+  "message": "I need to file a claim for an accident"
+}
+
+### Payment inquiry
+POST http://localhost:4004/api/chat/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sessionId": "test-session-1",
+  "userId": "user123",
+  "message": "How do I make a payment?"
+}
+
+### Emergency
+POST http://localhost:4004/api/chat/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sessionId": "test-session-1",
+  "userId": "user123",
+  "message": "This is an emergency!"
+}
+
+### Help
+POST http://localhost:4004/api/chat/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sessionId": "test-session-1",
+  "userId": "user123",
+  "message": "help"
+}
+
+### Farewell
+POST http://localhost:4004/api/chat/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sessionId": "test-session-1",
+  "userId": "user123",
+  "message": "thank you, goodbye"
+}
