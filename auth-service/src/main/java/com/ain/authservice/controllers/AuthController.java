@@ -42,10 +42,9 @@ public class AuthController {
     @GetMapping("/validate")
     @Operation(summary = "Validate token")
     public ResponseEntity<Void> validateToken(@RequestHeader("Authorization") String authHeader) {
-        log.info("=== VALIDATE TOKEN DEBUG ===");
+        log.info("VALIDATE TOKEN DEBUG");
         log.info("Authorization Header: {}", authHeader);
 
-        // ПРОВЕРКА: Должен быть Bearer token
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             log.warn("Invalid Authorization header: {}", authHeader);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -82,11 +81,9 @@ public class AuthController {
     public ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO request) {
         try {
             authService.forgotPassword(request);
-            // Always return success even if email doesn't exist (security best practice)
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error("Forgot password error: ", e);
-            // Still return OK to prevent email enumeration
             return ResponseEntity.ok().build();
         }
     }

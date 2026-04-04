@@ -13,7 +13,7 @@ public class ChatResponseDTO {
     private String intent;
     private double confidence;
     private List<ChatMessageDTO.ActionButton> suggestions;
-    private List<InsurancePolicyResponseDTO> relatedPolicies; // Changed to your existing DTO
+    private List<InsurancePolicyResponseDTO> relatedPolicies;
     private boolean requiresHumanAgent;
     private String emotion;
 }

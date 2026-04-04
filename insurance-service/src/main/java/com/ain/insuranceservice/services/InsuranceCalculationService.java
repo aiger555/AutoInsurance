@@ -175,7 +175,7 @@ public class InsuranceCalculationService {
         };
     }
 
-    private BigDecimal calculateCarAgeCoefficient(int manufactureYear) {
+    public BigDecimal calculateCarAgeCoefficient(int manufactureYear) {
         int carAge = LocalDate.now().getYear() - manufactureYear;
         if (carAge <= 3) return new BigDecimal("1.0");
         else if (carAge <= 5) return new BigDecimal("0.9");

@@ -1,9 +1,9 @@
 ### loging request to retrieve a token
 
-#--локально
+#locally
 #POST http://localhost:4005/login
 
-#через api-gateway
+#through api-gateway
 POST http://localhost:4004/login
 Content-Type: application/json
 Accept: application/json

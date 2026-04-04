@@ -62,8 +62,8 @@ public class EmailService {
                             "Welcome to our application! Your account has been successfully created.\n\n" +
                             "You can now log in using your email and password.\n\n" +
                             "Login endpoint: POST /login\n" +
-                            "With JSON: {\"email\": \"%s\", \"password\": \"your-password\"}\n\n" +
-                            "Best regards,\nYour App Team",
+                            "With JSON: {\"email\": \"%s\", \"password\": \"y-password\"}\n\n" +
+                            "Best regards,\n",
                     to
             );
 
@@ -73,7 +73,6 @@ public class EmailService {
             log.info("Welcome email sent to: {}", to);
         } catch (Exception e) {
             log.error("Failed to send welcome email to: {}", to, e);
-            // Don't throw exception for welcome email - it's not critical
         }
     }
 }

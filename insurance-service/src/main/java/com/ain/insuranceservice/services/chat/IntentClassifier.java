@@ -23,7 +23,6 @@ public class IntentClassifier {
     }
 
     private void initializeIntents() {
-        // GREETING intent
         intentPatterns.put("GREETING", Arrays.asList(
                 Pattern.compile(".*\\b(hello|hi|hey|greetings|good morning|good afternoon|good evening)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile("^hi$|^hello$|^hey$", Pattern.CASE_INSENSITIVE),
@@ -31,7 +30,6 @@ public class IntentClassifier {
         ));
         intentResponses.put("GREETING", "Hello! I'm your insurance assistant. How can I help you today?");
 
-        // POLICY_INQUIRY intent
         intentPatterns.put("POLICY_INQUIRY", Arrays.asList(
                 Pattern.compile(".*\\b(policy|coverage|insured|insurance|premium|deductible)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*how much (is|are).*", Pattern.CASE_INSENSITIVE),
@@ -43,7 +41,6 @@ public class IntentClassifier {
         ));
         intentResponses.put("POLICY_INQUIRY", "I can help you with policy information. Could you provide your policy number?");
 
-        // CLAIM_FILING intent
         intentPatterns.put("CLAIM_FILING", Arrays.asList(
                 Pattern.compile(".*\\b(claim|accident|damage|crash|hit|stolen|theft|break\\-in)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*how (to|do I) file (a )?claim.*", Pattern.CASE_INSENSITIVE),
@@ -54,7 +51,6 @@ public class IntentClassifier {
         ));
         intentResponses.put("CLAIM_FILING", "I'll help you file a claim. Let me guide you through the process...");
 
-        // RENEWAL intent
         intentPatterns.put("RENEWAL", Arrays.asList(
                 Pattern.compile(".*\\b(renew|renewal|expir|expire|expiration|extend|continue)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*when does my policy expire.*", Pattern.CASE_INSENSITIVE),
@@ -64,7 +60,6 @@ public class IntentClassifier {
         ));
         intentResponses.put("RENEWAL", "I can help you with policy renewal. Let me check your policy status...");
 
-        // PAYMENT intent
         intentPatterns.put("PAYMENT", Arrays.asList(
                 Pattern.compile(".*\\b(pay|payment|bill|invoice|due|premium|installment)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*how (much|to) pay.*", Pattern.CASE_INSENSITIVE),
@@ -75,7 +70,6 @@ public class IntentClassifier {
         ));
         intentResponses.put("PAYMENT", "I can help you with payments. Would you like to make a payment now?");
 
-        // EMERGENCY intent
         intentPatterns.put("EMERGENCY", Arrays.asList(
                 Pattern.compile(".*\\b(emergency|urgent|immediate|right now|asap|help!|accident now)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*need help (right )?now.*", Pattern.CASE_INSENSITIVE),
@@ -91,7 +85,6 @@ public class IntentClassifier {
                 "• Fire: 101\n\n" +
                 "Please stay calm. Help is on the way.");
 
-        // FAREWELL intent
         intentPatterns.put("FAREWELL", Arrays.asList(
                 Pattern.compile(".*\\b(bye|goodbye|see you|talk to you later|have a good day)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile("^bye$|^goodbye$", Pattern.CASE_INSENSITIVE),
@@ -99,7 +92,6 @@ public class IntentClassifier {
         ));
         intentResponses.put("FAREWELL", "You're welcome! Feel free to return if you have more questions. Have a great day! 🌟");
 
-        // HELP intent
         intentPatterns.put("HELP", Arrays.asList(
                 Pattern.compile(".*\\b(help|support|assist|can you|what can you do)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile("^help$|^support$", Pattern.CASE_INSENSITIVE),
@@ -114,14 +106,12 @@ public class IntentClassifier {
                 "️ *General Questions* - Ask about insurance types, coverage options\n\n" +
                 "What would you like help with today?");
 
-        // POLICY_NUMBER intent (specific for when user provides policy number)
         intentPatterns.put("PROVIDE_POLICY_NUMBER", Arrays.asList(
                 Pattern.compile(".*\\b(POL[-:]?)?(\\d{6,10})\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile("^\\d{6,10}$", Pattern.CASE_INSENSITIVE)
         ));
         intentResponses.put("PROVIDE_POLICY_NUMBER", "Thank you for providing your policy number. Let me fetch the details for you.");
 
-        // QUOTE_REQUEST intent
         intentPatterns.put("QUOTE_REQUEST", Arrays.asList(
                 Pattern.compile(".*\\b(quote|estimate|how much would it cost)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*get (a )?quote.*", Pattern.CASE_INSENSITIVE),
@@ -129,7 +119,6 @@ public class IntentClassifier {
         ));
         intentResponses.put("QUOTE_REQUEST", "I can help you get a quote! Let me ask you a few questions about your vehicle and driving history.");
 
-        // DOCUMENT_REQUEST intent
         intentPatterns.put("DOCUMENT_REQUEST", Arrays.asList(
                 Pattern.compile(".*\\b(document|paperwork|form|download|pdf)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*get (my )?policy (document|paper).*", Pattern.CASE_INSENSITIVE),
@@ -137,14 +126,12 @@ public class IntentClassifier {
         ));
         intentResponses.put("DOCUMENT_REQUEST", "I can help you download your policy documents. Please provide your policy number.");
 
-        // CONTACT_AGENT intent
         intentPatterns.put("CONTACT_AGENT", Arrays.asList(
                 Pattern.compile(".*\\b(agent|human|representative|talk to someone|speak to)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*can I talk to a (real )?person.*", Pattern.CASE_INSENSITIVE)
         ));
         intentResponses.put("CONTACT_AGENT", "I'll connect you with a human agent. Please wait while I transfer you...");
 
-        // VEHICLE_INFO intent
         intentPatterns.put("VEHICLE_INFO", Arrays.asList(
                 Pattern.compile(".*\\b(vehicle|car|truck|motorcycle|bike|automobile)\\b.*", Pattern.CASE_INSENSITIVE),
                 Pattern.compile(".*info about my (car|vehicle).*", Pattern.CASE_INSENSITIVE),
@@ -183,7 +170,6 @@ public class IntentClassifier {
 
         String normalizedMessage = message.toLowerCase().trim();
 
-        // Check for policy number first (high priority)
         String extractedPolicyNumber = extractPolicyNumber(normalizedMessage);
         if (extractedPolicyNumber != null) {
             Map<String, String> entities = new HashMap<>();
@@ -205,11 +191,9 @@ public class IntentClassifier {
                 if (matcher.matches()) {
                     double score = calculateConfidence(normalizedMessage, intent);
 
-                    // Extract entities if this intent matches
                     Map<String, String> entities = extractEntities(normalizedMessage, intent);
                     extractedEntities.putAll(entities);
 
-                    // Boost score if we found relevant entities
                     if (!entities.isEmpty()) {
                         score = Math.min(1.0, score + 0.1);
                     }
@@ -223,7 +207,6 @@ public class IntentClassifier {
             }
         }
 
-        // If no pattern matched, try keyword matching as fallback
         if (bestIntent.equals("UNKNOWN") || bestScore < 0.3) {
             IntentClassification keywordMatch = matchByKeywords(normalizedMessage);
             if (keywordMatch.getConfidence() > bestScore) {
@@ -264,7 +247,6 @@ public class IntentClassifier {
                     bestScore = score;
                     bestIntent = intent;
 
-                    // Try to extract entities
                     entities = extractEntities(message, intent);
                 }
             }
@@ -278,18 +260,14 @@ public class IntentClassifier {
         List<String> keywords = intentKeywords.getOrDefault(intent, new ArrayList<>());
         if (keywords.isEmpty()) return 0.5;
 
-        // Count keyword matches
         long matchCount = keywords.stream()
                 .filter(keyword -> message.contains(keyword.toLowerCase()))
                 .count();
 
-        // Calculate base confidence
         double baseConfidence = matchCount / (double) keywords.size();
 
-        // Boost confidence based on message length (longer messages with keywords are more likely intentional)
         double lengthBoost = Math.min(0.2, message.length() / 100.0);
 
-        // Check for question patterns
         if (message.contains("?") || message.startsWith("what") ||
                 message.startsWith("how") || message.startsWith("when") ||
                 message.startsWith("where") || message.startsWith("why")) {
@@ -300,7 +278,6 @@ public class IntentClassifier {
     }
 
     private String extractPolicyNumber(String message) {
-        // Pattern for policy numbers (6-10 digits, optionally with POL- prefix)
         java.util.regex.Pattern policyPattern =
                 java.util.regex.Pattern.compile("\\b(POL[-:]?)?(\\d{6,10})\\b", Pattern.CASE_INSENSITIVE);
         java.util.regex.Matcher matcher = policyPattern.matcher(message);
@@ -314,16 +291,13 @@ public class IntentClassifier {
     private Map<String, String> extractEntities(String message, String intent) {
         Map<String, String> entities = new HashMap<>();
 
-        // Extract policy number for any intent
         String policyNumber = extractPolicyNumber(message);
         if (policyNumber != null) {
             entities.put("policy_number", policyNumber);
         }
 
-        // Intent-specific entity extraction
         switch (intent) {
             case "PAYMENT":
-                // Extract amount if present (e.g., "$500", "500 dollars", "500 KGS")
                 java.util.regex.Pattern amountPattern =
                         java.util.regex.Pattern.compile("\\b(\\d+(\\.\\d{2})?)\\s*(USD|KGS|\\$)?\\b");
                 java.util.regex.Matcher amountMatcher = amountPattern.matcher(message);
@@ -333,7 +307,6 @@ public class IntentClassifier {
                 break;
 
             case "CLAIM_FILING":
-                // Extract date if present
                 java.util.regex.Pattern datePattern =
                         java.util.regex.Pattern.compile("\\b(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})\\b");
                 java.util.regex.Matcher dateMatcher = datePattern.matcher(message);
@@ -343,7 +316,6 @@ public class IntentClassifier {
                 break;
 
             case "VEHICLE_INFO":
-                // Extract car brand/model if present (simple implementation)
                 List<String> commonBrands = Arrays.asList("toyota", "honda", "bmw", "mercedes", "audi", "ford");
                 for (String brand : commonBrands) {
                     if (message.contains(brand)) {

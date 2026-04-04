@@ -24,7 +24,6 @@ public class JwtUtil {
 
     public JwtUtil(@Value("${jwt.secret}") String secret) {
         try {
-            // ПРОВЕРКА: secret должен быть минимум 32 символа
             if (secret == null || secret.length() < 32) {
                 throw new IllegalArgumentException("JWT secret must be at least 32 characters long");
             }
@@ -44,7 +43,7 @@ public class JwtUtil {
                 .subject(email)
                 .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // - 10 hours
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(secretKey)
                 .compact();
     }

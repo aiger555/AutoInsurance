@@ -8,7 +8,7 @@ import java.util.List;
 public class ChatMessageDTO {
     private String id;
     private String sessionId;
-    private String sender; // "USER" or "BOT"
+    private String sender;
     private String message;
     private LocalDateTime timestamp;
     private MessageType type;

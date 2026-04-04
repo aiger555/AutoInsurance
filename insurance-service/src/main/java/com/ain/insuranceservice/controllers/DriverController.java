@@ -23,33 +23,33 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/drivers")
-@Tag(name = "Driver", description = "API for managing Drivers") // swagger
+@Tag(name = "Driver", description = "API for managing Drivers")
 public class DriverController {
     private final DriverService driverService;
 
     @GetMapping
-    @Operation(summary = "Get Drivers") // swagger
+    @Operation(summary = "Get Drivers")
     public ResponseEntity<List<DriverResponseDTO>> getDrivers() {
         List<DriverResponseDTO> drivers = driverService.getDrivers();
         return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 
     @PostMapping
-    @Operation(summary = "Create a new Driver") // swagger
+    @Operation(summary = "Create a new Driver")
     public ResponseEntity<DriverResponseDTO> createDriver(@Valid @RequestBody DriverRequestDTO driverRequestDTO) {
         DriverResponseDTO driverResponseDTO = driverService.createDriver(driverRequestDTO);
         return new ResponseEntity<>(driverResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a Driver") // swagger
+    @Operation(summary = "Update a Driver")
     public ResponseEntity<DriverResponseDTO> updateDriver(@PathVariable UUID id, @Validated({Default.class}) @RequestBody DriverRequestDTO driverRequestDTO) {
         DriverResponseDTO driverResponseDTO = driverService.updateDriver(id, driverRequestDTO);
         return new ResponseEntity<>(driverResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a Driver") // swagger
+    @Operation(summary = "Delete a Driver")
     public ResponseEntity<Void> deleteDriver(@PathVariable UUID id) {
         driverService.deleteDriver(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

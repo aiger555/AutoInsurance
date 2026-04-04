@@ -27,7 +27,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/policies")
-@Tag(name = "Policy", description = "API for managing Policies") // swagger
+@Tag(name = "Policy", description = "API for managing Policies")
 public class InsurancePolicyController {
     private final InsurancePolicyService policyService;
     private final PDFService pdfService;
@@ -35,28 +35,28 @@ public class InsurancePolicyController {
 
 
     @GetMapping
-    @Operation(summary = "Get Policies") // swagger
+    @Operation(summary = "Get Policies")
     public ResponseEntity<List<InsurancePolicyResponseDTO>> getPolicies() {
         List<InsurancePolicyResponseDTO> policies = policyService.getInsurancePolicies();
         return new ResponseEntity<>(policies, HttpStatus.OK);
     }
 
     @PostMapping
-    @Operation(summary = "Create a new Policy") // swagger
+    @Operation(summary = "Create a new Policy")
     public ResponseEntity<InsurancePolicyResponseDTO> createPolicy(@Valid @RequestBody InsurancePolicyRequestDTO policyRequestDTO) {
         InsurancePolicyResponseDTO policyResponseDTO = policyService.createInsurancePolicy(policyRequestDTO);
         return new ResponseEntity<>(policyResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{policyNumber}")
-    @Operation(summary = "Update a Policy") // swagger
+    @Operation(summary = "Update a Policy")
     public ResponseEntity<InsurancePolicyResponseDTO> updatePolicy(@PathVariable String policyNumber, @Validated({Default.class}) @RequestBody InsurancePolicyRequestDTO insurancePolicyRequestDTO) {
         InsurancePolicyResponseDTO insurancePolicyResponseDTO = policyService.updatePolicy(policyNumber, insurancePolicyRequestDTO);
         return new ResponseEntity<>(insurancePolicyResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a Policy") // swagger
+    @Operation(summary = "Delete a Policy")
     public ResponseEntity<Void> deletePolicy(@PathVariable String id) {
         policyService.deletePolicy(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -68,26 +68,23 @@ public class InsurancePolicyController {
         try {
             log.info("🔍 Searching for policy with number: {}", policyNumber);
 
-            // ИСПРАВЬ: используй метод с JOIN FETCH вместо findById
             InsurancePolicy policy = insurancePolicyRepository.findByPolicyNumberWithAssociations(policyNumber);
 
             if (policy == null) {
-                log.error("❌ Policy not found: {}", policyNumber);
+                log.error("Policy not found: {}", policyNumber);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
-            // ДЕБАГ ЛОГИ
-            log.info("✅ Policy found: {}", policy.getPolicyNumber());
-            log.info("👤 Vehicle Owner: {}",
+            log.info("Policy found: {}", policy.getPolicyNumber());
+            log.info("Vehicle Owner: {}",
                     policy.getVehicleOwner() != null ? policy.getVehicleOwner().getFullName() : "NULL");
-            log.info("🚗 Insured Car: {}",
+            log.info("Insured Car: {}",
                     policy.getInsuredCar() != null ? policy.getInsuredCar().getBrand() : "NULL");
-            log.info("👥 Drivers count: {}",
+            log.info("Drivers count: {}",
                     policy.getDrivers() != null ? policy.getDrivers().size() : 0);
 
-            // Если все равно NULL - создаем тестовые данные
             if (policy.getVehicleOwner() == null || policy.getInsuredCar() == null) {
-                log.warn("⚠️ Some associations are null, using test data");
+                log.warn("Some associations are null, using test data");
                 policy = createTestPolicyData(policy);
             }
 
@@ -95,23 +92,21 @@ public class InsurancePolicyController {
 
             String filename = "insurance_policy_" + policyNumber + ".pdf";
 
-            log.info("📄 PDF generated successfully for policy: {}", policyNumber);
+            log.info("PDF generated successfully for policy: {}", policyNumber);
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
                     .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
                     .body(pdfBytes);
 
         } catch (Exception e) {
-            log.error("❌ Error generating PDF for policy {}", policyNumber, e);
+            log.error("Error generating PDF for policy {}", policyNumber, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // ДОБАВЬ этот метод для тестовых данных
     private InsurancePolicy createTestPolicyData(InsurancePolicy policy) {
-        log.info("🛠️ Creating test data for policy: {}", policy.getPolicyNumber());
+        log.info("Creating test data for policy: {}", policy.getPolicyNumber());
 
-        // Создаем тестового владельца если его нет
         if (policy.getVehicleOwner() == null) {
             com.ain.insuranceservice.models.Client testOwner = new com.ain.insuranceservice.models.Client();
             testOwner.setFullName("Иванов Иван Иванович");
@@ -123,7 +118,6 @@ public class InsurancePolicyController {
             policy.setVehicleOwner(testOwner);
         }
 
-        // Создаем тестовый автомобиль если его нет
         if (policy.getInsuredCar() == null) {
             com.ain.insuranceservice.models.Car testCar = new com.ain.insuranceservice.models.Car();
             testCar.setBrand("Toyota");
@@ -139,7 +133,6 @@ public class InsurancePolicyController {
             policy.setInsuredCar(testCar);
         }
 
-        // Создаем тестовых водителей если их нет
         if (policy.getDrivers() == null || policy.getDrivers().isEmpty()) {
             com.ain.insuranceservice.models.Driver testDriver = new com.ain.insuranceservice.models.Driver();
             testDriver.setFullName("Иванов Иван Иванович");

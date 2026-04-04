@@ -22,33 +22,33 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/clients")
-@Tag(name = "Client", description = "API for managing CLients") // swagger
+@Tag(name = "Client", description = "API for managing CLients")
 public class ClientController {
     private final ClientService clientService;
 
     @GetMapping
-    @Operation(summary = "Get Clients") // swagger
+    @Operation(summary = "Get Clients")
     public ResponseEntity<List<ClientResponseDTO>> getClients() {
         List<ClientResponseDTO> clients = clientService.getClients();
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
     @PostMapping
-    @Operation(summary = "Create a new Client") // swagger
+    @Operation(summary = "Create a new Client")
     public ResponseEntity<ClientResponseDTO> createClient(@Valid @RequestBody ClientRequestDTO clientRequestDTO) {
         ClientResponseDTO clientResponseDTO = clientService.createClient(clientRequestDTO);
         return new ResponseEntity<>(clientResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a Client") // swagger
+    @Operation(summary = "Update a Client")
     public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id, @Validated({Default.class}) @RequestBody ClientRequestDTO clientRequestDTO) {
         ClientResponseDTO clientResponseDTO = clientService.updateClient(id, clientRequestDTO);
         return new ResponseEntity<>(clientResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a Client") // swagger
+    @Operation(summary = "Delete a Client")
     public ResponseEntity<Void> deleteClient(@PathVariable UUID id) {
         clientService.deleteClient(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

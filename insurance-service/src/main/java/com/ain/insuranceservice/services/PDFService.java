@@ -26,11 +26,9 @@ public class PDFService {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    // Маппинг кириллицы на латиницу
     private static final Map<Character, String> CYRILLIC_TO_LATIN = new HashMap<>();
 
     static {
-        // Русские буквы
         CYRILLIC_TO_LATIN.put('а', "a"); CYRILLIC_TO_LATIN.put('б', "b"); CYRILLIC_TO_LATIN.put('в', "v");
         CYRILLIC_TO_LATIN.put('г', "g"); CYRILLIC_TO_LATIN.put('д', "d"); CYRILLIC_TO_LATIN.put('е', "e");
         CYRILLIC_TO_LATIN.put('ё', "yo"); CYRILLIC_TO_LATIN.put('ж', "zh"); CYRILLIC_TO_LATIN.put('з', "z");
@@ -43,7 +41,6 @@ public class PDFService {
         CYRILLIC_TO_LATIN.put('ъ', ""); CYRILLIC_TO_LATIN.put('ы', "y"); CYRILLIC_TO_LATIN.put('ь', "");
         CYRILLIC_TO_LATIN.put('э', "e"); CYRILLIC_TO_LATIN.put('ю', "yu"); CYRILLIC_TO_LATIN.put('я', "ya");
 
-        // Заглавные буквы
         CYRILLIC_TO_LATIN.put('А', "A"); CYRILLIC_TO_LATIN.put('Б', "B"); CYRILLIC_TO_LATIN.put('В', "V");
         CYRILLIC_TO_LATIN.put('Г', "G"); CYRILLIC_TO_LATIN.put('Д', "D"); CYRILLIC_TO_LATIN.put('Е', "E");
         CYRILLIC_TO_LATIN.put('Ё', "Yo"); CYRILLIC_TO_LATIN.put('Ж', "Zh"); CYRILLIC_TO_LATIN.put('З', "Z");
@@ -63,11 +60,9 @@ public class PDFService {
             PdfDocument pdfDocument = new PdfDocument(writer);
             Document document = new Document(pdfDocument);
 
-            // Шрифты
             PdfFont boldFont = PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA_BOLD);
             PdfFont normalFont = PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA);
 
-            // ===== HEADER =====
             Paragraph header = new Paragraph("INSURANCE POLICY")
                     .setFont(boldFont)
                     .setFontSize(18)
@@ -75,7 +70,6 @@ public class PDFService {
                     .setMarginBottom(20);
             document.add(header);
 
-            // ===== POLICY INFO SECTION =====
             document.add(createSectionHeader("POLICY INFORMATION", boldFont));
 
             Table policyTable = createStyledTable(new float[]{40, 60});
@@ -93,7 +87,6 @@ public class PDFService {
             document.add(policyTable);
             document.add(new Paragraph(" "));
 
-            // ===== VEHICLE OWNER SECTION =====
             if (policy.getVehicleOwner() != null) {
                 document.add(createSectionHeader("VEHICLE OWNER", boldFont));
 
@@ -110,7 +103,6 @@ public class PDFService {
                 document.add(new Paragraph(" "));
             }
 
-            // ===== VEHICLE INFO SECTION =====
             if (policy.getInsuredCar() != null) {
                 document.add(createSectionHeader("VEHICLE INFORMATION", boldFont));
 
@@ -126,7 +118,6 @@ public class PDFService {
                 addTableRow(vehicleTable, "Registration Date:", formatDate(policy.getInsuredCar().getRegistrationDate()), boldFont, normalFont);
                 addTableRow(vehicleTable, "Tech Passport:", safeGet(policy.getInsuredCar().getTechPassportNumber()), boldFont, normalFont);
 
-                // Specific fields
                 if (policy.getInsuredCar().getEngineVolume() != null) {
                     addTableRow(vehicleTable, "Engine Volume:", policy.getInsuredCar().getEngineVolume() + " L", boldFont, normalFont);
                 }
@@ -144,7 +135,6 @@ public class PDFService {
                 document.add(new Paragraph(" "));
             }
 
-            // ===== DRIVERS SECTION =====
             if (policy.getDrivers() != null && !policy.getDrivers().isEmpty()) {
                 document.add(createSectionHeader("AUTHORIZED DRIVERS", boldFont));
 
@@ -152,13 +142,11 @@ public class PDFService {
                 driversTable.setWidth(UnitValue.createPercentValue(100));
                 driversTable.setMarginBottom(10);
 
-                // Table headers
                 addHeaderCell(driversTable, "Full Name", boldFont);
                 addHeaderCell(driversTable, "Birth Date", boldFont);
                 addHeaderCell(driversTable, "License Number", boldFont);
                 addHeaderCell(driversTable, "Driving Experience", boldFont);
 
-                // Table data
                 for (int i = 0; i < policy.getDrivers().size(); i++) {
                     var driver = policy.getDrivers().get(i);
                     addDataCell(driversTable, transliterate(safeGet(driver.getFullName())), normalFont);
@@ -170,7 +158,6 @@ public class PDFService {
                 document.add(driversTable);
             }
 
-            // ===== FOOTER =====
             document.add(new Paragraph("\n"));
             Paragraph footer = new Paragraph("Document generated: " + java.time.LocalDate.now().format(DATE_FORMATTER))
                     .setFont(normalFont)
@@ -190,7 +177,6 @@ public class PDFService {
         }
     }
 
-    // ===== ТРАНСЛИТЕРАЦИЯ КИРИЛЛИЦЫ =====
     private String transliterate(String text) {
         if (text == null) return "Not specified";
 
@@ -205,7 +191,6 @@ public class PDFService {
         return result.toString();
     }
 
-    // ===== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ =====
 
     private Paragraph createSectionHeader(String text, PdfFont font) {
         return new Paragraph(text)
