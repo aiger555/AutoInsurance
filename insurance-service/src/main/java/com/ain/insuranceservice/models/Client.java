@@ -34,7 +34,6 @@ public class Client {
 
     @NotNull
     private String address;
-
-
+    
 
 }
