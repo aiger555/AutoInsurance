@@ -1,6 +1,7 @@
 package com.ain.insuranceservice.controllers;
 
 import com.ain.insuranceservice.dto.*;
+import com.ain.insuranceservice.mappers.InsurancePolicyMapper;
 import com.ain.insuranceservice.models.InsurancePolicy;
 import com.ain.insuranceservice.repositories.InsurancePolicyRepository;
 import com.ain.insuranceservice.services.ClientService;
@@ -39,6 +40,13 @@ public class InsurancePolicyController {
     public ResponseEntity<List<InsurancePolicyResponseDTO>> getPolicies() {
         List<InsurancePolicyResponseDTO> policies = policyService.getInsurancePolicies();
         return new ResponseEntity<>(policies, HttpStatus.OK);
+    }
+    @GetMapping("/{policyNumber}")
+    @Operation(summary = "Get Policy by Number")
+    public ResponseEntity<InsurancePolicyResponseDTO> getPolicyByNumber(@PathVariable String policyNumber) {
+        InsurancePolicy policy = policyService.getPolicyByNumber(policyNumber);
+        InsurancePolicyResponseDTO response = InsurancePolicyMapper.toDTO(policy);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
