@@ -47,14 +47,15 @@ public class JwtValidationFilterTest {
 
     @BeforeEach
     void setUp() {
+        when(webClientBuilder.baseUrl("http://auth-service:4005")).thenReturn(webClientBuilder);
+        when(webClientBuilder.build()).thenReturn(webClient);
+
         filterFactory = new JwtValidationGatewayFilterFactory(webClientBuilder);
         config = new JwtValidationGatewayFilterFactory.Config();
     }
 
     @Test
     void apply_FilterWithValidToken_ShouldContinueChain() {
-        when(webClientBuilder.baseUrl("http://auth-service:4005")).thenReturn(webClientBuilder);
-        when(webClientBuilder.build()).thenReturn(webClient);
         when(webClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri("/validate")).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.header(HttpHeaders.AUTHORIZATION, "Bearer valid_token")).thenReturn(requestHeadersSpec);
