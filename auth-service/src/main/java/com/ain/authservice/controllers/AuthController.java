@@ -84,7 +84,7 @@ public class AuthController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error("Forgot password error: ", e);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
