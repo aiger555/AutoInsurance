@@ -203,7 +203,7 @@ public class ChatService {
     private ChatResponseDTO handleEmergency() {
         return ChatResponseDTO.builder()
                 .sessionId(UUID.randomUUID().toString())
-                .message("🚨 EMERGENCY ASSISTANCE\n\n" +
+                .message("EMERGENCY ASSISTANCE\n\n" +
                         "24/7 Emergency Hotline: +996 XXX XXX XXX\n\n" +
                         "For immediate assistance:\n" +
                         "• Roadside assistance: +996 XXX XXX XXX\n" +

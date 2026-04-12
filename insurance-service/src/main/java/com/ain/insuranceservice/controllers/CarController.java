@@ -23,33 +23,33 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cars")
-@Tag(name = "Car", description = "API for managing Cars") // swagger
+@Tag(name = "Car", description = "API for managing Cars")
 public class CarController {
     private final CarService carService;
 
     @GetMapping
-    @Operation(summary = "Get Cars") // swagger
+    @Operation(summary = "Get Cars")
     public ResponseEntity<List<CarResponseDTO>> getAllCars() {
         List<CarResponseDTO> cars = carService.getCars();
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
     @PostMapping
-    @Operation(summary = "Create a new Car") // swagger
+    @Operation(summary = "Create a new Car")
     public ResponseEntity<CarResponseDTO> createCar(@Valid @RequestBody CarRequestDTO carRequestDTO) {
         CarResponseDTO carResponseDTO = carService.createCar(carRequestDTO);
         return new ResponseEntity<>(carResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a Car") // swagger
+    @Operation(summary = "Update a Car")
     public ResponseEntity<CarResponseDTO> updateCar(@PathVariable UUID id, @Validated({Default.class}) @RequestBody CarRequestDTO carRequestDTO) {
         CarResponseDTO carResponseDTO = carService.updateCar(id, carRequestDTO);
         return new ResponseEntity<>(carResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a Car") // swagger
+    @Operation(summary = "Delete a Car")
     public ResponseEntity<Void> deleteCar(@PathVariable UUID id) {
         carService.deleteCar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
