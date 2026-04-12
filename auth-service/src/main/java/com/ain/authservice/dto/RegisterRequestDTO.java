@@ -21,6 +21,6 @@ public class RegisterRequestDTO {
     private String confirmPassword;
 
     @NotBlank(message = "Role is required")
-    @Pattern(regexp = "ADMIN|USER|AGENT", message = "Role must be ADMIN, USER, or AGENT")
+    @Pattern(regexp = "ADMIN|AGENT", message = "Role must be ADMIN, or AGENT")
     private String role;
 }
