@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drivers - Insurance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Insurance System</h3>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html"> Dashboard</a>
+            <a href="clients.html">Clients</a>
+            <a href="cars.html">Cars</a>
+            <a href="drivers.html" class="active"> Drivers</a>
+            <a href="policies.html">Policies</a>
+            <a href="chat.html">Chatbot</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Drivers Management</h1>
+            <div class="user-info">
+                <span id="userEmail"></span>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <button onclick="openAddModal()" class="btn-add">+ Add New Driver</button>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                <tr><th>Full Name</th><th>Birth Date</th><th>License Number</th><th>Driving Experience</th><th>Policy</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="driversTable">
+                <tr><td colspan="6">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="driverModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Add Driver</h3>
+        <input type="hidden" id="driverId">
+        <input type="text" id="fullName" placeholder="Full Name">
+        <input type="date" id="birthDate" placeholder="Birth Date">
+        <input type="text" id="licenseNumber" placeholder="License Number">
+        <input type="date" id="drivingExperience" placeholder="Driving Experience (start date)">
+        <input type="text" id="policyNumber" placeholder="Policy Number">
+        <div class="modal-buttons">
+            <button onclick="saveDriver()" class="btn-primary">Save</button>
+            <button onclick="closeModal()" class="btn-danger">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+    async function loadDrivers() {
+        const drivers = await getDrivers();
+        const table = document.getElementById('driversTable');
+
+        if (drivers.length === 0) {
+            table.innerHTML = '<tr><td colspan="6">No drivers found</td></tr>';
+            return;
+        }
+
+        table.innerHTML = drivers.map(driver => `
+                <tr>
+                    <td>${driver.fullName}</td>
+                    <td>${driver.birthDate}</td>
+                    <td>${driver.licenseNumber}</td>
+                    <td>${driver.drivingExperience}</td>
+                    <td>${driver.policyNumber || 'N/A'}</td>
+                    <td class="action-buttons">
+                        <button onclick="editDriver('${driver.id}')" class="btn-sm btn-edit">Edit</button>
+                        <button onclick="deleteDriverRecord('${driver.id}')" class="btn-sm btn-delete">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+    }
+
+    function openAddModal() {
+        document.getElementById('modalTitle').textContent = 'Add Driver';
+        document.getElementById('driverId').value = '';
+        document.getElementById('fullName').value = '';
+        document.getElementById('birthDate').value = '';
+        document.getElementById('licenseNumber').value = '';
+        document.getElementById('drivingExperience').value = '';
+        document.getElementById('policyNumber').value = '';
+        document.getElementById('driverModal').style.display = 'flex';
+    }
+
+    async function editDriver(id) {
+        const drivers = await getDrivers();
+        const driver = drivers.find(d => d.id === id);
+        if (driver) {
+            document.getElementById('modalTitle').textContent = 'Edit Driver';
+            document.getElementById('driverId').value = driver.id;
+            document.getElementById('fullName').value = driver.fullName;
+            document.getElementById('birthDate').value = driver.birthDate;
+            document.getElementById('licenseNumber').value = driver.licenseNumber;
+            document.getElementById('drivingExperience').value = driver.drivingExperience;
+            document.getElementById('policyNumber').value = driver.policyNumber || '';
+            document.getElementById('driverModal').style.display = 'flex';
+        }
+    }
+
+    async function saveDriver() {
+        const driverData = {
+            fullName: document.getElementById('fullName').value,
+            birthDate: document.getElementById('birthDate').value,
+            licenseNumber: document.getElementById('licenseNumber').value,
+            drivingExperience: document.getElementById('drivingExperience').value,
+            policyNumber: document.getElementById('policyNumber').value
+        };
+
+        let success;
+        const id = document.getElementById('driverId').value;
+        if (id) {
+            success = await updateDriver(id, driverData);
+        } else {
+            success = await createDriver(driverData);
+        }
+
+        if (success) {
+            closeModal();
+            loadDrivers();
+        } else {
+            alert('Error saving driver');
+        }
+    }
+
+    async function deleteDriverRecord(id) {
+        if (confirm('Are you sure?')) {
+            const success = await deleteDriver(id);
+            if (success) loadDrivers();
+            else alert('Error deleting driver');
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('driverModal').style.display = 'none';
+    }
+
+    document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || 'User';
+    loadDrivers();
+</script>
+</body>
+</html>

@@ -8,10 +8,10 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "fullName": "Johnnn Doeee",
+  "fullName": "Johujynn Doeee",
   "dateOfBirth": "2001-11-10",
-  "passportNumber": "AN4584564",
-  "pin": "22214568158787",
+  "passportNumber": "AN4884564",
+  "pin": "25544568158797",
   "address": "Bishkek",
   "phoneNumber": "+996775862198"
 

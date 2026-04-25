@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot - Insurance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Insurance System</h3>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="clients.html">Clients</a>
+            <a href="cars.html"> Cars</a>
+            <a href="drivers.html">Drivers</a>
+            <a href="policies.html">Policies</a>
+            <a href="chat.html" class="active">Chatbot</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Insurance Assistant</h1>
+            <div class="user-info">
+                <span id="userEmail"></span>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="bot-message">Hello! I'm your insurance assistant. How can I help you today?</div>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+    async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        addMessage(message, 'user');
+        input.value = '';
+
+        const response = await sendChatMessage(message);
+
+        if (response) {
+            addMessage(response.message, 'bot');
+
+            if (response.suggestions && response.suggestions.length > 0) {
+                addSuggestions(response.suggestions);
+            }
+        } else {
+            addMessage('Sorry, I could not process your request. Please try again.', 'bot');
+        }
+    }
+
+    function addMessage(text, sender) {
+        const messagesDiv = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = sender === 'user' ? 'user-message' : 'bot-message';
+        messageDiv.textContent = text;
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function addSuggestions(suggestions) {
+        const messagesDiv = document.getElementById('chatMessages');
+        const suggestionsDiv = document.createElement('div');
+        suggestionsDiv.className = 'suggestions';
+
+        suggestions.forEach(suggestion => {
+            const btn = document.createElement('button');
+            btn.textContent = suggestion.text;
+            btn.onclick = () => {
+                document.getElementById('chatInput').value = suggestion.text;
+                sendMessage();
+            };
+            suggestionsDiv.appendChild(btn);
+        });
+
+        messagesDiv.appendChild(suggestionsDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || 'User';
+</script>
+</body>
+</html>

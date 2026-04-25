@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Policies - Insurance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Insurance System</h3>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="clients.html">Clients</a>
+            <a href="cars.html">Cars</a>
+            <a href="drivers.html">Drivers</a>
+            <a href="policies.html" class="active">Policies</a>
+            <a href="chat.html">Chatbot</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Insurance Policies</h1>
+            <div class="user-info">
+                <span id="userEmail"></span>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <button onclick="openAddModal()" class="btn-add">+ Create New Policy</button>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                <tr><th>Policy #</th><th>Type</th><th>Premium</th><th>Start Date</th><th>End Date</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="policiesTable">
+                <tr><td colspan="7">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="policyModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Create Policy</h3>
+        <input type="hidden" id="policyId">
+        <input type="text" id="policyNumber" placeholder="Policy Number">
+        <select id="policyType">
+            <option value="OSAGO">OSAGO - Compulsory Insurance</option>
+            <option value="DSAGO">DSAGO - Voluntary Insurance</option>
+            <option value="CASCO">CASCO - Comprehensive Insurance</option>
+        </select>
+        <input type="date" id="startDate" placeholder="Start Date">
+        <input type="date" id="endDate" placeholder="End Date">
+        <select id="status">
+            <option value="ACTIVE">Active</option>
+            <option value="EXPIRED">Expired</option>
+            <option value="CANCELLED">Cancelled</option>
+        </select>
+        <div class="modal-buttons">
+            <button onclick="savePolicy()" class="btn-primary">Save</button>
+            <button onclick="closeModal()" class="btn-danger">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+    let clientsList = [];
+    let carsList = [];
+
+    async function loadPolicies() {
+        const policies = await getPolicies();
+        const table = document.getElementById('policiesTable');
+
+        if (policies.length === 0) {
+            table.innerHTML = '<tr><td colspan="7">No policies found</td></tr>';
+            return;
+        }
+
+        table.innerHTML = policies.map(policy => `
+                <tr>
+                    <td>${policy.policyNumber}</td>
+                    <td>${policy.policyType}</td>
+                    <td>${policy.premium}</td>
+                    <td>${policy.startDate}</td>
+                    <td>${policy.endDate}</td>
+                    <td>${policy.status}</td>
+                    <td class="action-buttons">
+                        <button onclick="downloadPDF('${policy.policyNumber}')" class="btn-sm btn-pdf">PDF</button>
+                        <button onclick="editPolicy('${policy.policyNumber}')" class="btn-sm btn-edit">Edit</button>
+                        <button onclick="deletePolicyRecord('${policy.policyNumber}')" class="btn-sm btn-delete">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+    }
+
+    async function downloadPDF(policyNumber) {
+        await downloadPolicyPDF(policyNumber);
+    }
+
+    async function openAddModal() {
+        clientsList = await getClients();
+        carsList = await getCars();
+
+        document.getElementById('modalTitle').textContent = 'Create Policy';
+        document.getElementById('policyId').value = '';
+        document.getElementById('policyNumber').value = '';
+        document.getElementById('policyType').value = 'OSAGO';
+        document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('endDate').value = '';
+        document.getElementById('status').value = 'ACTIVE';
+        document.getElementById('policyModal').style.display = 'flex';
+    }
+
+    async function editPolicy(policyNumber) {
+        const policy = await getPolicyByNumber(policyNumber);
+        if (policy) {
+            document.getElementById('modalTitle').textContent = 'Edit Policy';
+            document.getElementById('policyId').value = policy.policyNumber;
+            document.getElementById('policyNumber').value = policy.policyNumber;
+            document.getElementById('policyType').value = policy.policyType;
+            document.getElementById('startDate').value = policy.startDate;
+            document.getElementById('endDate').value = policy.endDate;
+            document.getElementById('status').value = policy.status;
+            document.getElementById('policyModal').style.display = 'flex';
+        }
+    }
+
+    async function savePolicy() {
+        const clientsList = await getClients();
+        const carsList = await getCars();
+
+        const policyData = {
+            policyNumber: document.getElementById('policyNumber').value,
+            policyType: document.getElementById('policyType').value,
+            policyHolder: clientsList[0]?.fullname || 'Test Holder',
+            startDate: document.getElementById('startDate').value,
+            endDate: document.getElementById('endDate').value,
+            status: document.getElementById('status').value,
+            vehicleOwner: clientsList[0] || { id: 'placeholder' },
+            insuredCar: carsList[0] || { id: 'placeholder' },
+            drivers: []
+        };
+
+        let success;
+        const id = document.getElementById('policyId').value;
+        if (id) {
+            success = await updatePolicy(id, policyData);
+        } else {
+            success = await createPolicy(policyData);
+        }
+
+        if (success) {
+            closeModal();
+            loadPolicies();
+        } else {
+            alert('Error saving policy');
+        }
+    }
+
+    async function deletePolicyRecord(policyNumber) {
+        if (confirm('Are you sure?')) {
+            const success = await deletePolicy(policyNumber);
+            if (success) loadPolicies();
+            else alert('Error deleting policy');
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('policyModal').style.display = 'none';
+    }
+
+    document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || 'User';
+    loadPolicies();
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register - Insurance System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Create Account</h2>
+    <div id="errorMsg" class="error-msg"></div>
+    <div id="successMsg" class="success-msg"></div>
+
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="At least 6 characters">
+    </div>
+
+    <div class="input-group">
+      <label>Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="Confirm your password">
+    </div>
+
+    <div class="input-group">
+      <label>Role</label>
+      <select id="role">
+        <option value="AGENT">Insurance Agent</option>
+        <option value="ADMIN">Administrator</option>
+      </select>
+    </div>
+
+    <button onclick="doRegister()" class="btn-primary">Register</button>
+
+    <div class="auth-link">
+      <a href="login.html">Already have an account? Login</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  async function doRegister() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const role = document.getElementById('role').value;
+    const errorDiv = document.getElementById('errorMsg');
+    const successDiv = document.getElementById('successMsg');
+
+    errorDiv.style.display = 'none';
+    successDiv.style.display = 'none';
+
+    if (!email || !password) {
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = 'Please fill all fields';
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = 'Passwords do not match';
+      return;
+    }
+
+    if (password.length < 6) {
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = 'Password must be at least 6 characters';
+      return;
+    }
+
+    const success = await register(email, password, role);
+
+    if (success) {
+      successDiv.style.display = 'block';
+      successDiv.textContent = 'Registration successful! Redirecting to login...';
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 2000);
+    } else {
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = 'Registration failed. Email may already exist.';
+    }
+  }
+</script>
+</body>
+</html>

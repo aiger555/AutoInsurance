@@ -3,7 +3,7 @@
 #DELETE http://localhost:4000/clients/95b338b9-cfd4-4adc-b496-b9884f0acc8e
 
 #api-gateway
-DELETE http://localhost:4004/api/clients/95b338b9-cfd4-4adc-b496-b9884f0acc8e
+DELETE http://localhost:4004/api/clients/bc26b37f-5986-46c5-a6a7-57124148087a
 Authorization: Bearer {{token}}
 
 ###

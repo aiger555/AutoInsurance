@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cars - Insurance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Insurance System</h3>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="clients.html">Clients</a>
+            <a href="cars.html" class="active">Cars</a>
+            <a href="drivers.html">Drivers</a>
+            <a href="policies.html">Policies</a>
+            <a href="chat.html">Chatbot</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Cars Management</h1>
+            <div class="user-info">
+                <span id="userEmail"></span>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <button onclick="openAddModal()" class="btn-add">+ Add New Car</button>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                <tr><th>Brand</th><th>Model</th><th>Year</th><th>License Plate</th><th>VIN</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="carsTable">
+                <tr><td colspan="6">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="carModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Add Car</h3>
+        <input type="hidden" id="carId">
+        <input type="text" id="brand" placeholder="Brand">
+        <input type="text" id="model" placeholder="Model">
+        <input type="number" id="manufactureYear" placeholder="Year">
+        <input type="text" id="vin" placeholder="VIN">
+        <input type="text" id="licensePlate" placeholder="License Plate">
+        <input type="text" id="engineVolume" placeholder="Engine Volume (for passenger car)">
+        <select id="vehicleType">
+            <option value="PASSENGER_CAR">Passenger Car</option>
+            <option value="TRUCK">Truck</option>
+            <option value="ELECTRIC_CAR">Electric Car</option>
+            <option value="MOTORCYCLE">Motorcycle</option>
+            <option value="BUS">Bus</option>
+        </select>
+        <div class="modal-buttons">
+            <button onclick="saveCar()" class="btn-primary">Save</button>
+            <button onclick="closeModal()" class="btn-danger">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+    let clientsList = [];
+
+    async function loadCars() {
+        const cars = await getCars();
+        clientsList = await getClients();
+
+        const table = document.getElementById('carsTable');
+
+        if (cars.length === 0) {
+            table.innerHTML = '<tr><td colspan="6">No cars found</td></tr>';
+            return;
+        }
+
+        table.innerHTML = cars.map(car => `
+                <tr>
+                    <td>${car.brand}</td>
+                    <td>${car.model}</td>
+                    <td>${car.manufactureYear}</td>
+                    <td>${car.licensePlate}</td>
+                    <td>${car.vin}</td>
+                    <td class="action-buttons">
+                        <button onclick="editCar('${car.id}')" class="btn-sm btn-edit">Edit</button>
+                        <button onclick="deleteCarRecord('${car.id}')" class="btn-sm btn-delete">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+    }
+
+    function openAddModal() {
+        document.getElementById('modalTitle').textContent = 'Add Car';
+        document.getElementById('carId').value = '';
+        document.getElementById('brand').value = '';
+        document.getElementById('model').value = '';
+        document.getElementById('manufactureYear').value = '';
+        document.getElementById('vin').value = '';
+        document.getElementById('licensePlate').value = '';
+        document.getElementById('engineVolume').value = '';
+        document.getElementById('vehicleType').value = 'PASSENGER_CAR';
+        document.getElementById('carModal').style.display = 'flex';
+    }
+
+    async function editCar(id) {
+        const car = await getCarById(id);
+        if (car) {
+            document.getElementById('modalTitle').textContent = 'Edit Car';
+            document.getElementById('carId').value = car.id;
+            document.getElementById('brand').value = car.brand;
+            document.getElementById('model').value = car.model;
+            document.getElementById('manufactureYear').value = car.manufactureYear;
+            document.getElementById('vin').value = car.vin;
+            document.getElementById('licensePlate').value = car.licensePlate;
+            document.getElementById('engineVolume').value = car.engineVolume;
+            document.getElementById('vehicleType').value = car.vehicleType;
+            document.getElementById('carModal').style.display = 'flex';
+        }
+    }
+
+    async function saveCar() {
+        const carData = {
+            brand: document.getElementById('brand').value,
+            model: document.getElementById('model').value,
+            manufactureYear: document.getElementById('manufactureYear').value,
+            vin: document.getElementById('vin').value,
+            licensePlate: document.getElementById('licensePlate').value,
+            engineVolume: document.getElementById('engineVolume').value,
+            vehicleType: document.getElementById('vehicleType').value,
+            owner: clientsList[0] || { id: 'placeholder' }
+        };
+
+        let success;
+        const id = document.getElementById('carId').value;
+        if (id) {
+            success = await updateCar(id, carData);
+        } else {
+            success = await createCar(carData);
+        }
+
+        if (success) {
+            closeModal();
+            loadCars();
+        } else {
+            alert('Error saving car');
+        }
+    }
+
+    async function deleteCarRecord(id) {
+        if (confirm('Are you sure?')) {
+            const success = await deleteCar(id);
+            if (success) loadCars();
+            else alert('Error deleting car');
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('carModal').style.display = 'none';
+    }
+
+    document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || 'User';
+    loadCars();
+</script>
+</body>
+</html>

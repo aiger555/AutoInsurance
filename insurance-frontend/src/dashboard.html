@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Insurance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Insurance System</h3>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html" class="active">
+                <span class="icon"></span> Dashboard
+            </a>
+            <a href="clients.html">
+                <span class="icon"></span> Clients
+            </a>
+            <a href="cars.html">
+                <span class="icon"></span> Cars
+            </a>
+            <a href="drivers.html">
+                <span class="icon"></span> Drivers
+            </a>
+            <a href="policies.html">
+                <span class="icon"></span> Policies
+            </a>
+            <a href="chat.html">
+                <span class="icon"></span> Chatbot
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <div class="user-info">
+                <span>Welcome, <span id="userEmail"></span></span>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 id="clientCount">0</h3>
+                <p>Total Clients</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="carCount">0</h3>
+                <p>Total Cars</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="driverCount">0</h3>
+                <p>Total Drivers</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="policyCount">0</h3>
+                <p>Active Policies</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+    async function loadStats() {
+        const clients = await getClients();
+        const cars = await getCars();
+        const drivers = await getDrivers();
+        const policies = await getPolicies();
+
+        document.getElementById('clientCount').textContent = clients.length;
+        document.getElementById('carCount').textContent = cars.length;
+        document.getElementById('driverCount').textContent = drivers.length;
+        document.getElementById('policyCount').textContent = policies.length;
+    }
+
+    document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || 'User';
+    loadStats();
+</script>
+</body>
+</html>

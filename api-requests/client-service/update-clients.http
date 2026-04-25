@@ -3,7 +3,7 @@
 #PUT http://localhost:4000/clients/95b338b9-cfd4-4adc-b496-b9884f0acc8e
 
 #api-gateway
-PUT http://localhost:4004/api/clients/95b338b9-cfd4-4adc-b496-b9884f0acc8e
+PUT http://localhost:4004/api/clients/bc26b37f-5986-46c5-a6a7-57124148087a
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -11,7 +11,7 @@ Content-Type: application/json
   "fullName": "John Doe LEEE",
   "dateOfBirth": "2001-11-10",
   "passportNumber": "AN 4584564",
-  "pin": "22214568158787",
+  "pin": "222145685648787",
   "address": "Bishkek",
   "phoneNumber": "+996775862198"
 

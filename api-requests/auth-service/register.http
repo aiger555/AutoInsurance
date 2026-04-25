@@ -17,7 +17,7 @@ Content-Type: application/json
   "email": "gigigigi0987654@gmail.com"
 }
 
-### Reset password with token (replace TOKEN with actual token from email)
+### Reset password with token
 POST http://localhost:4004/reset-password
 Content-Type: application/json
 

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clients - Insurance System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Insurance System</h3>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="clients.html" class="active">Clients</a>
+            <a href="cars.html">Cars</a>
+            <a href="drivers.html">Drivers</a>
+            <a href="policies.html">Policies</a>
+            <a href="chat.html">Chatbot</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Clients Management</h1>
+            <div class="user-info">
+                <span id="userEmail"></span>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <button onclick="openAddModal()" class="btn-add">+ Add New Client</button>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                <tr><th>Full Name</th><th>Phone</th><th>PIN</th><th>Passport</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="clientsTable">
+                <tr><td colspan="5">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="clientModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Add Client</h3>
+        <input type="hidden" id="clientId">
+        <input type="text" id="fullName" placeholder="Full Name">
+        <input type="date" id="birthDate" placeholder="Birth Date">
+        <input type="text" id="phoneNumber" placeholder="Phone Number">
+        <input type="text" id="passportNumber" placeholder="Passport Number">
+        <input type="text" id="pin" placeholder="PIN">
+        <input type="text" id="address" placeholder="Address">
+        <div class="modal-buttons">
+            <button onclick="saveClient()" class="btn-primary">Save</button>
+            <button onclick="closeModal()" class="btn-danger">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+    let isEditMode = false;
+
+    async function loadClients() {
+        const clients = await getClients();
+        const table = document.getElementById('clientsTable');
+
+        if (clients.length === 0) {
+            table.innerHTML = '<tr><td colspan="5">No clients found</td></tr>';
+            return;
+        }
+
+        table.innerHTML = clients.map(client => `
+                <tr>
+                    <td>${client.fullname}</td>
+                    <td>${client.phoneNumber}</td>
+                    <td>${client.pin}</td>
+                    <td>${client.passportNumber}</td>
+                    <td class="action-buttons">
+                        <button onclick="editClient('${client.id}')" class="btn-sm btn-edit">Edit</button>
+                        <button onclick="deleteClientRecord('${client.id}')" class="btn-sm btn-delete">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+    }
+
+    async function openAddModal() {
+        isEditMode = false;
+        document.getElementById('modalTitle').textContent = 'Add Client';
+        document.getElementById('clientId').value = '';
+        document.getElementById('fullName').value = '';
+        document.getElementById('birthDate').value = '';
+        document.getElementById('phoneNumber').value = '';
+        document.getElementById('passportNumber').value = '';
+        document.getElementById('pin').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('clientModal').style.display = 'flex';
+    }
+
+    async function editClient(id) {
+        isEditMode = true;
+        const client = await getClientById(id);
+        if (client) {
+            document.getElementById('modalTitle').textContent = 'Edit Client';
+            document.getElementById('clientId').value = client.id;
+            document.getElementById('fullName').value = client.fullname;
+            document.getElementById('birthDate').value = client.dateOfBirth;
+            document.getElementById('phoneNumber').value = client.phoneNumber;
+            document.getElementById('passportNumber').value = client.passportNumber;
+            document.getElementById('pin').value = client.pin;
+            document.getElementById('address').value = client.address;
+            document.getElementById('clientModal').style.display = 'flex';
+        }
+    }
+
+    async function saveClient() {
+        const clientData = {
+            fullName: document.getElementById('fullName').value,
+            dateOfBirth: document.getElementById('birthDate').value,
+            phoneNumber: document.getElementById('phoneNumber').value,
+            passportNumber: document.getElementById('passportNumber').value,
+            pin: document.getElementById('pin').value,
+            address: document.getElementById('address').value
+        };
+
+        let success;
+        if (isEditMode) {
+            const id = document.getElementById('clientId').value;
+            success = await updateClient(id, clientData);
+        } else {
+            success = await createClient(clientData);
+        }
+
+        if (success) {
+            closeModal();
+            loadClients();
+        } else {
+            alert('Error saving client');
+        }
+    }
+
+    async function deleteClientRecord(id) {
+        if (confirm('Are you sure you want to delete this client?')) {
+            const success = await deleteClient(id);
+            if (success) {
+                loadClients();
+            } else {
+                alert('Error deleting client');
+            }
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('clientModal').style.display = 'none';
+    }
+
+    document.getElementById('userEmail').textContent = localStorage.getItem('userEmail') || 'User';
+    loadClients();
+</script>
+</body>
+</html>
