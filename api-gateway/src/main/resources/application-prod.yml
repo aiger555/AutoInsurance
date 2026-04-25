@@ -1,82 +1,82 @@
 server:
-  port: 4004 # Gateway listens on port 4004
+  port: 4004
 
 spring:
+  application:
+    name: api-gateway
   cloud:
     gateway:
       routes:
-        - id: auth-service-route
+        - id: auth-service-login
           uri: http://auth-service:4005
           predicates:
-            - Path=/auth/**
-          filters:
-            - StripPrefix=1
-
-        # Route for /api/clients/** to insurance-service
-        - id: insurance-service-clients-route
+            - Path=/login
+        - id: auth-service-validate
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/validate
+        - id: auth-service-register
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/register
+        - id: auth-service-forgot-password
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/forgot-password
+        - id: auth-service-reset-password
+          uri: http://auth-service:4005
+          predicates:
+            - Path=/reset-password
+        - id: insurance-service-clients
           uri: http://insurance-service:4000
           predicates:
             - Path=/api/clients/**
           filters:
             - StripPrefix=1
-            - JwtValidation
-
-        - id: insurance-service-cars-route
+            - name: JwtValidation
+        - id: insurance-service-cars
           uri: http://insurance-service:4000
           predicates:
             - Path=/api/cars/**
           filters:
             - StripPrefix=1
-            - JwtValidation
-
-        - id: insurance-service-drivers-route
+            - name: JwtValidation
+        - id: insurance-service-drivers
           uri: http://insurance-service:4000
           predicates:
             - Path=/api/drivers/**
           filters:
             - StripPrefix=1
-            - JwtValidation
-
-        - id: insurance-service-policies-route
+            - name: JwtValidation
+        - id: insurance-service-policies
           uri: http://insurance-service:4000
           predicates:
             - Path=/api/policies/**
           filters:
             - StripPrefix=1
-            - JwtValidation
-
-        # Route for /api/docs/clients to insurance-service /v3/api-docs
-        - id: api-docs-client-route
+            - name: JwtValidation
+        - id: insurance-service-policy-download
           uri: http://insurance-service:4000
           predicates:
-            - Path=/api-docs/clients
+            - Path=/api/policies/*/download
           filters:
-            - RewritePath=/api-docs/clients,/v3/api-docs
-
-        - id: api-docs-client-route
+            - StripPrefix=1
+            - name: JwtValidation
+        - id: insurance-service-chat
           uri: http://insurance-service:4000
           predicates:
-            - Path=/api-docs/cars
+            - Path=/api/chat/**
           filters:
-            - RewritePath=/api-docs/cars,/v3/api-docs
-
-        - id: api-docs-client-route
+            - StripPrefix=1
+            - name: JwtValidation
+        - id: insurance-service-chat-ws
           uri: http://insurance-service:4000
           predicates:
-            - Path=/api-docs/drivers
+            - Path=/ws-chat/**
           filters:
-            - RewritePath=/api-docs/drivers,/v3/api-docs
+            - StripPrefix=0
 
-        - id: api-docs-client-route
-          uri: http://insurance-service:4000
-          predicates:
-            - Path=/api-docs/policies
-          filters:
-            - RewritePath=/api-docs/policies,/v3/api-docs
-
-        - id: api-docs-auth-route
-          uri: http://auth-service:4005
-          predicates:
-            - Path=/api-docs/auth
-          filters:
-            - RewritePath=/api-docs/auth,/v3/api-docs
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    com.ain.apigateway: INFO
